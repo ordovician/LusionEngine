@@ -2,6 +2,8 @@ require("script/roadmap")
 require("script/trapezoid")
 require("script/edge")
 
+print("Hello form Eriks laptop")
+
 function eq(a, b)
   return math.abs(a-b) < 0.00000001
 end
