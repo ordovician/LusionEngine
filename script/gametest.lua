@@ -2,6 +2,8 @@ require("script/roadmap")
 require("script/trapezoid")
 require("script/edge")
 
+print("We make some new addons") 
+
 function eq(a, b)
   return math.abs(a-b) < 0.00000001
 end
@@ -552,13 +554,13 @@ function testRectIntersects()
   r2:halfSize():print()
 end
 
-testRectIntersects()
+-- testRectIntersects()
 -- circleIntersects()
 
 -- collisionTest()
 
 -- lineIntersectTest()
 -- testNearest()
--- rayIntersectTest()
+rayIntersectTest()
 
 -- trapezoidUnitTest2()
