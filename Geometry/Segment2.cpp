@@ -168,6 +168,43 @@ bool Segment2::intersect(const Segment2& seg) const
 */
 bool Segment2::intersect(const Rect2& r) const
 {
+//  Vector2 max = r.max();
+//  Vector2 min = r.min();
+//  
+//  // Source to the right?
+//  if (source().x() > max.x()) {
+//    if (target.x() > max.x())
+//      return false;
+//      
+//    // Source above rect?
+//    if (source.y() > max.y()) {
+//      if (target.y() > max.y())
+//        return false;
+//      if (target.y() > min.y()) {
+//        if (target.x() > min.x())
+//          return true;
+//        
+//      }  
+//      if (target.y() < min.y()) {
+//        
+//      }        
+//    }
+//    // Source below rectÀ
+//    else if (source.y() < min.y()) {
+//      if (target.y() < min.y())
+//        return false;
+//      if (taget.y() > max.y())
+//        
+//    }
+//  }
+//  // Source to the left?  
+//  else if (source().x() < min.x()) {
+//    if (target.x() < min.x())
+//      return false;
+//
+//  }
+  
+  
   if (intersect(Segment2(r.bottomLeft(), r.topLeft())))
     return true;
     

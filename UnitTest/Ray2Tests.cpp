@@ -33,7 +33,7 @@ void Ray2Tests::testBasics()
   
 }
 
-void Ray2Tests::testIntersections()
+void Ray2Tests::testSegmentIntersections()
 {
   Ray2 r1(Point2(1.0f, -10.0f), Vector2(0.0f, 1.0f));
   Ray2 r2(Point2(1.0f, 10.0f), Vector2(0.0f, 1.0f));
@@ -43,19 +43,59 @@ void Ray2Tests::testIntersections()
   
   Point2 p(0.0f, 0.0f);
   
-  CPTAssert(intersect(r1, s1, p));
+  CPTAssert(r1.intersection(s1, p));
   CPTAssert(p == Point2(1.0f, 1.0f));  
 
-  CPTAssert(intersect(r3, s1, p));
+  CPTAssert(r3.intersection(s1, p));
   CPTAssert(p == Point2(-2.0f, 1.0f));  
   
-  CPTAssert(!intersect(r2, s1, p));
+  CPTAssert(!r2.intersection(s1, p));
   CPTAssert(p != Point2(1.0f, 1.0f));  
   
 }
 
+void Ray2Tests::testRectIntersections()
+{
+  Rect2 rect(Vector2(1.0f, 1.0f), Vector2(4.0f, 4.0f));
+  
+  Ray2 r1(Vector2(-1.0f, 2.0f), Vector2(1.0f, 0.0f)); // Enter from left
+  Ray2 r2(Vector2(5.0f, 2.0f), Vector2(-1.0f, 0.0f)); // right
+  
+  Ray2 r3(Vector2(2.0f, -1.0f), Vector2(0.0f, 1.0f)); // bottom  
+  Ray2 r4(Vector2(2.0f, 5.0f), Vector2(0.0f, -1.0f)); // top    
+  
+  Ray2 r5(Vector2(-1.0f, 2.0f), Vector2(-1.0f, 0.0f)); // Outside left
+  Ray2 r6(Vector2(5.0f, 2.0f), Vector2(1.0f, 0.0f)); // right
+  
+  Ray2 r7(Vector2(2.0f, -1.0f), Vector2(0.0f, -1.0f)); // bottom  
+  Ray2 r8(Vector2(2.0f, 5.0f), Vector2(0.0f, 1.0f)); // top    
+  
+  Ray2 r9(Vector2(2.0f, 2.0f), Vector2(1.0f, 1.0f)); // Inside out    
+  Ray2 r10(Vector2(2.0f, 3.0f), Vector2(1.0f, -2.0f)); // Inside out      
+  Ray2 r11(Vector2(1.2f, 3.0f), Vector2(-1.0f, -2.0f)); // Inside out        
+  
+  Ray2 r12(Vector2(1.2f, 5.0f), Vector2(1.2f, 1.0f)); // Outside
+    
+  CPTAssert(r1.intersect(rect));
+  CPTAssert(r2.intersect(rect));
+  CPTAssert(r3.intersect(rect));
+  CPTAssert(r4.intersect(rect));      
+  
+  CPTAssert(!r5.intersect(rect));
+  CPTAssert(!r6.intersect(rect));
+  CPTAssert(!r7.intersect(rect));
+  CPTAssert(!r8.intersect(rect));      
+
+  CPTAssert(r9.intersect(rect));  
+  CPTAssert(r10.intersect(rect));  
+  CPTAssert(r11.intersect(rect));      
+  
+  CPTAssert(!r12.intersect(rect));        
+}
+
 static Ray2Tests test1(TEST_INVOCATION(Ray2Tests, testBasics));
-//static Ray2Tests test2(TEST_INVOCATION(Ray2Tests, testIntersections));
+static Ray2Tests test2(TEST_INVOCATION(Ray2Tests, testSegmentIntersections));
+static Ray2Tests test3(TEST_INVOCATION(Ray2Tests, testRectIntersections));
 
 //bool intersect(const Ray2& r, const Segment2& s, Vector2& result);
 //bool intersect(const Ray2& r, ConstPointIterator2 begin, ConstPointIterator2 end, Vector2& result);

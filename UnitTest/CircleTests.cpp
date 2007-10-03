@@ -12,6 +12,7 @@
 #include <Geometry/Vector2.hpp>
 #include <Geometry/Rect2.hpp>
 #include <Geometry/Segment2.hpp>
+#include <Geometry/Ray2.hpp>
 
 CircleTests::CircleTests(TestInvocation *invocation)
     : TestCase(invocation)
@@ -100,6 +101,43 @@ void CircleTests::testPolygonIntersect()
   CPTAssert(!c4.intersect(poly.begin(), poly.end()));      
 }
 
+void CircleTests::testRayIntersect()
+{
+  Circle c1(Vector2(2.0f, 2.0f), 4.0f);
+  
+  Ray2 r1(Vector2(2.0f, 2.0f), Vector2(1.0f, 0.0f)); // Going out
+  Ray2 r2(Vector2(2.0f, 2.2f), Vector2(-1.0f, 0.0f)); // Going out
+  Ray2 r3(Vector2(2.1f, 2.0f), Vector2(1.0f, 1.0f)); // Going out
+  Ray2 r4(Vector2(1.0f, 2.0f), Vector2(-1.0f, -1.0f)); // Going out      
+  Ray2 r5(Vector2(2.0f, 3.0f), Vector2(0.0f, -1.0f)); // Going out        
+  Ray2 r6(Vector2(2.5f, 2.5f), Vector2(0.0f, 1.0f)); // Going out          
+  
+  Ray2 r7(Vector2(6.5f, 2.5f), Vector2(1.0f, 1.0f)); // Outside not intersecting          
+  Ray2 r8(Vector2(2.5f, 7.5f), Vector2(0.0f, 1.0f)); // Outside not intersecting          
+  Ray2 r9(Vector2(-6.5f, 2.5f), Vector2(-1.0f, 1.0f)); // Outside not intersecting          
+  Ray2 r10(Vector2(2.5f, -10.5f), Vector2(0.2f, -1.0f)); // Outside not intersecting                
+  
+  // Border values
+  Ray2 r11(Vector2(6.0f, 2.0f), Vector2(1.0f, 0.0f)); // Tangenting
+  Ray2 r12(Vector2(-2.0f, 2.5f), Vector2(-1.0f, 0.2f)); // Tangenting
+  
+  
+  CPTAssert(c1.intersect(r1));
+  CPTAssert(c1.intersect(r2));
+  CPTAssert(c1.intersect(r3));
+  CPTAssert(c1.intersect(r4));
+  CPTAssert(c1.intersect(r5));        
+  CPTAssert(c1.intersect(r6));          
+  
+  CPTAssert(!c1.intersect(r7));
+  CPTAssert(!c1.intersect(r8));
+  CPTAssert(!c1.intersect(r9));
+  CPTAssert(!c1.intersect(r10));  
+  
+  CPTAssert(!c1.intersect(r11));
+  CPTAssert(!c1.intersect(r12));    
+}
+
 void CircleTests::testBasics()
 {
   Circle circle(Vector2(1.0f, 1.0f), 4.0f);
@@ -116,5 +154,6 @@ static CircleTests test2(TEST_INVOCATION(CircleTests, testRectIntersect));
 static CircleTests test3(TEST_INVOCATION(CircleTests, testSegmentIntersect));
 static CircleTests test4(TEST_INVOCATION(CircleTests, testPolygonIntersect));
 static CircleTests test5(TEST_INVOCATION(CircleTests, testBasics));
+static CircleTests test6(TEST_INVOCATION(CircleTests, testRayIntersect));
 
 

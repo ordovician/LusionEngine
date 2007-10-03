@@ -112,7 +112,53 @@ bool Ray2::intersection(ConstPointIterator2 begin, ConstPointIterator2 end, Vect
   result = p_prev;
   return found_point;
 }
-            
+ 
+real Ray2::squaredDistance(const Point2& p) const
+{
+  Vector2 v = p-origin();  
+  real t = direction().dot(v);
+  if (t < 0.0f)
+      return v.squaredLength();
+  real len = v.cross(direction());
+  return len*len;
+}
+ 
+real Ray2::distance(const Point2& p) const
+{
+  Vector2 v = p-origin();  
+  real t = direction().dot(v);
+  if (t < 0.0f)
+      return v.length();
+  return abs(v.cross(direction()));
+}
+
+Point2 Ray2::nearestPoint(const Point2& p) const
+{
+  Vector2 v = p-origin();
+  real t = direction().dot(v);
+  if (t < 0.0f)
+    return origin();
+  
+  return origin()+t*direction();
+}
+
+bool Ray2::intersect(const Rect2& r) const
+{
+  if (intersect(Segment2(r.bottomLeft(), r.topLeft())))
+    return true;
+    
+  if (intersect(Segment2(r.topLeft(), r.topRight())))
+    return true;
+
+  if (intersect(Segment2(r.bottomLeft(), r.bottomRight())))
+    return true;
+    
+  if (intersect(Segment2(r.bottomRight(), r.topRight())))
+    return true;
+    
+  return false;
+}
+                       
 // Operators
 bool Ray2::operator==(const Ray2& r) const
 {

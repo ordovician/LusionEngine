@@ -13,6 +13,7 @@ Comment	: This class has not been tested yet.
 #include <Geometry/Vector2.hpp>
 #include <Geometry/Rect2.hpp>
 #include <Geometry/Segment2.hpp>
+#include <Geometry/Ray2.hpp>
 
 #include <vector>
 
@@ -36,6 +37,7 @@ public:
     bool intersect(const Circle& c) const;
     bool intersect(const Rect2& rect) const;
     bool intersect(const Segment2& seg) const;
+    bool intersect(const Ray2& ray) const;
     bool intersect(ConstPointIterator2 begin, ConstPointIterator2 end) const;
     
     // Calculations

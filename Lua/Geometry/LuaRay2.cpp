@@ -82,7 +82,7 @@ static int segmentIntersect(lua_State *L)
   Segment2 s = Segment2_pull(L, 2);
   
   Vector2 v;
-  if (intersect(r, s, v)) {
+  if (r.intersection(s, v)) {
     Vector2_push(L, v);    
   }  
   else
@@ -101,7 +101,7 @@ static int polygonIntersect(lua_State *L)
   getPolygon(L, 2, poly);
   
   Vector2 v;
-  if (intersect(r, poly.begin(), poly.end(), v)) {
+  if (r.intersection(poly.begin(), poly.end(), v)) {
     Vector2_push(L, v);    
   }  
   else

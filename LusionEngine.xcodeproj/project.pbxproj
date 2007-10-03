@@ -94,6 +94,18 @@
 		D5BD17E30BBD64F500BA3313 /* LuaMatrix2.h in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = D5BD17E10BBD64F500BA3313 /* LuaMatrix2.h */; };
 		D5C18F280B4B611A0079286F /* liblua.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D5C18F270B4B611A0079286F /* liblua.a */; };
 		D5C410240B4DECAB00735BD0 /* libCGAL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D5C410230B4DECAB00735BD0 /* libCGAL.a */; };
+		D5CA4D900CB43125006261D6 /* Circle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D542DF560CB41AF500AABC11 /* Circle.cpp */; };
+		D5CA4D920CB43125006261D6 /* Graph2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D542DF580CB41AF500AABC11 /* Graph2.cpp */; };
+		D5CA4D940CB43125006261D6 /* IO.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D542DF5A0CB41AF500AABC11 /* IO.cpp */; };
+		D5CA4D960CB43125006261D6 /* Matrix2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D542DF5C0CB41AF500AABC11 /* Matrix2.cpp */; };
+		D5CA4D980CB43125006261D6 /* QuadNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D542DF600CB41AF500AABC11 /* QuadNode.cpp */; };
+		D5CA4D9A0CB43125006261D6 /* Ray2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D542DF620CB41AF500AABC11 /* Ray2.cpp */; };
+		D5CA4D9C0CB43125006261D6 /* Rect2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D542DF640CB41AF500AABC11 /* Rect2.cpp */; };
+		D5CA4D9E0CB43125006261D6 /* Segment2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D542DF660CB41AF500AABC11 /* Segment2.cpp */; };
+		D5CA4DA00CB43125006261D6 /* Trapezoid2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D542DF680CB41AF500AABC11 /* Trapezoid2.cpp */; };
+		D5CA4DA20CB43125006261D6 /* TrapezoidalMap2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D542DF6A0CB41AF500AABC11 /* TrapezoidalMap2.cpp */; };
+		D5CA4DA40CB43125006261D6 /* TrapezoidNode2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D542DF6C0CB41AF500AABC11 /* TrapezoidNode2.cpp */; };
+		D5CA4DA60CB43125006261D6 /* Vector2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D542DF6E0CB41AF500AABC11 /* Vector2.cpp */; };
 		D5DC3D410BDF808800430EFB /* CollisionGroup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5DC3D3B0BDF808700430EFB /* CollisionGroup.cpp */; };
 		D5DC3D420BDF808800430EFB /* CollisionGroup.h in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = D5DC3D3C0BDF808800430EFB /* CollisionGroup.h */; };
 		D5DC3D430BDF808800430EFB /* CollisionObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5DC3D3D0BDF808800430EFB /* CollisionObject.cpp */; };
@@ -754,6 +766,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5CA4D900CB43125006261D6 /* Circle.cpp in Sources */,
+				D5CA4D920CB43125006261D6 /* Graph2.cpp in Sources */,
+				D5CA4D940CB43125006261D6 /* IO.cpp in Sources */,
+				D5CA4D960CB43125006261D6 /* Matrix2.cpp in Sources */,
+				D5CA4D980CB43125006261D6 /* QuadNode.cpp in Sources */,
+				D5CA4D9A0CB43125006261D6 /* Ray2.cpp in Sources */,
+				D5CA4D9C0CB43125006261D6 /* Rect2.cpp in Sources */,
+				D5CA4D9E0CB43125006261D6 /* Segment2.cpp in Sources */,
+				D5CA4DA00CB43125006261D6 /* Trapezoid2.cpp in Sources */,
+				D5CA4DA20CB43125006261D6 /* TrapezoidalMap2.cpp in Sources */,
+				D5CA4DA40CB43125006261D6 /* TrapezoidNode2.cpp in Sources */,
+				D5CA4DA60CB43125006261D6 /* Vector2.cpp in Sources */,
 				D5DCB3160CA1BBDB005C1355 /* Vector2Tests.cpp in Sources */,
 				D5DCB3170CA1BBDB005C1355 /* CircleTests.cpp in Sources */,
 				D5DCB3180CA1BBDB005C1355 /* Segment2Tests.cpp in Sources */,

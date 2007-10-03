@@ -16,5 +16,6 @@ public:
     virtual ~Ray2Tests();
     
     void testBasics();
-    void testIntersections();
+    void testSegmentIntersections();
+    void testRectIntersections();
 };

@@ -102,6 +102,11 @@ bool Circle::intersect(const Segment2& seg) const
   return seg.distance(center()) < radius();
 }
 
+bool Circle::intersect(const Ray2& ray) const
+{
+  return ray.distance(center()) < radius();
+}
+
 bool Circle::intersect(ConstPointIterator2 begin, ConstPointIterator2 end) const
 {
   ConstPointIterator2 it = begin, prev = begin;

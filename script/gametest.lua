@@ -2,8 +2,6 @@ require("script/roadmap")
 require("script/trapezoid")
 require("script/edge")
 
-print("We make some new addons") 
-
 function eq(a, b)
   return math.abs(a-b) < 0.00000001
 end
@@ -522,22 +520,25 @@ function rayIntersectTest()
   -- intersection 0.5, 1
   
   -- Line intersection algo from: http://www.cgafaq.info/wiki/Intersection_Of_2D_Line_Segments
-  local p1 = vec(0.5, 0)
-  local p2 = vec(2, 3)
-  local s1 = seg(vec(-1,2), vec(8, 4))
-  -- local s2 = seg(vec(0.5, 0), vec(2, 3))  
-  local r1 = ray(p1, vec(0,1))  
-  local r2 = ray(vec(3, 4), vec(0,1))  
+  local p1 = vec(2, 0)
+  local p2 = vec(2, 0)
+  local s1 = seg(vec(2,1), vec(6, -2))
+  local s2 = seg(vec(0.5, 0), vec(2, 3))  
+  local r1 = ray(vec(2, 0), vec(-0.15,-1))  
+  local r2 = ray(vec(3, 4), vec(0.1,-1))  
   
   r1:toSegment():print()
   -- Geometry.viewPoints({s1:intersect(s2)}) 
   
-  print(r1:segmentIntersect(s1))
-  print(r2:segmentIntersect(s1))
+  -- print(r1:segmentIntersect(s1))
+  -- print(r2:segmentIntersect(s1))
     
+  -- points = Geometry.viewPoints({r1:segmentIntersect(s1), r2:segmentIntersect(s1)})   
   points = Geometry.viewPoints({r1:segmentIntersect(s1), r2:segmentIntersect(s1)})   
 
+  -- segments = Geometry.viewSegments({s1, r1:toSegment(), r2:toSegment()})
   segments = Geometry.viewSegments({s1, r1:toSegment(), r2:toSegment()})
+  
   -- Geometry.viewPoints({vec(div1, div2)})
   -- Geometry.viewPoints({vec(0,0), s2.source+v2:unit()*math.abs(div)})
 end

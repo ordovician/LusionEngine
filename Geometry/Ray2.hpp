@@ -32,6 +32,12 @@ public:
     bool intersect(const Segment2& seg) const;
     bool intersection(const Segment2& seg, Vector2& result) const;
     bool intersection(ConstPointIterator2 begin, ConstPointIterator2 end, Vector2& result) const;
+
+    real    squaredDistance(const Point2& p) const;    
+    real    distance(const Point2& p) const;
+    Point2  nearestPoint(const Point2& p) const;
+    
+    bool intersect(const Rect2& rect) const;
     
     // Operators
     bool operator==(const Ray2& q) const;
