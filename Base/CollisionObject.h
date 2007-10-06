@@ -28,6 +28,9 @@ public:
   // Accessors
   virtual Rect2 boundingBox() const = 0;  
     
+  // Request
+  virtual bool isSimple() const;
+  
   // Calculations
   virtual bool intersect(const Circle& c) const = 0;
   virtual bool intersect(const Rect2& r) const = 0;

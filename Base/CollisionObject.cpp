@@ -37,5 +37,10 @@ CollisionObject::~CollisionObject()
 // Accessors
 
 // Request
+/*! Returns true if this object is a simple non recursive collision object */
+bool CollisionObject::isSimple() const
+{
+  return true;
+}
 
 // Operations
