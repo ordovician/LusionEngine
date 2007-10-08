@@ -42,7 +42,7 @@ public:
   virtual void draw(const Rect2& r) const;
    
   // Operations
-  virtual void update(real start_time, real delta_time) = 0;  
+  virtual void update(real start_time, real delta_time);  
 };
 
 typedef vector<CollisionObject*> CollisionObjects;

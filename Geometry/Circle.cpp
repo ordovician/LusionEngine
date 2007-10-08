@@ -2,8 +2,9 @@
 
 /*!
     \class Circle Circle.h
-    \brief Describes a 2d line segment.
+    \brief Describes a 2d Circle.
 
+    
 */
 
 #include <cmath>
@@ -11,7 +12,7 @@
 using namespace std;
 
 // Constructors
-Circle::Circle()
+Circle::Circle() : iRadius(0.0f)
 {
 }
 

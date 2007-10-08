@@ -1,5 +1,5 @@
 /*
- *  CollisionCircle.h
+ *  CollisionRect2.h
  *  LusionEngine
  *
  *  Created by Erik Engheim on 19.1.07.
@@ -13,16 +13,16 @@
 
 #include "Base/CollisionObject.h"
 
-#include <Geometry/Circle.hpp>
+#include <Geometry/Rect2.hpp>
 
 class SpriteCommand;
 
-class CollisionCircle : public CollisionObject
+class CollisionRect2 : public CollisionObject
 {
 public:
   // Constructors
-  CollisionCircle(const Circle& circle);
-  virtual ~CollisionCircle();
+  CollisionRect2(const Rect2& rect);
+  virtual ~CollisionRect2();
 
   // Accessors
   Rect2 boundingBox() const;  
@@ -39,5 +39,5 @@ public:
   void draw(const Rect2& r) const;
       
 private:
-  Circle iCircle;
+  Rect2 iRect;
 };

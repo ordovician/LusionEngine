@@ -185,6 +185,19 @@ void gltVertex(ConstPointIterator2 begin, ConstPointIterator2 end)
   }
 }
 
+void drawCircle(double r)
+{
+  glPushMatrix(); 
+
+  glColor3d(1.0, 0.0, 1.0);      
+  glBegin(GL_LINE_LOOP);
+  for (double angle=0.0; angle<360.0; angle+=15.0) {
+    glVertex2d(cos(rad(angle))*r, sin(rad(angle))*r);
+  }
+  glEnd();
+  glPopMatrix();       
+}
+
 // Debug
 void gltPerformanceTest(int n)
 {

@@ -426,19 +426,6 @@ static void draw(const Polygon2& poly)
   glEnd();
 }
 
-static void drawCircle(double r)
-{
-  glPushMatrix(); 
-
-  glColor3d(1.0, 0.0, 1.0);      
-  glBegin(GL_LINE_LOOP);
-  for (double angle=0.0; angle<360.0; angle+=15.0) {
-    glVertex2d(cos(rad(angle))*r, sin(rad(angle))*r);
-  }
-  glEnd();
-  glPopMatrix();       
-}
-
 void Sprite::draw(const Rect2& r) const
 {
 	if (iVisible && iView != 0 && r.intersect(boundingBox())) {

@@ -91,6 +91,8 @@ void gltVertex(const Segment2& segment);
 void gltVertex(ConstPointIterator2 begin, ConstPointIterator2 end, const Point2& position, real angle);
 void gltVertex(ConstPointIterator2 begin, ConstPointIterator2 end);
 
+void drawCircle(double radius);
+
 // Debug
 void gltPerformanceTest(int n);
 void trigPerformanceTest(int n);

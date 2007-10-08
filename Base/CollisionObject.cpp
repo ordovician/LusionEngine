@@ -105,3 +105,16 @@ void CollisionObject::draw(const Rect2& r) const
 {
   
 }
+
+// Operations
+/*!
+  Update position orientation, speed etc of object based on
+  time passed. 
+  
+  Default implementation doesn't do anythning since some objects might
+  be static and not moveable.
+*/
+void CollisionObject::update(real start_time, real delta_time)
+{
+  // Do nothing
+}
