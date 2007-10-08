@@ -118,53 +118,6 @@ static int rectIntersect(lua_State *L)
   return 1;
 }
 
-// Calculations
-static int traverse(lua_State *L) 
-{
-  int n = lua_gettop(L);  // Number of arguments
-  if (n != 4) 
-    return luaL_error(L, "Got %d arguments expected 4 (self, start_time, delta_time function)", n); 
-    
-  CollisionGroup* group = checkCollisionGroup(L);      
-  assert(group != 0);  
-   
-  real t = luaL_checknumber(L, 2);
-  real dt = luaL_checknumber(L, 3);  
-  
-  bool ret = false;
-  lua_pushvalue(L, 4);
-  LuaCommand cmd(L);
-  ret = group->traverse(t, dt, &cmd);
-    
-  lua_pushboolean(L, ret);
-  
-  return 1;
-}
-
-static int boundingBoxes(lua_State *L) 
-{
-  int n = lua_gettop(L);  // Number of arguments
-  if (n != 1) 
-    return luaL_error(L, "Got %d arguments expected 1 (self)", n); 
-    
-  CollisionGroup* group = checkCollisionGroup(L);      
-  assert(group != 0);  
-
-  struct BoundingBoxesCommand : public SpriteCommand {
-    bool execute(CollisionObject* me, CollisionObject*, real, real) {
-      boxes.push_back(me->boundingBox());
-      return true;      
-    }
-    vector<Rect2> boxes;
-  } cmd;
-
-  group->traverse(0.0, 0.0, &cmd);
-  
-  for_each(cmd.boxes.begin(), cmd.boxes.end(), PushValue<Rect2>(L));
-  
-  return 1;
-}
-
 // Operations
 static int update(lua_State *L) 
 {
@@ -204,11 +157,7 @@ static const luaL_Reg gCollisionGroupFuncs[] = {
   // Request
   {"circleIntersect", circleIntersect},
   {"rectIntersect", rectIntersect},
-  
-  // Calculations
-  {"traverse", traverse},
-  {"boundingBoxes", boundingBoxes},
-  
+    
   // Operations  
   {"update", update},
   {NULL, NULL}

@@ -17,6 +17,8 @@
 #include "Base/CollisionGroup.h"
 #include "Base/Command.h"
 
+#include "Engine.h"
+
 #include <iostream>
 
 #include <lua.hpp>
@@ -172,7 +174,7 @@ static int render(lua_State *L)
     return luaL_error(L, "Got %d arguments expected 1", n); 
     
   Group* group = checkGroup(L);    
-  group->draw();
+  group->draw(worldView());
   return 0;
 }
 
@@ -216,66 +218,6 @@ static int nextSprite(lua_State *L)
   return 1;
 }
 
-static int spriteCollide(lua_State *L) 
-{
-  int n = lua_gettop(L);  // Number of arguments
-  if (n != 4 && n != 5) 
-    return luaL_error(L, "Got %d arguments expected 4 or 5 (self, sprite, start_time, delta_time [,function])", n); 
-    
-  Group* group = checkGroup(L, 1);    
-  Sprite* sprite = checkSprite(L, 2);
-
-  assert(group != 0);
-  assert(sprite != 0);
-  
-  real t = luaL_checknumber(L, 3);
-  real dt = luaL_checknumber(L, 4);
-
-  bool ret = false;
-  
-  if (n == 4) {
-    ret = group->spriteCollide(sprite, t, dt);
-  }
-  else if (n == 5) {
-    lua_pushvalue(L, 5);
-    LuaCommand cmd(L);
-    ret = group->spriteCollide(sprite, t, dt, &cmd);
-  }
-
-  lua_pushboolean(L, ret);
-  return 1;  
-}
-
-static int groupCollide(lua_State *L) 
-{
-  int n = lua_gettop(L);  // Number of arguments
-  if (n != 4 && n != 5) 
-    return luaL_error(L, "Got %d arguments expected 4 or 5 (self, group, start_time, delta_time [,function])", n); 
-    
-  Group* me = checkGroup(L, 1);    
-  Group* other = checkGroup(L, 2);
-
-  assert(me != 0);
-  assert(other != 0);
-  
-  real t = luaL_checknumber(L, 3);
-  real dt = luaL_checknumber(L, 4);
-
-  bool ret = false;
-  
-  if (n == 4) {
-    ret = me->groupCollide(other, t, dt);
-  }
-  else if (n == 5) {
-    lua_pushvalue(L, 5);
-    LuaCommand cmd(L);
-    ret = me->groupCollide(other, t, dt, &cmd);
-  }
-
-  lua_pushboolean(L, ret);
-  return 1;
-}
-
 static int collide(lua_State *L) 
 {
   int n = lua_gettop(L);  // Number of arguments
@@ -284,7 +226,6 @@ static int collide(lua_State *L)
     
   Group* me = checkGroup(L, 1);    
   CollisionGroup* other = checkCollisionGroup(L, 2);
-//  CollisionObject* other = checkCollisionObject(L, 2);
 
   assert(me != 0);
   assert(other != 0);
@@ -341,8 +282,6 @@ static const luaL_Reg gGroupFuncs[] = {
   {"render", render},
   {"clear", clear},
   {"nextSprite", nextSprite},  
-  {"spriteCollide", spriteCollide}, 
-  {"groupCollide", groupCollide},    
   {"collide", collide},      
   {NULL, NULL}
 };

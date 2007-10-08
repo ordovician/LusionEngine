@@ -30,14 +30,17 @@ public:
     
   // Request
   virtual bool isSimple() const;
-  
-  // Calculations
-  virtual bool intersect(const Circle& c) const = 0;
-  virtual bool intersect(const Rect2& r) const = 0;
-  virtual bool intersect(const Segment2& s) const = 0;
-      
-  virtual bool traverse(real t, real dt, SpriteCommand* command) = 0;
+  virtual bool collide(CollisionObject* other, real t, real dt, SpriteCommand* command = 0) = 0;  
+  virtual bool inside(const Point2& p, real t, real dt, SpriteCommand* command = 0) = 0;
     
+  // Calculations
+  virtual bool intersect(const Circle& c) const;
+  virtual bool intersect(const Rect2& r) const;
+  virtual bool intersect(const Segment2& s) const;
+  virtual bool intersect(ConstPointIterator2 begin, ConstPointIterator2 end) const;      
+   
+  virtual void draw(const Rect2& r) const;
+   
   // Operations
   virtual void update(real start_time, real delta_time) = 0;  
 };

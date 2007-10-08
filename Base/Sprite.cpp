@@ -271,12 +271,10 @@ real Sprite::radius() const
 
 Rect2 Sprite::boundingBox() const
 {
-  if (iView) {
-    real r = iView->radius();
-    Point2 s = Point2(r,r);
-    return Rect2(position()-s, position()+s);
-  }
-  return Rect2();
+  if (iNeedUpdate) {
+    updateCache();
+  }  
+  return iBBox;
 }
 
 void Sprite::setCollisionCommand(SpriteCommand *command)
@@ -357,82 +355,59 @@ bool Sprite::visible() const
 	return iVisible;
 }
 
-bool Sprite::collision(const Sprite* other) const
-{
-  if (other->radius()+radius() > (position()-other->position()).length()) {
-    ShallowPoints2 otherPoly = other->collisionPolygon();
-    ShallowPoints2 thisPoly = collisionPolygon();
-    return ::collision(otherPoly.first, otherPoly.second, thisPoly.first, thisPoly.second);
-  }
-  return false;
-}
-
-bool Sprite::inside(const Point2& p) const
-{
-  ShallowPoints2 col_poly = collisionPolygon();
-  return ::inside(col_poly.first, col_poly.second, p);
-}
-
 // Calculations
-bool Sprite::groupCollide(Group* other, real t, real dt, SpriteCommand* command)
-{
-  BinarySpriteCollisionCommand scc;
-  SpriteCommand* cmd = command != 0 ? command : &scc;           
-  
-  ShallowSpriteSet sprites = other->sprites();
-  bool is_col = false;
-  ConstSpriteSetIterator it;  
-  for (it = sprites.first; it != sprites.second; ++it) {
-    Sprite* sprite = *it;
-    if (secondsPassed() > t+dt)
-      break;
-    if (!collision(sprite))
-      continue;
-
-    if (cmd->execute(this, sprite, t, dt))
-      is_col = true;
-  }    
-  return is_col;
-}
-
 bool Sprite::collide(CollisionObject* other, real t, real dt, SpriteCommand* command) 
 {
-  IntersectCommand scc(this);
-  SpriteCommand* cmd = command != 0 ? command : &scc;
-  return other->traverse(t, dt, cmd);
+  if (!boundingBox().intersect(other->boundingBox()))
+    return false;
+  if (!other->isSimple())
+    return other->collide(this, t, dt, command);
+
+  ShallowPoints2 poly = collisionPolygon();    
+  bool is_colliding = other->intersect(poly.first, poly.second);
+  if (is_colliding && command != 0) 
+    command->execute(this, other, t, dt);
+  else if (is_colliding && iCollisionCommand != 0)
+    iCollisionCommand->execute(this, other, t, dt);
+  return is_colliding;
+}
+
+bool Sprite::inside(const Point2& p, real t, real dt,  SpriteCommand* command)
+{
+  if (!boundingBox().inside(p))
+    return false;
+  ShallowPoints2 col_poly = collisionPolygon();
+  
+  bool is_inside = ::inside(col_poly.first, col_poly.second, p);
+  if (is_inside && command != 0)
+    command->execute(this, 0, t, dt);
+  else if (is_inside && iInsideCommand != 0)
+    iInsideCommand->execute(this, 0, t, dt);
+  return is_inside;
 }
 
 bool Sprite::intersect(const Circle& c) const
 {
-  if (c.intersect(boundingBox())) {
-    ShallowPoints2 poly = collisionPolygon();
-    return ::collision(c, poly.first, poly.second);    
-  }
-  return false;
+  ShallowPoints2 poly = collisionPolygon();
+  return ::intersect(c, poly.first, poly.second);    
 }
 
 bool Sprite::intersect(const Rect2& r) const
 {
-  if (r.intersect(boundingBox())) {  
-    ShallowPoints2 poly = collisionPolygon();
-    return ::collision(r, poly.first, poly.second);  
-  }
-  return false;
+  ShallowPoints2 poly = collisionPolygon();
+  return ::intersect(r, poly.first, poly.second);  
 }
 
 bool Sprite::intersect(const Segment2& s) const
 {
-  if (s.intersect(boundingBox())) {  
-    ShallowPoints2 poly = collisionPolygon();
-    return ::collision(s, poly.first, poly.second);  
-  }
-  return false;
+  ShallowPoints2 poly = collisionPolygon();
+  return ::intersect(s, poly.first, poly.second);  
 }
 
-bool Sprite::traverse(real t, real dt, SpriteCommand* command)
+bool Sprite::intersect(ConstPointIterator2 begin, ConstPointIterator2 end) const
 {
-  assert(command != 0);
-  return command->execute(this, 0, t, dt);
+  ShallowPoints2 poly = collisionPolygon();
+  return ::intersect(poly.first, poly.second, begin, end);  
 }
 
 static void draw(const Rect2& box)
@@ -464,9 +439,9 @@ static void drawCircle(double r)
   glPopMatrix();       
 }
 
-void Sprite::draw() const
+void Sprite::draw(const Rect2& r) const
 {
-	if (iVisible && iView != 0) {
+	if (iVisible && iView != 0 && r.intersect(boundingBox())) {
     glPushMatrix();
       if (gShowCollision)
         ::draw(iPolygon);    // To see collision polygon
@@ -511,6 +486,7 @@ void Sprite::advance(real dt)
 void Sprite::updateCache() const
 {
   iState->getCollisionPolygon(iView, iPolygon);
+  iBBox = ::boundingBox(iPolygon.begin(), iPolygon.end());
   iNeedUpdate = false;
 }
 

@@ -77,7 +77,7 @@ inline void deleteAll(const Container &c)
 static void renderFrame(real start_time) 
 {
     glClear(GL_COLOR_BUFFER_BIT);
-    renderGroup()->draw();
+    renderGroup()->draw(worldView());
     // luaRenderFrame(start_ticks); // don't see a need to be able to control this form lua
     SDL_GL_SwapBuffers();
 }

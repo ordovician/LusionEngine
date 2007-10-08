@@ -7,9 +7,9 @@
  *
  */
 
-#include "Base/CollisionGroup.h"
-#include "Engine.h"
-#include "Base/Command.h"
+#include <Base/CollisionGroup.h>
+#include <Engine.h>
+#include <Base/Command.h>
 
 #include <iostream>
 
@@ -85,58 +85,58 @@ Rect2 CollisionGroup::boundingBox() const
 }
 
 // Request
-bool CollisionGroup::intersect(const Circle& circle) const
+bool CollisionGroup::isSimple() const
 {
-  if (!circle.intersect(boundingBox())) return false;
-  
+  return false;
+}
+
+// Calculations
+/*!
+  Returns true if there was a collision with \a other CollisionObject. \a command is executed
+  on every CollisionObject in CollisionGroup which collided with \a other, and if \a other is also
+  a CollisionGroup then every CollisionObject in that group which collided with a CollisionObject in
+  this group. If calculations take too long time, meaning more than \a dt time is spent since
+  time \a t and now, then false will be returned even if there really was a collision.
+*/
+bool CollisionGroup::collide(CollisionObject* other, real t, real dt, SpriteCommand* command)
+{
+  if (!iBox.intersect(other->boundingBox()))
+    return false;
+    
   bool hit_left = false;
   bool hit_right = false;
   
-  if (iLeft) hit_left = iLeft->intersect(circle);
-  if (iRight) hit_right = iRight->intersect(circle);
+  if (iLeft) hit_left = iLeft->collide(other, t, dt, command);
+  if (iRight) hit_right = iRight->collide(other, t, dt, command);
   
   return hit_right || hit_left;  
 }
 
-bool CollisionGroup::intersect(const Rect2& rect) const
+bool CollisionGroup::inside(const Point2& p, real t, real dt, SpriteCommand* command)
 {
-  if (!rect.intersect(boundingBox())) return false;
-  
+  if (!iBox.inside(p))
+    return false;
+    
   bool hit_left = false;
   bool hit_right = false;
   
-  if (iLeft) hit_left = iLeft->intersect(rect);
-  if (iRight) hit_right = iRight->intersect(rect);
+  if (iLeft) hit_left = iLeft->inside(p, t, dt, command);
+  if (iRight) hit_right = iRight->inside(p, t, dt, command);
   
   return hit_right || hit_left;    
 }
 
-bool CollisionGroup::intersect(const Segment2& seg) const
+/*!
+  Draw all child components which are inside or intersect rectangle \a r.
+  It is optimized to do as few intersection tests as possible.
+*/
+void CollisionGroup::draw(const Rect2& r) const
 {
-  if (!boundingBox().intersect(Rect2(seg.left(), seg.right()))) return false;
-  
-  bool hit_left = false;
-  bool hit_right = false;
-  
-  if (iLeft) hit_left = iLeft->intersect(seg);
-  if (iRight) hit_right = iRight->intersect(seg);
-  
-  return hit_right || hit_left;      
-}
-
-// Calculations
-bool CollisionGroup::traverse(real t, real dt, SpriteCommand* command)
-{
-  assert(command != 0);  
-  if (!command->execute(this, 0, t, dt)) return false;
-  
-  bool hit_left = false;
-  bool hit_right = false;
-  
-  if (iLeft) hit_left = iLeft->traverse(t, dt, command);
-  if (iRight) hit_right = iRight->traverse(t, dt, command);
-  
-  return hit_right || hit_left;
+  if (!iBox.intersect(r))
+    return;
+      
+  iLeft->draw(r);
+  iRight->draw(r); 
 }
 
 // Operations
@@ -175,10 +175,7 @@ void CollisionGroup::init(CollisionObject *left, CollisionObject *right, const R
 void CollisionGroup::init(CollisionObjectIterator begin, CollisionObjectIterator end)
 {
   init();
-  
-  // CollisionObjectIterator i;
-  // for (i = begin; i != end; ++i) (*i)->retain();
-  
+    
   int no_nodes = end-begin;      
   if (no_nodes == 0) {
     cerr << "Can't group sprites because none was provided!" << endl;

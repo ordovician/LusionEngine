@@ -4,8 +4,6 @@
     \class Vector2 Vector3.h
     \brief Describes a 2 dimensional offset or location. 
 
-    \mainclass
-
     Vector can be used to store a point, the vertex of a geometric object, an offset or a vector in 2D space. 
 */
 

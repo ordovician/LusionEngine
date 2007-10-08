@@ -43,7 +43,7 @@ bool ProjectPolygon::operator()(const Vector2& v)
   Check if there is a collision between two polygons. First polygon is defined
   by point sequence 'pb' to 'pe'. Second polygon by 'qb' to 'qe'. 
 */
-bool collision(
+bool intersect(
   ConstPointIterator2 pb, // Start of first polygon
   ConstPointIterator2 pe, 
   ConstPointIterator2 qb, // Start of second polygon
@@ -66,12 +66,12 @@ bool collision(
     find_if(d2.begin(), d2.end(), ProjectPolygon(pb, pe, qb, qe)) == d2.end();   
 }
 
-bool collision(const Polygon2& p1, const Polygon2& p2)
+bool intersect(const Polygon2& p1, const Polygon2& p2)
 {
-  return collision(p1.begin(), p1.end(), p2.begin(), p2.end());
+  return intersect(p1.begin(), p1.end(), p2.begin(), p2.end());
 }
 
-bool collision(const Circle& circle, ConstPointIterator2 begin, ConstPointIterator2 end)
+bool intersect(const Circle& circle, ConstPointIterator2 begin, ConstPointIterator2 end)
 {
   ConstPointIterator2 it;
   for (it = begin+1; it != end; ++it) {
@@ -80,7 +80,7 @@ bool collision(const Circle& circle, ConstPointIterator2 begin, ConstPointIterat
   return false;
 }
 
-bool collision(const Segment2& s, ConstPointIterator2 begin, ConstPointIterator2 end)
+bool intersect(const Segment2& s, ConstPointIterator2 begin, ConstPointIterator2 end)
 {
   ConstPointIterator2 it;
   for (it = begin+1; it != end; ++it) {
@@ -89,7 +89,7 @@ bool collision(const Segment2& s, ConstPointIterator2 begin, ConstPointIterator2
   return false;  
 }
 
-bool collision(const Rect2& rect, ConstPointIterator2 begin, ConstPointIterator2 end)
+bool intersect(const Rect2& rect, ConstPointIterator2 begin, ConstPointIterator2 end)
 {
   Segment2 bottom(rect.bottomLeft(), rect.bottomRight());
   Segment2 top(rect.topLeft(), rect.topRight());
@@ -108,7 +108,7 @@ bool collision(const Rect2& rect, ConstPointIterator2 begin, ConstPointIterator2
 }
 
 // NOTE: Only works for convex shapes
-bool inside(Polygon2::const_iterator pb, Polygon2::const_iterator pe, const Point2& q)
+bool inside(ConstPointIterator2 pb, ConstPointIterator2 pe, const Point2& q)
 {
   bool is_inside = true;
   Polygon2::const_iterator p;
@@ -118,6 +118,22 @@ bool inside(Polygon2::const_iterator pb, Polygon2::const_iterator pe, const Poin
     break;
   }
   return is_inside;
+}
+
+/*!
+  Calculates a minimum bounding box for all supplied points
+*/
+Rect2 boundingBox(ConstPointIterator2 pb, ConstPointIterator2 pe)
+{
+  real min = numeric_limits<real>::min();
+  real max = numeric_limits<real>::max();
+    
+  Rect2 r(Vector2(max, max), Vector2(min, min));
+  Polygon2::const_iterator p;
+  for (p = pb; p != pe; ++p) {
+    r.surround(*p);
+  }
+  return r;
 }
 
 void gltTranslate(const Point2& pos)

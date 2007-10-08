@@ -69,19 +69,20 @@ struct Longest : public unary_function<Vector2, void>
 inline real rad(real degrees) { return degrees*M_PI/180.0; }
 inline real deg(real rad) { return rad*180.0/M_PI; }
 
-bool collision(
+bool intersect(
   ConstPointIterator2 pb, 
   ConstPointIterator2 pe, 
   ConstPointIterator2 qb, 
   ConstPointIterator2 qe);
   
-bool collision(const Polygon2& p1, const Polygon2& p2);
+bool intersect(const Polygon2& p1, const Polygon2& p2);
 
-bool collision(const Circle& circle, ConstPointIterator2 begin, ConstPointIterator2 end);
-bool collision(const Segment2& seg, ConstPointIterator2 begin, ConstPointIterator2 end);
-bool collision(const Rect2& rect, ConstPointIterator2 begin, ConstPointIterator2 end);
+bool intersect(const Circle& circle, ConstPointIterator2 begin, ConstPointIterator2 end);
+bool intersect(const Segment2& seg, ConstPointIterator2 begin, ConstPointIterator2 end);
+bool intersect(const Rect2& rect, ConstPointIterator2 begin, ConstPointIterator2 end);
 
-bool inside(Polygon2::const_iterator pb, Polygon2::const_iterator pe, const Point2& point);
+bool inside(ConstPointIterator2 pb, ConstPointIterator2 pe, const Point2& point);
+Rect2 boundingBox(ConstPointIterator2 pb, ConstPointIterator2 pe); 
 
 void gltTranslate(const Point2& pos);
 void gltVertex(const Point2& pos);

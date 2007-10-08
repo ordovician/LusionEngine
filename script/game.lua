@@ -1,4 +1,5 @@
-dofile("script/gametest.lua")
+-- dofile("script/unittester.lua")
+-- dofile("script/gametest.lua")
 -- Sprite.setShowCollision(true)
 
 -- dofile("script/maingame.lua")
@@ -54,7 +55,7 @@ function createRandomObstacles(noObstacles)
       x = math.random(xmin+5, xmax-5)
       y = math.random(ymin+5, ymax-5)    
       obstacle:setPosition(x,y) 
-    until not obstacles:spriteCollide(obstacle, Engine.seconds(), 1)
+    until not obstacles:collide(obstacle, Engine.seconds(), 1)
 
     obstacles:add(obstacle)
     -- obstacle:setVisible(false)
@@ -122,10 +123,10 @@ function update(start_time)
   -- Engine.lookAt(currentNPC():position())
   -- drawTrailingLine()
   actors:doPlanning(start_time, delta_time)
-  -- actors:groupCollide(obstacles, start_time, delta_time, function(self, other, t, dt) print("collision!") end)
+  -- actors:collide(obstacles, start_time, delta_time, function(self, other, t, dt) print("collision!") end)
   actors:collide(obstacles, start_time, delta_time)
   
-  -- if obstacles:spriteCollide(currentNPC(), start_time, Engine.secondsPerFrame()) then print("collision") end
+  -- if obstacles:collide(currentNPC(), start_time, Engine.secondsPerFrame()) then print("collision") end
 end
 
 function setupRRTSearch()
@@ -381,7 +382,7 @@ function setupCollisionHandling()
   end)
 end
 
--- setupWorld()
+setupWorld()
 -- setupCollisionHandling()
 -- setupSeek()
 -- setupRRTSearch()

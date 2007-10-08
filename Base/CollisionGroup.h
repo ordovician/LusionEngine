@@ -11,7 +11,7 @@
 
 #include "Types.h"
 
-#include "Base/CollisionObject.h"
+#include <Base/CollisionObject.h>
 
 #include <Geometry/Circle.hpp>
 
@@ -29,15 +29,15 @@ public:
 
   // Accessors
   Rect2 boundingBox() const;
-  
+    
   // Request
-  bool  intersect(const Circle& c) const;
-  bool  intersect(const Rect2& r) const;
-  bool  intersect(const Segment2& s) const;
+  bool isSimple() const;
   
   // Calculations
-  bool traverse(real t, real dt, SpriteCommand* command);
-        
+  bool collide(CollisionObject* other, real t, real dt, SpriteCommand* command = 0);  
+  bool inside(const Point2& p, real t, real dt, SpriteCommand* command = 0);
+  void draw(const Rect2& r) const;
+  
   // Operations
   void update(real start_time, real delta_time);  
   

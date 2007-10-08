@@ -102,7 +102,7 @@ function setupEnemies()
     npc:setRotation(angle)
     npc.fireTimer = Timer:start()
     
-    while actors:spriteCollide(npc) ~= nil do
+    while actors:collide(npc) ~= nil do
       local x = math.random(xmin, xmax)
       local y = math.random(ymin, ymax)    
       npc:setPosition(x,y)
@@ -148,7 +148,7 @@ function setupObstacles()
       x = math.random(xmin+5, xmax-5)
       y = math.random(ymin+5, ymax-5)    
       obstacle:setPosition(x,y) 
-    until not (actors:spriteCollide(obstacle) or obstacles:spriteCollide(obstacle) )
+    until not (actors:collide(obstacle) or obstacles:collide(obstacle) )
 
     if i ~= noObstacles then
       print("{{"..w..", "..h.."}, {"..x..", "..y..", "..angle..",0}},")

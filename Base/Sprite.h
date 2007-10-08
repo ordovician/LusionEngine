@@ -98,19 +98,18 @@ public:
 	// Request
 	void  setVisible(bool aVisible);
 	bool  visible() const;
-	bool  collision(const Sprite* other) const;
-  bool  inside(const Point2& p) const;  
   bool  viewCollide() const;
   
 	// Calculations
-	bool  groupCollide(Group* other, real t, real dt, SpriteCommand* command = 0);	
   bool  collide(CollisionObject* other, real t, real dt, SpriteCommand* command = 0);
+  bool  inside(const Point2& p, real t, real dt, SpriteCommand* command = 0);
+  
   bool  intersect(const Circle& c) const;
   bool  intersect(const Rect2& r) const;
   bool  intersect(const Segment2& s) const;
-  bool  traverse(real t, real dt, SpriteCommand* command);
+  bool  intersect(ConstPointIterator2 begin, ConstPointIterator2 end) const;
 
-	void	draw() const;
+	void	draw(const Rect2& r) const;
 
 	// Operations
   void  update(real start_time, real delta_time);
@@ -150,7 +149,7 @@ private:
   MotionState*        iState;
   mutable Polygon2    iPolygon;     // Collision polygon
   mutable bool        iNeedUpdate;  // indicate whether collision poly needs update
-  real                iRadius;
+  mutable Rect2       iBBox;        // Bounding box
 };
 
 struct SpriteDepth : public binary_function<Sprite*, Sprite*, bool>

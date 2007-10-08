@@ -20,6 +20,8 @@
 #include "Base/Sprite.h"
 #include "Base/CollisionGroup.h"
 
+#include "Engine.h"
+
 
 #include <lua.hpp>
 #include <assert.h>
@@ -27,6 +29,11 @@
 #include <iostream>
 
 // Helper functions
+/*!
+ Create a table to hold mapping between lua tables and pointers. The table has weak
+ references so that lua tables are garbage collected even if there is one reference
+ left to table in the this mapping table.
+*/
 void initSpriteBookkeeping(lua_State* L)
 {
   luaL_newmetatable(L, "Lusion.Sprites"); // Make new table in registry to hold mapping between sprite pointers and tables
@@ -707,33 +714,6 @@ static int viewCollide(lua_State *L)
 }
 
 // Calculations
-static int groupCollide(lua_State* L)
-{
-  int n = lua_gettop(L);
-  if (n != 5 && n != 4)
-    return luaL_error(L, "Got %d arguments expected 5 or 4 (self, group, start_time, delta_time [, function])", n); 
-  Sprite* sprite = checkSprite(L,1);
-  Group* group = checkGroup(L,2); 
-  assert(sprite != 0);    
-  assert(group != 0);      
-
-  real t = luaL_checknumber(L, 3);
-  real dt = luaL_checknumber(L, 4);
-  
-  bool ret = false;
-  if (n == 4)
-    ret = sprite->groupCollide(group, t, dt);
-  else if (n == 5) {
-    lua_pushvalue(L,5);
-    LuaCommand cmd(L);
-    ret = sprite->groupCollide(group, t, dt, &cmd);
-  }
-    
-  lua_pushboolean(L, ret);
-  
-  return 1;
-}
-
 static int collide(lua_State* L)
 {
   int n = lua_gettop(L);
@@ -762,24 +742,6 @@ static int collide(lua_State* L)
   return 1;
 }
 
-static int traverse(lua_State* L)
-{
-  int n = lua_gettop(L);
-  if (n != 4)
-    return luaL_error(L, "Got %d arguments expected 4 (self, start_time, delta_time, function)", n); 
-  Sprite* sprite = checkSprite(L);
-  assert(sprite != 0);    
-
-  real t = luaL_checknumber(L, 2);
-  real dt = luaL_checknumber(L, 3);
-  
-  lua_pushvalue(L,4);
-  LuaCommand cmd(L);
-  lua_pushboolean(L, sprite->traverse(t, dt, &cmd));
-  
-  return 1;
-}
-
 static int inside(lua_State* L)
 {
   int n = lua_gettop(L);
@@ -790,7 +752,7 @@ static int inside(lua_State* L)
 
   Point2 point = Vector2_pull(L,2);
   
-  lua_pushboolean(L, sprite->inside(point));
+  lua_pushboolean(L, sprite->inside(point, 0, 0, 0));
   
   return 1;
 }
@@ -802,7 +764,7 @@ static int render(lua_State *L)
   if (n != 1) 
     return luaL_error(L, "Got %d arguments expected 1", n); 
   Sprite* sprite = checkSprite(L);
-  sprite->draw();
+  sprite->draw(worldView());
 
   return 0;
 }
@@ -829,21 +791,6 @@ static int advance(lua_State *L)
   sprite->advance(luaL_checknumber(L,2));
 
   return 0;
-}
-
-static int collision(lua_State *L) 
-{
-  int n = lua_gettop(L);  // Number of arguments
-  if (n == 2) {
-    Sprite* me = checkSprite(L,1);      assert(me != 0);
-    Sprite* other = checkSprite(L,2);   assert(other != 0);
-    bool isCol = me->collision(other);
-    lua_pushboolean(L, isCol);    
-  }
-  else
-    return luaL_error(L, "Got %d arguments expected 2", n); 
-
-  return 1;
 }
 
 static int move(lua_State *L) 
@@ -1038,16 +985,13 @@ static const luaL_Reg gSpriteFuncs[] = {
   {"viewCollide", viewCollide}, 
     
   // Calculations
-  {"groupCollide", groupCollide},
   {"collide", collide},    
-  {"traverse", traverse}, 
   {"inside", inside},     
      
   // Operations
   {"render", render},      
   {"update", update},          
   {"advance", advance},            
-  {"collision", collision},   
   {"move", move},    
   {"accelerate", accelerate},      
   {"rotate", rotate},  

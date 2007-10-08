@@ -187,6 +187,10 @@ void registerPointer(lua_State* L, void* ptr,  const char* tablename)
   lua_pop(L,1);
 }
 
+/*!
+  Get lua table that was registered for pointer \a ptr in table \a tablename.
+  The table is put on top of stack.
+*/
 void retrievePointer(lua_State* L, void* ptr, const char* tablename)
 {
   lua_getfield(L, LUA_REGISTRYINDEX, tablename);

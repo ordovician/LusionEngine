@@ -324,7 +324,7 @@ static int polygonCollision(lua_State* L)
   getPolygon(L, 1, p1);
   getPolygon(L, 2, p2);
 
-  bool is_col = collision(p1.begin(), p1.end(), p2.begin(), p2.end());
+  bool is_col = intersect(p1.begin(), p1.end(), p2.begin(), p2.end());
   lua_pushboolean(L, is_col);
   return 1;
 }

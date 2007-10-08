@@ -15,6 +15,17 @@
 
 using namespace std;
 
+/*!
+    \class Group Group.h
+    \brief Collection for Sprites. 
+
+    Is in many ways similar to CollisionGroup. However CollisionGroup is not mutable
+    Once it is created Sprites can't be added or removed. A Group on the otherhand
+    can have Sprites added and removed at any time. The downside of this is that
+    the structure can be as efficient in handling collision, because one can't create
+    an optimized hierarchical structure.
+*/
+
 // Gloal functions
 static Group gRenderGroup;
 
@@ -50,10 +61,20 @@ MutableShallowSpriteSet Group::sprites()
   return make_pair(iSprites.begin(), iSprites.end());
 }
 
+Rect2 Group::boundingBox() const
+{
+  return iBBox; // TODO: Calculate the boundingbox
+}
+
 // Request
 bool Group::contains(Sprite* sprite) const
 {
   return iSprites.find(sprite) != iSprites.end();
+}
+
+bool Group::isSimple() const
+{
+  return false;
 }
 
 // Operations
@@ -91,11 +112,11 @@ void Group::doPlanning(real start_time, real delta_time)
     sprite->planCommand()->execute(sprite, 0, start_time, delta_time);
 }
   
-void Group::draw()
+void Group::draw(const Rect2& r) const
 {
   SpriteSet::iterator sprite = iSprites.begin();
   for (;sprite != iSprites.end(); ++sprite) {
-    (*sprite)->draw();
+    (*sprite)->draw(r);
   }  
 }
 
@@ -119,39 +140,6 @@ Sprite* Group::nextSprite()
   return s;
 }
   
-bool Group::spriteCollide(Sprite* other, real t, real dt, SpriteCommand* command)
-{  
-  BinarySpriteCollisionCommand scc;
-  SpriteCommand* cmd = command != 0 ? command : &scc;           
-
-  bool is_col = false;
-  SpriteSet::iterator it;
-  for (it = iSprites.begin(); it != iSprites.end(); ++it) {
-    Sprite* sprite = *it;
-    if (secondsPassed() > t+dt)
-      break;
-    if (sprite == other || !other->collision(sprite)) 
-      continue;
-
-    if (cmd->execute(sprite, other, t, dt))
-      is_col = true;
-  }    
-  return is_col;
-}
-
-bool Group::groupCollide(Group* other, real t, real dt, SpriteCommand* command)
-{
-  bool is_col = false;
-  SpriteSet::iterator it;  
-  for (it = iSprites.begin(); it != iSprites.end(); ++it) {
-    Sprite* sprite = *it;
-    if (secondsPassed() > t+dt)
-      break;
-    if (sprite->groupCollide(other, t, dt, command))
-      is_col = true;
-  }    
-  return is_col;
-}
 
 bool Group::collide(CollisionObject* other, real t, real dt, SpriteCommand* command)
 {
@@ -161,11 +149,28 @@ bool Group::collide(CollisionObject* other, real t, real dt, SpriteCommand* comm
     Sprite* sprite = *it;
     if (secondsPassed() > t+dt)
       break;
+      
+    if (sprite == other)
+      continue;
 
-    IntersectCommand scc(sprite);
-    SpriteCommand* cmd = command != 0 ? command : &scc;     
-    if(other->traverse(t, dt, cmd))
+    if(sprite->collide(other, t, dt, command))
       is_col = true;
   }    
   return is_col;
+}
+
+bool Group::inside(const Point2& p, real t, real dt, SpriteCommand* command)
+{
+  bool is_col = false;
+  SpriteSet::iterator it;  
+  for (it = iSprites.begin(); it != iSprites.end(); ++it) {
+    Sprite* sprite = *it;
+
+    if (secondsPassed() > t+dt)
+      break;
+      
+    if(sprite->inside(p, t, dt, command))
+      is_col = true;
+  }    
+  return is_col;  
 }
