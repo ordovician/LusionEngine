@@ -7,7 +7,7 @@
  *
  */
 
-#include <Base/CollisionRect2.h>
+#include <Base/RectShape2.h>
 #include <Engine.h>
 #include <Base/Command.h>
 #include <Utils/PolygonUtils.h>

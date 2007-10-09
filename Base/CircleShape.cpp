@@ -7,7 +7,7 @@
  *
  */
 
-#include <Base/CollisionCircle.h>
+#include <Base/CircleShape.h>
 #include <Engine.h>
 #include <Base/Command.h>
 #include <Utils/PolygonUtils.h>

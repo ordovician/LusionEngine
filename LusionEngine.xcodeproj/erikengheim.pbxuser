@@ -235,6 +235,12 @@
 			D5E547850CBC32F100D16BE5 /* PBXTextBookmark */ = D5E547850CBC32F100D16BE5 /* PBXTextBookmark */;
 			D5E547860CBC32F100D16BE5 /* PBXTextBookmark */ = D5E547860CBC32F100D16BE5 /* PBXTextBookmark */;
 			D5E547870CBC32F100D16BE5 /* PBXTextBookmark */ = D5E547870CBC32F100D16BE5 /* PBXTextBookmark */;
+			D5E547980CBC369D00D16BE5 /* PBXTextBookmark */ = D5E547980CBC369D00D16BE5 /* PBXTextBookmark */;
+			D5E547990CBC369D00D16BE5 /* PBXTextBookmark */ = D5E547990CBC369D00D16BE5 /* PBXTextBookmark */;
+			D5E5479A0CBC36A400D16BE5 /* PBXTextBookmark */ = D5E5479A0CBC36A400D16BE5 /* PBXTextBookmark */;
+			D5E5479B0CBC36A400D16BE5 /* PBXTextBookmark */ = D5E5479B0CBC36A400D16BE5 /* PBXTextBookmark */;
+			D5E5479C0CBC36A400D16BE5 /* PBXTextBookmark */ = D5E5479C0CBC36A400D16BE5 /* PBXTextBookmark */;
+			D5E5479D0CBC36A400D16BE5 /* PBXTextBookmark */ = D5E5479D0CBC36A400D16BE5 /* PBXTextBookmark */;
 			D5EBB98E0CBACC6C00191634 = D5EBB98E0CBACC6C00191634 /* PBXTextBookmark */;
 			D5EBB98F0CBACC6C00191634 = D5EBB98F0CBACC6C00191634 /* PBXTextBookmark */;
 			D5EBB9900CBACC6C00191634 = D5EBB9900CBACC6C00191634 /* PBXTextBookmark */;
@@ -1508,7 +1514,7 @@
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {874, 1800}}";
 			sepNavSelRange = "{148, 20}";
-			sepNavVisRect = "{{0, 0}, {625, 248}}";
+			sepNavVisRect = "{{0, 0}, {526, 190}}";
 		};
 	};
 	D5DC3D3E0BDF808800430EFB /* CollisionObject.h */ = {
@@ -2072,6 +2078,71 @@
 		vrLen = 229;
 		vrLoc = 83;
 	};
+	D5E5478A0CBC367500D16BE5 /* CircleShape.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {622, 1395}}";
+			sepNavSelRange = "{170, 0}";
+			sepNavVisRect = "{{0, 0}, {526, 190}}";
+		};
+	};
+	D5E547980CBC369D00D16BE5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = D5DC3D3D0BDF808800430EFB /* CollisionObject.cpp */;
+		name = Base/CollisionObject;
+		rLen = 20;
+		rLoc = 148;
+		rType = 0;
+		vrLen = 213;
+		vrLoc = 0;
+	};
+	D5E547990CBC369D00D16BE5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = D5DC3D3D0BDF808800430EFB /* CollisionObject.cpp */;
+		name = Base/CollisionObject;
+		rLen = 20;
+		rLoc = 148;
+		rType = 0;
+		vrLen = 213;
+		vrLoc = 0;
+	};
+	D5E5479A0CBC36A400D16BE5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = D5DC3D3D0BDF808800430EFB /* CollisionObject.cpp */;
+		name = Base/CollisionObject;
+		rLen = 20;
+		rLoc = 148;
+		rType = 0;
+		vrLen = 240;
+		vrLoc = 0;
+	};
+	D5E5479B0CBC36A400D16BE5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "error: Base/CollisionCircle.h: No such file or directory";
+		fRef = D5E5478A0CBC367500D16BE5 /* CircleShape.cpp */;
+		rLen = 1;
+		rLoc = 9;
+		rType = 1;
+	};
+	D5E5479C0CBC36A400D16BE5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = D5DC3D3D0BDF808800430EFB /* CollisionObject.cpp */;
+		name = Base/CollisionObject;
+		rLen = 20;
+		rLoc = 148;
+		rType = 0;
+		vrLen = 240;
+		vrLoc = 0;
+	};
+	D5E5479D0CBC36A400D16BE5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = D5E5478A0CBC367500D16BE5 /* CircleShape.cpp */;
+		name = "#include <Base/CollisionCircle.h>";
+		rLen = 30;
+		rLoc = 144;
+		rType = 0;
+		vrLen = 299;
+		vrLoc = 0;
+	};
 	D5E7BA0E0B71570B002E3AE8 /* Group.cpp */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {608, 2115}}";
@@ -2230,7 +2301,7 @@
 		isa = PBXTextBookmark;
 		fRef = D5EBB9820CBACBE700191634 /* CollisionCircle.h */;
 		rLen = 0;
-		rLoc = 852;
+		rLoc = 826;
 		rType = 0;
 	};
 	D5EBB9910CBACC6C00191634 /* PBXTextBookmark */ = {
@@ -2278,9 +2349,9 @@
 		fRef = D5EBB9820CBACBE700191634 /* CollisionCircle.h */;
 		name = "CollisionCircle.h: 43";
 		rLen = 0;
-		rLoc = 852;
+		rLoc = 826;
 		rType = 0;
-		vrLen = 447;
+		vrLen = 441;
 		vrLoc = 385;
 	};
 	D5EBB99E0CBAD76100191634 /* PBXTextBookmark */ = {
@@ -2296,9 +2367,9 @@
 		fRef = D5EBB9820CBACBE700191634 /* CollisionCircle.h */;
 		name = "CollisionCircle.h: 43";
 		rLen = 0;
-		rLoc = 852;
+		rLoc = 826;
 		rType = 0;
-		vrLen = 447;
+		vrLen = 441;
 		vrLoc = 385;
 	};
 	D5EBB9A00CBAD76100191634 /* PBXTextBookmark */ = {

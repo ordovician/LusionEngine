@@ -119,6 +119,12 @@
 		D5DCB3180CA1BBDB005C1355 /* Segment2Tests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5DCB2220CA1B49C005C1355 /* Segment2Tests.cpp */; };
 		D5DCB3190CA1BBDB005C1355 /* Rect2Tests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5DCB2250CA1B4BD005C1355 /* Rect2Tests.cpp */; };
 		D5DCB31A0CA1BBDB005C1355 /* Ray2Tests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5DCB2280CA1B4DB005C1355 /* Ray2Tests.cpp */; };
+		D5E547900CBC367500D16BE5 /* CircleShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5E5478A0CBC367500D16BE5 /* CircleShape.cpp */; };
+		D5E547910CBC367500D16BE5 /* CircleShape.h in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = D5E5478B0CBC367500D16BE5 /* CircleShape.h */; };
+		D5E547920CBC367500D16BE5 /* RectShape2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5E5478C0CBC367500D16BE5 /* RectShape2.cpp */; };
+		D5E547930CBC367500D16BE5 /* RectShape2.h in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = D5E5478D0CBC367500D16BE5 /* RectShape2.h */; };
+		D5E547940CBC367500D16BE5 /* SegmentShape2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5E5478E0CBC367500D16BE5 /* SegmentShape2.cpp */; };
+		D5E547950CBC367500D16BE5 /* SegmentShape2.h in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = D5E5478F0CBC367500D16BE5 /* SegmentShape2.h */; };
 		D5E7BA180B71570B002E3AE8 /* Group.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5E7BA0E0B71570B002E3AE8 /* Group.cpp */; };
 		D5E7BA190B71570B002E3AE8 /* Group.h in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = D5E7BA0F0B71570B002E3AE8 /* Group.h */; };
 		D5E7BA1A0B71570B002E3AE8 /* ImageView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5E7BA100B71570B002E3AE8 /* ImageView.cpp */; };
@@ -196,6 +202,9 @@
 				D542DF850CB41AF500AABC11 /* TrapezoidalMap2.hpp in Copy Frameworks into .app bundle */,
 				D542DF870CB41AF500AABC11 /* TrapezoidNode2.hpp in Copy Frameworks into .app bundle */,
 				D542DF890CB41AF500AABC11 /* Vector2.hpp in Copy Frameworks into .app bundle */,
+				D5E547910CBC367500D16BE5 /* CircleShape.h in Copy Frameworks into .app bundle */,
+				D5E547930CBC367500D16BE5 /* RectShape2.h in Copy Frameworks into .app bundle */,
+				D5E547950CBC367500D16BE5 /* SegmentShape2.h in Copy Frameworks into .app bundle */,
 			);
 			name = "Copy Frameworks into .app bundle";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -315,6 +324,12 @@
 		D5DCB2250CA1B4BD005C1355 /* Rect2Tests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Rect2Tests.cpp; path = UnitTest/Rect2Tests.cpp; sourceTree = "<group>"; };
 		D5DCB2270CA1B4DB005C1355 /* Ray2Tests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Ray2Tests.h; path = UnitTest/Ray2Tests.h; sourceTree = "<group>"; };
 		D5DCB2280CA1B4DB005C1355 /* Ray2Tests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Ray2Tests.cpp; path = UnitTest/Ray2Tests.cpp; sourceTree = "<group>"; };
+		D5E5478A0CBC367500D16BE5 /* CircleShape.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = CircleShape.cpp; sourceTree = "<group>"; };
+		D5E5478B0CBC367500D16BE5 /* CircleShape.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = CircleShape.h; sourceTree = "<group>"; };
+		D5E5478C0CBC367500D16BE5 /* RectShape2.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = RectShape2.cpp; sourceTree = "<group>"; };
+		D5E5478D0CBC367500D16BE5 /* RectShape2.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = RectShape2.h; sourceTree = "<group>"; };
+		D5E5478E0CBC367500D16BE5 /* SegmentShape2.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = SegmentShape2.cpp; sourceTree = "<group>"; };
+		D5E5478F0CBC367500D16BE5 /* SegmentShape2.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = SegmentShape2.h; sourceTree = "<group>"; };
 		D5E7BA0E0B71570B002E3AE8 /* Group.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = Group.cpp; sourceTree = "<group>"; };
 		D5E7BA0F0B71570B002E3AE8 /* Group.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = Group.h; sourceTree = "<group>"; };
 		D5E7BA100B71570B002E3AE8 /* ImageView.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = ImageView.cpp; sourceTree = "<group>"; };
@@ -528,6 +543,12 @@
 		D5E7BA0D0B71570B002E3AE8 /* Base */ = {
 			isa = PBXGroup;
 			children = (
+				D5E5478A0CBC367500D16BE5 /* CircleShape.cpp */,
+				D5E5478B0CBC367500D16BE5 /* CircleShape.h */,
+				D5E5478C0CBC367500D16BE5 /* RectShape2.cpp */,
+				D5E5478D0CBC367500D16BE5 /* RectShape2.h */,
+				D5E5478E0CBC367500D16BE5 /* SegmentShape2.cpp */,
+				D5E5478F0CBC367500D16BE5 /* SegmentShape2.h */,
 				D5DC3D3B0BDF808700430EFB /* CollisionGroup.cpp */,
 				D5DC3D3C0BDF808800430EFB /* CollisionGroup.h */,
 				D5DC3D3D0BDF808800430EFB /* CollisionObject.cpp */,
@@ -759,6 +780,9 @@
 				D542DF840CB41AF500AABC11 /* TrapezoidalMap2.cpp in Sources */,
 				D542DF860CB41AF500AABC11 /* TrapezoidNode2.cpp in Sources */,
 				D542DF880CB41AF500AABC11 /* Vector2.cpp in Sources */,
+				D5E547900CBC367500D16BE5 /* CircleShape.cpp in Sources */,
+				D5E547920CBC367500D16BE5 /* RectShape2.cpp in Sources */,
+				D5E547940CBC367500D16BE5 /* SegmentShape2.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -7,7 +7,7 @@
  *
  */
 
-#include <Base/CollisionSegment2.h>
+#include <Base/SegmentShape2.h>
 #include <Engine.h>
 #include <Base/Command.h>
 #include <Utils/PolygonUtils.h>
