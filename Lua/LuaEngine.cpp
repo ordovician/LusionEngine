@@ -385,7 +385,7 @@ void initLua()
   initLuaSprite(gLuaState);
   initLuaView(gLuaState);
   initLuaGroup(gLuaState);
-  initLuaCollisionGroup(gLuaState);
+  initLuaShapeGroup(gLuaState);
     
   initLuaVector2(gLuaState);
   initLuaSegment2(gLuaState);  

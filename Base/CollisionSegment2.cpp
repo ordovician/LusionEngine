@@ -1,5 +1,5 @@
 /*
- *  CollisionSegment2.cpp
+ *  SegmentShape2.cpp
  *  LusionEngine
  *
  *  Created by Erik Engheim on 19.1.07.
@@ -17,7 +17,7 @@
 using namespace std;
 
 /*!
-    \class CollisionSegment2 CollisionSegment2.h
+    \class SegmentShape2 SegmentShape2.h
     \brief Defines a segment2 shape.
 
     This class differs from Segment2 in that it is polymorphic so it
@@ -26,24 +26,24 @@ using namespace std;
 */
 
 // Constructors
-CollisionSegment2::CollisionSegment2(const Segment2& seg) : iSeg(seg)
+SegmentShape2::SegmentShape2(const Segment2& seg) : iSeg(seg)
 {
   
 }
 
-CollisionSegment2::~CollisionSegment2()
+SegmentShape2::~SegmentShape2()
 {
   
 }
 
 // Accessors
-Rect2 CollisionSegment2::boundingBox() const
+Rect2 SegmentShape2::boundingBox() const
 {
   return Rect2(iSeg.left(), iSeg.right());
 }
   
 // Request
-bool CollisionSegment2::collide(CollisionObject* other, real t, real dt, SpriteCommand* command)
+bool SegmentShape2::collide(Shape* other, real t, real dt, SpriteCommand* command)
 {
   if (!boundingBox().intersect(other->boundingBox()))
     return false;
@@ -58,22 +58,22 @@ bool CollisionSegment2::collide(CollisionObject* other, real t, real dt, SpriteC
 
 
 // Calculations
-bool CollisionSegment2::intersect(const Circle& c) const
+bool SegmentShape2::intersect(const Circle& c) const
 {
   return c.intersect(iSeg);
 }
 
-bool CollisionSegment2::intersect(const Rect2& r) const
+bool SegmentShape2::intersect(const Rect2& r) const
 {
   return iSeg.intersect(r);  
 }
 
-bool CollisionSegment2::intersect(const Segment2& s) const
+bool SegmentShape2::intersect(const Segment2& s) const
 {
   return iSeg.intersect(s);  
 }
 
-bool CollisionSegment2::intersect(ConstPointIterator2 begin, ConstPointIterator2 end) const
+bool SegmentShape2::intersect(ConstPointIterator2 begin, ConstPointIterator2 end) const
 {
   return ::intersect(iSeg, begin, end);
 }
@@ -81,7 +81,7 @@ bool CollisionSegment2::intersect(ConstPointIterator2 begin, ConstPointIterator2
 /*!
   Draws segment if it is inside rectangle \a r
 */
-void CollisionSegment2::draw(const Rect2& r) const
+void SegmentShape2::draw(const Rect2& r) const
 {
   glBegin(GL_LINES);      
     gltVertex(iSeg);

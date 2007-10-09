@@ -1,5 +1,5 @@
 /*
- *  CollisionObject.cpp
+ *  Shape.cpp
  *  LusionEngine
  *
  *  Created by Erik Engheim on 19.1.07.
@@ -7,19 +7,19 @@
  *
  */
 
-#include "Base/CollisionObject.h"
+#include "Base/Shape.h"
 #include <iostream>
 
 using namespace std;
 
 /*!
-   \class CollisionCircle 
+   \class CircleShape 
    \brief  
 
 */
  
 // Constructors
-CollisionCircle::CollisionCircle()
+CircleShape::CircleShape()
 {
   
 }
@@ -28,15 +28,15 @@ CollisionCircle::CollisionCircle()
 // Accessors
 
 // Request
-bool CollisionCircle::intersect(CollisionObject* obj) const
+bool CircleShape::intersect(Shape* obj) const
 {
   if (!obj->isSimple())
     return obj->intersect(this);
     
-  CollisionCircle* c = dynamic_cast<CollisionCircle*>(obj);
+  CircleShape* c = dynamic_cast<CircleShape*>(obj);
   if (c) 
     return 
   
-  CollisionRect2* r = dynamic_cast<CollisionRect2*>(obj);  
-  CollisionSegment2* s = dynamic_cast<CollisionSegment2*>(obj);    
+  RectShape2* r = dynamic_cast<RectShape2*>(obj);  
+  SegmentShape2* s = dynamic_cast<SegmentShape2*>(obj);    
 }

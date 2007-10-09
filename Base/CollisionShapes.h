@@ -1,5 +1,5 @@
 /*
- *  CollisionObject.h
+ *  Shape.h
  *  LusionEngine
  *
  *  Created by Erik Engheim on 19.1.07.
@@ -10,19 +10,19 @@
 #pragma once
 
 #include "Types.h"
-#include <Geometry/CollisionObject.hpp>
+#include <Geometry/Shape.hpp>
 
-class CollisionCircle : public CollisionObject
+class CircleShape : public Shape
 {
 public:
   // Constructors
-  CollisionCircle(const Circle& circle);
+  CircleShape(const Circle& circle);
 
   // Accessors
   Rect2 boundingBox() const;  
       
   // Calculations
-  bool intersect(CollisionObject* obj) const;
+  bool intersect(Shape* obj) const;
   
 private:
   Circle iCircle;

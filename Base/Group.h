@@ -19,7 +19,7 @@
 // Group used for rendering
 Group* renderGroup(); 
 
-class Group : public CollisionObject
+class Group : public Shape
 {
 public:
   // Constructors
@@ -38,7 +38,7 @@ public:
   bool isSimple() const;
   
   // Calculations
-  bool collide(CollisionObject* other, real t, real dt, SpriteCommand* command = 0);
+  bool collide(Shape* other, real t, real dt, SpriteCommand* command = 0);
   bool inside(const Point2& p, real t, real dt, SpriteCommand* command);
   void draw(const Rect2& r) const;
         

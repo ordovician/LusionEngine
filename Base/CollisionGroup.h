@@ -1,5 +1,5 @@
 /*
- *  CollisionGroup.h
+ *  ShapeGroup.h
  *  LusionEngine
  *
  *  Created by Erik Engheim on 19.1.07.
@@ -16,16 +16,16 @@
 #include <Geometry/Circle.hpp>
 
 
-class CollisionGroup : public CollisionObject
+class ShapeGroup : public Shape
 {
 public:
   // Constructors
-  CollisionGroup();
-  CollisionGroup(CollisionObjectIterator begin, CollisionObjectIterator end);
-  CollisionGroup(CollisionObject *left, CollisionObject *right);  
-  CollisionGroup(CollisionObject *left, CollisionObject *right, const Rect2& box);
+  ShapeGroup();
+  ShapeGroup(ShapeIterator begin, ShapeIterator end);
+  ShapeGroup(Shape *left, Shape *right);  
+  ShapeGroup(Shape *left, Shape *right, const Rect2& box);
   
-  virtual ~CollisionGroup();
+  virtual ~ShapeGroup();
 
   // Accessors
   Rect2 boundingBox() const;
@@ -34,7 +34,7 @@ public:
   bool isSimple() const;
   
   // Calculations
-  bool collide(CollisionObject* other, real t, real dt, SpriteCommand* command = 0);  
+  bool collide(Shape* other, real t, real dt, SpriteCommand* command = 0);  
   bool inside(const Point2& p, real t, real dt, SpriteCommand* command = 0);
   void draw(const Rect2& r) const;
   
@@ -42,12 +42,12 @@ public:
   void update(real start_time, real delta_time);  
   
   void init();
-  void init(CollisionObjectIterator begin, CollisionObjectIterator end);
-  void init(CollisionObject *left, CollisionObject *right);
-  void init(CollisionObject *left, CollisionObject *right, const Rect2& box);
-  CollisionObject* buildBranch(CollisionObjectIterator begin, CollisionObjectIterator end, int axis);
+  void init(ShapeIterator begin, ShapeIterator end);
+  void init(Shape *left, Shape *right);
+  void init(Shape *left, Shape *right, const Rect2& box);
+  Shape* buildBranch(ShapeIterator begin, ShapeIterator end, int axis);
   
 private:
-  CollisionObject *iLeft, *iRight;
+  Shape *iLeft, *iRight;
   Rect2 iBox;                 // Bounding box
 };

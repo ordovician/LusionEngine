@@ -349,7 +349,7 @@ end
 function setupWorld()
   obstacles = createRandomObstacles(10)
   
-  obstacles = CollisionGroup:new(obstacles)
+  obstacles = ShapeGroup:new(obstacles)
   -- boxes = Collection:new(unpack(col_objs:boundingBoxes()))
   -- boxes = boxes:map(function(x) return Sprite:new(OutlineView:new(x:toPolygon())) end)
   

@@ -1,5 +1,5 @@
 /*
- *  CollisionObject.h
+ *  Shape.h
  *  LusionEngine
  *
  *  Created by Erik Engheim on 19.1.07.
@@ -18,19 +18,19 @@
 
 class SpriteCommand;
 
-class CollisionObject : public SharedObject
+class Shape : public SharedObject
 {
 public:
   // Constructors
-  CollisionObject();
-  virtual ~CollisionObject();
+  Shape();
+  virtual ~Shape();
 
   // Accessors
   virtual Rect2 boundingBox() const = 0;  
     
   // Request
   virtual bool isSimple() const;
-  virtual bool collide(CollisionObject* other, real t, real dt, SpriteCommand* command = 0) = 0;  
+  virtual bool collide(Shape* other, real t, real dt, SpriteCommand* command = 0) = 0;  
   virtual bool inside(const Point2& p, real t, real dt, SpriteCommand* command = 0) = 0;
     
   // Calculations
@@ -45,6 +45,6 @@ public:
   virtual void update(real start_time, real delta_time);  
 };
 
-typedef vector<CollisionObject*> CollisionObjects;
-typedef CollisionObjects::iterator CollisionObjectIterator;
-typedef CollisionObjects::const_iterator ConstCollisionObjectIterator;
+typedef vector<Shape*> Shapes;
+typedef Shapes::iterator ShapeIterator;
+typedef Shapes::const_iterator ConstShapeIterator;

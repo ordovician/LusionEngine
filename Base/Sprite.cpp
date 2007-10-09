@@ -356,7 +356,7 @@ bool Sprite::visible() const
 }
 
 // Calculations
-bool Sprite::collide(CollisionObject* other, real t, real dt, SpriteCommand* command) 
+bool Sprite::collide(Shape* other, real t, real dt, SpriteCommand* command) 
 {
   if (!boundingBox().intersect(other->boundingBox()))
     return false;

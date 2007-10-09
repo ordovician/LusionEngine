@@ -1,5 +1,5 @@
 /*
- *  CollisionCircle.h
+ *  CircleShape.h
  *  LusionEngine
  *
  *  Created by Erik Engheim on 19.1.07.
@@ -17,18 +17,18 @@
 
 class SpriteCommand;
 
-class CollisionCircle : public CollisionObject
+class CircleShape : public Shape
 {
 public:
   // Constructors
-  CollisionCircle(const Circle& circle);
-  virtual ~CollisionCircle();
+  CircleShape(const Circle& circle);
+  virtual ~CircleShape();
 
   // Accessors
   Rect2 boundingBox() const;  
     
   // Request
-  bool collide(CollisionObject* other, real t, real dt, SpriteCommand* command = 0);  
+  bool collide(Shape* other, real t, real dt, SpriteCommand* command = 0);  
   
   // Calculations
   bool intersect(const Circle& c) const;

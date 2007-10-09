@@ -54,7 +54,7 @@ LuaCommand::~LuaCommand()
 }
 
 // Operations
-bool LuaCommand::execute(CollisionObject* me_obj, CollisionObject* other_obj, real t, real dt) 
+bool LuaCommand::execute(Shape* me_obj, Shape* other_obj, real t, real dt) 
 {      
   Sprite* me = dynamic_cast<Sprite*>(me_obj);
   Sprite* other = dynamic_cast<Sprite*>(other_obj);

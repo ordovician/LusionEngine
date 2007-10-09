@@ -1,5 +1,5 @@
 /*
- *  CollisionGroup.cpp
+ *  ShapeGroup.cpp
  *  LusionEngine
  *
  *  Created by Erik Engheim on 19.1.07.
@@ -18,28 +18,28 @@ using namespace std;
 // Helper functions
 
 /*! 
-  Kind of spatially sort CollisionObjects along 'axis' axis and return iterator to the CollisionObject
+  Kind of spatially sort Shapes along 'axis' axis and return iterator to the Shape
   placed right before the center of spatial sort. "Kind of" means that it is not fully sorted
   only the first half is sorted well enough to establish pivot iterator.
 */
-static CollisionObjectIterator qsplit(CollisionObjectIterator begin, 
-                                             CollisionObjectIterator end,
+static ShapeIterator qsplit(ShapeIterator begin, 
+                                             ShapeIterator end,
                                              real pivot, int axis)
 {
     Rect2 bbox;
     real centroid;
-    CollisionObjectIterator ret_value = begin;
+    ShapeIterator ret_value = begin;
     
     // Loop through and make sure bounding boxes are in spatialy ordered along 'axis'
     // such that the ones spatially to the left of pivot comes eariler in list than
     // those spatially to the right of pivot.
-    CollisionObjectIterator it;     
+    ShapeIterator it;     
     for (it = begin; it != end; ++it) {
         bbox = (*it)->boundingBox();
         centroid = bbox.center()[axis];   //  Order rectangles on center line throug rectangle (centroid)
         if (centroid >= pivot)
             continue;
-        CollisionObject* temp = *it;
+        Shape* temp = *it;
         *it = *ret_value;
         *ret_value = temp;
         ++ret_value;
@@ -51,27 +51,27 @@ static CollisionObjectIterator qsplit(CollisionObjectIterator begin,
 }
 
 // Constructors
-CollisionGroup::CollisionGroup()
+ShapeGroup::ShapeGroup()
 {
   init();
 }
 
-CollisionGroup::CollisionGroup(CollisionObjectIterator begin, CollisionObjectIterator end)
+ShapeGroup::ShapeGroup(ShapeIterator begin, ShapeIterator end)
 {
   init(begin, end);   
 }
 
-CollisionGroup::CollisionGroup(CollisionObject *left, CollisionObject *right)
+ShapeGroup::ShapeGroup(Shape *left, Shape *right)
 {
   init(left, right);
 }
 
-CollisionGroup::CollisionGroup(CollisionObject *left, CollisionObject *right, const Rect2& box)
+ShapeGroup::ShapeGroup(Shape *left, Shape *right, const Rect2& box)
 {
   init(left, right, box);
 }
 
-CollisionGroup::~CollisionGroup()
+ShapeGroup::~ShapeGroup()
 {
   // cout << hex << "0x" << (int)this << " collision group removed" << endl;  // DEBUG    
   iLeft->release();
@@ -79,26 +79,26 @@ CollisionGroup::~CollisionGroup()
 }
 
 // Accessors
-Rect2 CollisionGroup::boundingBox() const
+Rect2 ShapeGroup::boundingBox() const
 {
   return iBox;
 }
 
 // Request
-bool CollisionGroup::isSimple() const
+bool ShapeGroup::isSimple() const
 {
   return false;
 }
 
 // Calculations
 /*!
-  Returns true if there was a collision with \a other CollisionObject. \a command is executed
-  on every CollisionObject in CollisionGroup which collided with \a other, and if \a other is also
-  a CollisionGroup then every CollisionObject in that group which collided with a CollisionObject in
+  Returns true if there was a collision with \a other Shape. \a command is executed
+  on every Shape in ShapeGroup which collided with \a other, and if \a other is also
+  a ShapeGroup then every Shape in that group which collided with a Shape in
   this group. If calculations take too long time, meaning more than \a dt time is spent since
   time \a t and now, then false will be returned even if there really was a collision.
 */
-bool CollisionGroup::collide(CollisionObject* other, real t, real dt, SpriteCommand* command)
+bool ShapeGroup::collide(Shape* other, real t, real dt, SpriteCommand* command)
 {
   if (!iBox.intersect(other->boundingBox()))
     return false;
@@ -112,7 +112,7 @@ bool CollisionGroup::collide(CollisionObject* other, real t, real dt, SpriteComm
   return hit_right || hit_left;  
 }
 
-bool CollisionGroup::inside(const Point2& p, real t, real dt, SpriteCommand* command)
+bool ShapeGroup::inside(const Point2& p, real t, real dt, SpriteCommand* command)
 {
   if (!iBox.inside(p))
     return false;
@@ -130,7 +130,7 @@ bool CollisionGroup::inside(const Point2& p, real t, real dt, SpriteCommand* com
   Draw all child components which are inside or intersect rectangle \a r.
   It is optimized to do as few intersection tests as possible.
 */
-void CollisionGroup::draw(const Rect2& r) const
+void ShapeGroup::draw(const Rect2& r) const
 {
   if (!iBox.intersect(r))
     return;
@@ -140,19 +140,19 @@ void CollisionGroup::draw(const Rect2& r) const
 }
 
 // Operations
-void CollisionGroup::update(real start_time, real delta_time) 
+void ShapeGroup::update(real start_time, real delta_time) 
 {
   if (iLeft) iLeft->update(start_time, delta_time);
   if (iRight) iRight->update(start_time, delta_time);
 }
 
-void CollisionGroup::init()
+void ShapeGroup::init()
 {
   iLeft = 0;
   iRight = 0;
 }
 
-void CollisionGroup::init(CollisionObject *left, CollisionObject *right)
+void ShapeGroup::init(Shape *left, Shape *right)
 {
   left->retain();
   right->retain();
@@ -162,7 +162,7 @@ void CollisionGroup::init(CollisionObject *left, CollisionObject *right)
   iBox = left->boundingBox().surround(right->boundingBox());
 }
 
-void CollisionGroup::init(CollisionObject *left, CollisionObject *right, const Rect2& box)
+void ShapeGroup::init(Shape *left, Shape *right, const Rect2& box)
 {
   left->retain();
   right->retain();
@@ -172,7 +172,7 @@ void CollisionGroup::init(CollisionObject *left, CollisionObject *right, const R
   iBox = box;
 }
 
-void CollisionGroup::init(CollisionObjectIterator begin, CollisionObjectIterator end)
+void ShapeGroup::init(ShapeIterator begin, ShapeIterator end)
 {
   init();
     
@@ -188,12 +188,12 @@ void CollisionGroup::init(CollisionObjectIterator begin, CollisionObjectIterator
   
   // Find the midpoint of the bounding box to use as a qsplit pivot
   iBox = (*begin)->boundingBox();
-  CollisionObjectIterator it = begin;
+  ShapeIterator it = begin;
   while (++it != end) {
       iBox = iBox.surround((*it)->boundingBox());
   }
   Point2 pivot = iBox.center();
-  CollisionObjectIterator mid_point = qsplit(begin, end, pivot.x(), 0);
+  ShapeIterator mid_point = qsplit(begin, end, pivot.x(), 0);
   
   // Create a new bounding volume
   iLeft = buildBranch(begin, mid_point, 1);
@@ -203,11 +203,11 @@ void CollisionGroup::init(CollisionObjectIterator begin, CollisionObjectIterator
   iRight->retain(); 
 }
 
-CollisionObject* CollisionGroup::buildBranch(CollisionObjectIterator begin, 
-                              CollisionObjectIterator end, 
+Shape* ShapeGroup::buildBranch(ShapeIterator begin, 
+                              ShapeIterator end, 
                               int axis)
 {
-  CollisionObject* ret_obj = 0;  
+  Shape* ret_obj = 0;  
   int no_nodes = end-begin;      
   if (no_nodes == 0) {
     cerr << "Can't group sprites because none was provided!" << endl;
@@ -217,24 +217,24 @@ CollisionObject* CollisionGroup::buildBranch(CollisionObjectIterator begin,
     ret_obj->retain();
   }
   else if (no_nodes == 2) {
-    ret_obj = new CollisionGroup(*begin, *(begin+1));    
+    ret_obj = new ShapeGroup(*begin, *(begin+1));    
   }
   else {
     // Find the midpoint of the bounding box to use as a qsplit pivot
     Rect2 box = (*begin)->boundingBox();
-    CollisionObjectIterator it = begin;
+    ShapeIterator it = begin;
     while (++it != end) {
         box = box.surround((*it)->boundingBox());
     }
     Vector2 pivot = box.center();
 
     // Now split according to correct axis
-    CollisionObjectIterator mid_point = qsplit(begin, end, pivot[axis], axis);
+    ShapeIterator mid_point = qsplit(begin, end, pivot[axis], axis);
 
     // Create a new bounding volume
-    CollisionObject* left = buildBranch(begin, mid_point, (axis+1)%2);
-    CollisionObject* right = buildBranch(mid_point, end, (axis+1)%2);
-    ret_obj = new CollisionGroup(left, right, box);    
+    Shape* left = buildBranch(begin, mid_point, (axis+1)%2);
+    Shape* right = buildBranch(mid_point, end, (axis+1)%2);
+    ret_obj = new ShapeGroup(left, right, box);    
   }
   ret_obj->autorelease();
   return ret_obj;

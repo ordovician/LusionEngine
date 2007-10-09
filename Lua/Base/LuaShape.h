@@ -1,5 +1,5 @@
 /*
- *  LuaShapeGroup.h
+ *  LuaShape.h
  *  LusionEngine
  *
  *  Created by Erik Engheim on 19.1.07.
@@ -10,7 +10,7 @@
 #pragma once
 
 struct lua_State;
-class ShapeGroup;
+class Shape;
 
-void initLuaShapeGroup(lua_State *L);
-ShapeGroup *checkShapeGroup(lua_State* L, int index=1);
+void initLuaShape(lua_State *L);
+Shape *checkShape(lua_State* L, int index=1);

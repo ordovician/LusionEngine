@@ -43,13 +43,13 @@ void *popUserData (lua_State *L, int argnum, const char *tname) {
   return 0;  /* to avoid warnings */
 }
  
-CollisionObject *checkCollisionObject(lua_State* L, int index)
+Shape *checkShape(lua_State* L, int index)
 {
   luaL_checktype(L, index, LUA_TTABLE); 
   lua_getfield(L, index, "__self");
-  CollisionObject* v = (CollisionObject*)lua_touserdata(L, -1);
+  Shape* v = (Shape*)lua_touserdata(L, -1);
   lua_pop(L, 1);    
-  // pullClassInstance(L, index, "Lusion.CollisionObject", v);
+  // pullClassInstance(L, index, "Lusion.Shape", v);
   return v;
 }
  

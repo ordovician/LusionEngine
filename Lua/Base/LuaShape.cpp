@@ -1,5 +1,5 @@
 /*
- *  LuaShapeGroup.cpp
+ *  LuaShape.cpp
  *  LusionEngine
  *
  *  Created by Erik Engheim on 19.1.07.
@@ -27,15 +27,15 @@
 #include <assert.h>
 
 // Helper functions
-ShapeGroup *checkShapeGroup(lua_State* L, int index)
+Shape *checkShape(lua_State* L, int index)
 {
-  ShapeGroup* v;
-  pullClassInstance(L, index, "Lusion.ShapeGroup", v);
+  Shape* v;
+  pullClassInstance(L, index, "Lusion.Shape", v);
   return v;
 }
 
 // Functions exported to Lua
-static int newShapeGroup(lua_State *L) 
+static int newShape(lua_State *L) 
 {
   int n = lua_gettop(L);  // Number of arguments
   if (n != 2)
@@ -44,16 +44,16 @@ static int newShapeGroup(lua_State *L)
 
   pushClassInstance(L);
     
-  ShapeGroup **g = (ShapeGroup **)lua_newuserdata(L, sizeof(ShapeGroup *));
+  Shape **g = (Shape **)lua_newuserdata(L, sizeof(Shape *));
   
   Group* group = checkGroup(L,2);
   assert(group != 0);
   ShallowSpriteSet sprites = group->sprites();
   Shapes objs(distance(sprites.first, sprites.second));
   copy(sprites.first, sprites.second, objs.begin());
-  *g = new ShapeGroup(objs.begin(), objs.end());
+  *g = new Shape(objs.begin(), objs.end());
 
-  setUserDataMetatable(L, "Lusion.ShapeGroup");
+  setUserDataMetatable(L, "Lusion.Shape");
 
   // Handle user initialization
   lua_getfield(L, 1, "init"); 
@@ -68,7 +68,7 @@ static int init(lua_State *L)
   // int n = lua_gettop(L);  // Number of arguments
   // if (n != 1) 
   //   return luaL_error(L, "Got %d arguments expected 1 (self)", n); 
-  // ShapeGroup* g = checkShapeGroup(L);
+  // Shape* g = checkShape(L);
   // cout << "Initializing group: " << (int)g << endl;
   return 0;
 }
@@ -80,7 +80,7 @@ static int boundingBox(lua_State *L)
   if (n != 1) 
     return luaL_error(L, "Got %d arguments expected 1", n); 
     
-  ShapeGroup* group = checkShapeGroup(L); 
+  Shape* group = checkShape(L); 
   assert(group != 0);   
   Rect2_push(L, group->boundingBox());
       
@@ -94,7 +94,7 @@ static int circleIntersect(lua_State *L)
   if (n != 3) 
     return luaL_error(L, "Got %d arguments expected 3 (self, center, radius)", n); 
     
-  ShapeGroup* group = checkShapeGroup(L);      
+  Shape* group = checkShape(L);      
   assert(group != 0);  
    
   bool ret = group->intersect(Circle(Vector2_pull(L, 2), luaL_checknumber(L, 3)));    
@@ -109,7 +109,7 @@ static int rectIntersect(lua_State *L)
   if (n != 2) 
     return luaL_error(L, "Got %d arguments expected 2 (self, rect)", n); 
     
-  ShapeGroup* group = checkShapeGroup(L);      
+  Shape* group = checkShape(L);      
   assert(group != 0);  
    
   bool ret = group->intersect(Rect2(Rect2_pull(L, 2)));    
@@ -125,7 +125,7 @@ static int update(lua_State *L)
   if (n != 3) 
     return luaL_error(L, "Got %d arguments expected 3 (self, start_time, delta_time)", n); 
     
-  ShapeGroup* group = checkShapeGroup(L, 1);    
+  Shape* group = checkShape(L, 1);    
 
   group->update(luaL_checknumber(L, 2), luaL_checknumber(L, 3));
   
@@ -133,22 +133,22 @@ static int update(lua_State *L)
 }
 
 // __gc
-static int destroyShapeGroup(lua_State* L)
+static int destroyShape(lua_State* L)
 {
-  ShapeGroup* group = 0;
-  checkUserData(L, "Lusion.ShapeGroup", group);
+  Shape* group = 0;
+  checkUserData(L, "Lusion.Shape", group);
   group->release();
   return 0;
 }
 
 // functions that will show up in our Lua environment
-static const luaL_Reg gDestroyShapeGroupFuncs[] = {
-  {"__gc", destroyShapeGroup},  
+static const luaL_Reg gDestroyShapeFuncs[] = {
+  {"__gc", destroyShape},  
   {NULL, NULL}  
 };
 
-static const luaL_Reg gShapeGroupFuncs[] = {
-  {"new", newShapeGroup},
+static const luaL_Reg gShapeFuncs[] = {
+  {"new", newShape},
   {"init", init},
 
   // Accessors
@@ -164,14 +164,14 @@ static const luaL_Reg gShapeGroupFuncs[] = {
 };
 
 // Initialization
-void initLuaShapeGroup(lua_State *L)
+void initLuaShape(lua_State *L)
 {    
   // Metatable to be used for userdata identification
-  luaL_newmetatable(L, "Lusion.ShapeGroup");
-  luaL_register(L, 0, gDestroyShapeGroupFuncs);      
-  luaL_register(L, 0, gShapeGroupFuncs);      
+  luaL_newmetatable(L, "Lusion.Shape");
+  luaL_register(L, 0, gDestroyShapeFuncs);      
+  luaL_register(L, 0, gShapeFuncs);      
   lua_pushvalue(L,-1);
   lua_setfield(L,-2, "__index");  
 
-  luaL_register(L, "ShapeGroup", gShapeGroupFuncs);  
+  luaL_register(L, "Shape", gShapeFuncs);  
 }

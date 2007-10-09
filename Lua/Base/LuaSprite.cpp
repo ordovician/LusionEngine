@@ -720,8 +720,8 @@ static int collide(lua_State* L)
   if (n != 5 && n != 4)
     return luaL_error(L, "Got %d arguments expected 5 or 4 (self, group, start_time, delta_time [, function])", n); 
   Sprite* sprite = checkSprite(L,1);
-//  CollisionObject* obj = checkCollisionObject(L,2); 
-  CollisionGroup* obj = checkCollisionGroup(L,2);   
+//  Shape* obj = checkShape(L,2); 
+  ShapeGroup* obj = checkShapeGroup(L,2);   
   assert(sprite != 0);    
   assert(obj != 0);      
 

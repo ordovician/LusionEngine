@@ -1,5 +1,5 @@
 /*
- *  CollisionRect2.cpp
+ *  RectShape2.cpp
  *  LusionEngine
  *
  *  Created by Erik Engheim on 19.1.07.
@@ -17,7 +17,7 @@
 using namespace std;
 
 /*!
-    \class CollisionRect2 CollisionRect2.h
+    \class RectShape2 RectShape2.h
     \brief Defines a circle shape.
 
     This class differs from Circle in that it is polymorphic so it
@@ -26,24 +26,24 @@ using namespace std;
 */
 
 // Constructors
-CollisionRect2::CollisionRect2(const Rect2& rect) : iRect(rect)
+RectShape2::RectShape2(const Rect2& rect) : iRect(rect)
 {
   
 }
 
-CollisionRect2::~CollisionRect2()
+RectShape2::~RectShape2()
 {
   
 }
 
 // Accessors
-Rect2 CollisionRect2::boundingBox() const
+Rect2 RectShape2::boundingBox() const
 {
   return iRect;
 }
   
 // Request
-bool CollisionRect2::collide(CollisionObject* other, real t, real dt, SpriteCommand* command)
+bool RectShape2::collide(Shape* other, real t, real dt, SpriteCommand* command)
 {
   if (!boundingBox().intersect(other->boundingBox()))
     return false;
@@ -58,22 +58,22 @@ bool CollisionRect2::collide(CollisionObject* other, real t, real dt, SpriteComm
 
 
 // Calculations
-bool CollisionRect2::intersect(const Circle& c) const
+bool RectShape2::intersect(const Circle& c) const
 {
   return c.intersect(iRect);
 }
 
-bool CollisionRect2::intersect(const Rect2& r) const
+bool RectShape2::intersect(const Rect2& r) const
 {
   return iRect.intersect(r);  
 }
 
-bool CollisionRect2::intersect(const Segment2& s) const
+bool RectShape2::intersect(const Segment2& s) const
 {
   return s.intersect(iRect);  
 }
 
-bool CollisionRect2::intersect(ConstPointIterator2 begin, ConstPointIterator2 end) const
+bool RectShape2::intersect(ConstPointIterator2 begin, ConstPointIterator2 end) const
 {
   return ::intersect(iRect, begin, end);
 }
@@ -81,7 +81,7 @@ bool CollisionRect2::intersect(ConstPointIterator2 begin, ConstPointIterator2 en
 /*!
   Draws circle if it is inside rectangle \a r
 */
-void CollisionRect2::draw(const Rect2& r) const
+void RectShape2::draw(const Rect2& r) const
 {
   glBegin(GL_LINES);    
     gltVertex(iRect);

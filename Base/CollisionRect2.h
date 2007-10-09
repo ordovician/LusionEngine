@@ -1,5 +1,5 @@
 /*
- *  CollisionRect2.h
+ *  RectShape2.h
  *  LusionEngine
  *
  *  Created by Erik Engheim on 19.1.07.
@@ -17,18 +17,18 @@
 
 class SpriteCommand;
 
-class CollisionRect2 : public CollisionObject
+class RectShape2 : public Shape
 {
 public:
   // Constructors
-  CollisionRect2(const Rect2& rect);
-  virtual ~CollisionRect2();
+  RectShape2(const Rect2& rect);
+  virtual ~RectShape2();
 
   // Accessors
   Rect2 boundingBox() const;  
     
   // Request
-  bool collide(CollisionObject* other, real t, real dt, SpriteCommand* command = 0);  
+  bool collide(Shape* other, real t, real dt, SpriteCommand* command = 0);  
   
   // Calculations
   bool intersect(const Circle& c) const;

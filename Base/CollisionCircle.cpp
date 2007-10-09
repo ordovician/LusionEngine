@@ -1,5 +1,5 @@
 /*
- *  CollisionCircle.cpp
+ *  CircleShape.cpp
  *  LusionEngine
  *
  *  Created by Erik Engheim on 19.1.07.
@@ -17,7 +17,7 @@
 using namespace std;
 
 /*!
-    \class CollisionCircle CollisionCircle.h
+    \class CircleShape CircleShape.h
     \brief Defines a circle shape.
 
     This class differs from Circle in that it is polymorphic so it
@@ -26,18 +26,18 @@ using namespace std;
 */
 
 // Constructors
-CollisionCircle::CollisionCircle(const Circle& circle) : iCircle(circle)
+CircleShape::CircleShape(const Circle& circle) : iCircle(circle)
 {
   
 }
 
-CollisionCircle::~CollisionCircle()
+CircleShape::~CircleShape()
 {
   
 }
 
 // Accessors
-Rect2 CollisionCircle::boundingBox() const
+Rect2 CircleShape::boundingBox() const
 {
   Rect2 r(Vector2(0.0f, 0.0f), Vector2(iCircle.radius()*2.0f, iCircle.radius()*2.0f));
   r.moveCenter(iCircle.center());
@@ -45,7 +45,7 @@ Rect2 CollisionCircle::boundingBox() const
 }
   
 // Request
-bool CollisionCircle::collide(CollisionObject* other, real t, real dt, SpriteCommand* command)
+bool CircleShape::collide(Shape* other, real t, real dt, SpriteCommand* command)
 {
   if (!boundingBox().intersect(other->boundingBox()))
     return false;
@@ -60,22 +60,22 @@ bool CollisionCircle::collide(CollisionObject* other, real t, real dt, SpriteCom
 
 
 // Calculations
-bool CollisionCircle::intersect(const Circle& c) const
+bool CircleShape::intersect(const Circle& c) const
 {
   return iCircle.intersect(c);
 }
 
-bool CollisionCircle::intersect(const Rect2& r) const
+bool CircleShape::intersect(const Rect2& r) const
 {
   return iCircle.intersect(r);  
 }
 
-bool CollisionCircle::intersect(const Segment2& s) const
+bool CircleShape::intersect(const Segment2& s) const
 {
   return iCircle.intersect(s);  
 }
 
-bool CollisionCircle::intersect(ConstPointIterator2 begin, ConstPointIterator2 end) const
+bool CircleShape::intersect(ConstPointIterator2 begin, ConstPointIterator2 end) const
 {
   return iCircle.intersect(begin, end);
 }
@@ -83,7 +83,7 @@ bool CollisionCircle::intersect(ConstPointIterator2 begin, ConstPointIterator2 e
 /*!
   Draws circle if it is inside rectangle \a r
 */
-void CollisionCircle::draw(const Rect2& r) const
+void CircleShape::draw(const Rect2& r) const
 {
   glPushMatrix();
     gltTranslate(iCircle.center());

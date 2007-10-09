@@ -134,12 +134,6 @@
 		D5E7BA430B715761002E3AE8 /* Algorithms.h in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = D5E7BA3E0B715761002E3AE8 /* Algorithms.h */; };
 		D5E7BA440B715761002E3AE8 /* PolygonUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5E7BA3F0B715761002E3AE8 /* PolygonUtils.cpp */; };
 		D5E7BA450B715761002E3AE8 /* PolygonUtils.h in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = D5E7BA400B715761002E3AE8 /* PolygonUtils.h */; };
-		D5EBB9830CBACBE700191634 /* CollisionCircle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5EBB9810CBACBE700191634 /* CollisionCircle.cpp */; };
-		D5EBB9840CBACBE700191634 /* CollisionCircle.h in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = D5EBB9820CBACBE700191634 /* CollisionCircle.h */; };
-		D5EBB9C80CBADF5200191634 /* CollisionRect2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5EBB9C40CBADF5200191634 /* CollisionRect2.cpp */; };
-		D5EBB9C90CBADF5200191634 /* CollisionRect2.h in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = D5EBB9C50CBADF5200191634 /* CollisionRect2.h */; };
-		D5EBB9CA0CBADF5200191634 /* CollisionSegment2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5EBB9C60CBADF5200191634 /* CollisionSegment2.cpp */; };
-		D5EBB9CB0CBADF5200191634 /* CollisionSegment2.h in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = D5EBB9C70CBADF5200191634 /* CollisionSegment2.h */; };
 		D5FB6BBF0B52AA0A000F36A5 /* SDL_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5FB6BBE0B52AA0A000F36A5 /* SDL_image.framework */; };
 /* End PBXBuildFile section */
 
@@ -202,9 +196,6 @@
 				D542DF850CB41AF500AABC11 /* TrapezoidalMap2.hpp in Copy Frameworks into .app bundle */,
 				D542DF870CB41AF500AABC11 /* TrapezoidNode2.hpp in Copy Frameworks into .app bundle */,
 				D542DF890CB41AF500AABC11 /* Vector2.hpp in Copy Frameworks into .app bundle */,
-				D5EBB9840CBACBE700191634 /* CollisionCircle.h in Copy Frameworks into .app bundle */,
-				D5EBB9C90CBADF5200191634 /* CollisionRect2.h in Copy Frameworks into .app bundle */,
-				D5EBB9CB0CBADF5200191634 /* CollisionSegment2.h in Copy Frameworks into .app bundle */,
 			);
 			name = "Copy Frameworks into .app bundle";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -339,12 +330,6 @@
 		D5E7BA3E0B715761002E3AE8 /* Algorithms.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = Algorithms.h; sourceTree = "<group>"; };
 		D5E7BA3F0B715761002E3AE8 /* PolygonUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = PolygonUtils.cpp; sourceTree = "<group>"; };
 		D5E7BA400B715761002E3AE8 /* PolygonUtils.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = PolygonUtils.h; sourceTree = "<group>"; };
-		D5EBB9810CBACBE700191634 /* CollisionCircle.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = CollisionCircle.cpp; sourceTree = "<group>"; };
-		D5EBB9820CBACBE700191634 /* CollisionCircle.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = CollisionCircle.h; sourceTree = "<group>"; };
-		D5EBB9C40CBADF5200191634 /* CollisionRect2.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = CollisionRect2.cpp; sourceTree = "<group>"; };
-		D5EBB9C50CBADF5200191634 /* CollisionRect2.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = CollisionRect2.h; sourceTree = "<group>"; };
-		D5EBB9C60CBADF5200191634 /* CollisionSegment2.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = CollisionSegment2.cpp; sourceTree = "<group>"; };
-		D5EBB9C70CBADF5200191634 /* CollisionSegment2.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = CollisionSegment2.h; sourceTree = "<group>"; };
 		D5FB6BBE0B52AA0A000F36A5 /* SDL_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL_image.framework; path = /Library/Frameworks/SDL_image.framework; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
@@ -543,12 +528,6 @@
 		D5E7BA0D0B71570B002E3AE8 /* Base */ = {
 			isa = PBXGroup;
 			children = (
-				D5EBB9C40CBADF5200191634 /* CollisionRect2.cpp */,
-				D5EBB9C50CBADF5200191634 /* CollisionRect2.h */,
-				D5EBB9C60CBADF5200191634 /* CollisionSegment2.cpp */,
-				D5EBB9C70CBADF5200191634 /* CollisionSegment2.h */,
-				D5EBB9810CBACBE700191634 /* CollisionCircle.cpp */,
-				D5EBB9820CBACBE700191634 /* CollisionCircle.h */,
 				D5DC3D3B0BDF808700430EFB /* CollisionGroup.cpp */,
 				D5DC3D3C0BDF808800430EFB /* CollisionGroup.h */,
 				D5DC3D3D0BDF808800430EFB /* CollisionObject.cpp */,
@@ -780,9 +759,6 @@
 				D542DF840CB41AF500AABC11 /* TrapezoidalMap2.cpp in Sources */,
 				D542DF860CB41AF500AABC11 /* TrapezoidNode2.cpp in Sources */,
 				D542DF880CB41AF500AABC11 /* Vector2.cpp in Sources */,
-				D5EBB9830CBACBE700191634 /* CollisionCircle.cpp in Sources */,
-				D5EBB9C80CBADF5200191634 /* CollisionRect2.cpp in Sources */,
-				D5EBB9CA0CBADF5200191634 /* CollisionSegment2.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

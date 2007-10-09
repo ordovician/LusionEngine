@@ -1,5 +1,5 @@
 /*
- *  CollisionSegment2.h
+ *  SegmentShape2.h
  *  LusionEngine
  *
  *  Created by Erik Engheim on 19.1.07.
@@ -17,18 +17,18 @@
 
 class SpriteCommand;
 
-class CollisionSegment2 : public CollisionObject
+class SegmentShape2 : public Shape
 {
 public:
   // Constructors
-  CollisionSegment2(const Segment2& seg);
-  virtual ~CollisionSegment2();
+  SegmentShape2(const Segment2& seg);
+  virtual ~SegmentShape2();
 
   // Accessors
   Rect2 boundingBox() const;  
     
   // Request
-  bool collide(CollisionObject* other, real t, real dt, SpriteCommand* command = 0);  
+  bool collide(Shape* other, real t, real dt, SpriteCommand* command = 0);  
   
   // Calculations
   bool intersect(const Circle& c) const;

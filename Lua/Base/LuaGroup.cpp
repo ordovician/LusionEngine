@@ -225,7 +225,7 @@ static int collide(lua_State *L)
     return luaL_error(L, "Got %d arguments expected 4 or 5 (self, collision_obj, start_time, delta_time [,function])", n); 
     
   Group* me = checkGroup(L, 1);    
-  CollisionGroup* other = checkCollisionGroup(L, 2);
+  ShapeGroup* other = checkShapeGroup(L, 2);
 
   assert(me != 0);
   assert(other != 0);

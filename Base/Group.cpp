@@ -19,7 +19,7 @@ using namespace std;
     \class Group Group.h
     \brief Collection for Sprites. 
 
-    Is in many ways similar to CollisionGroup. However CollisionGroup is not mutable
+    Is in many ways similar to ShapeGroup. However ShapeGroup is not mutable
     Once it is created Sprites can't be added or removed. A Group on the otherhand
     can have Sprites added and removed at any time. The downside of this is that
     the structure can be as efficient in handling collision, because one can't create
@@ -141,7 +141,7 @@ Sprite* Group::nextSprite()
 }
   
 
-bool Group::collide(CollisionObject* other, real t, real dt, SpriteCommand* command)
+bool Group::collide(Shape* other, real t, real dt, SpriteCommand* command)
 {
   bool is_col = false;
   SpriteSet::iterator it;  

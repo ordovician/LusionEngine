@@ -17,7 +17,7 @@
 
 using namespace std;
 
-class CollisionObject;
+class Shape;
 class Sprite;
 class View;
 class SegmentView;
@@ -48,7 +48,7 @@ void pullClassInstance(lua_State* L, int index, const char* classname, T*& data)
   data = *((T**)ud);      
 }
 
-CollisionObject  *checkCollisionObject(lua_State* L, int index = 1);
+Shape  *checkShape(lua_State* L, int index = 1);
 Sprite  *checkSprite(lua_State* L, int index = 1);
 Group   *checkGroup(lua_State* L, int index = 1);
 View    *checkView(lua_State* L, int index = 1);

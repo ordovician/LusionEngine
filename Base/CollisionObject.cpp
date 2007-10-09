@@ -1,5 +1,5 @@
 /*
- *  CollisionObject.cpp
+ *  Shape.cpp
  *  LusionEngine
  *
  *  Created by Erik Engheim on 19.1.07.
@@ -15,7 +15,7 @@
 using namespace std;
 
 /*!
-   \class CollisionObject CollisionObject.h
+   \class Shape Shape.h
    \brief A node in the scene graph. 
 
    The scene graph is used for rendering. The node is also used for collision
@@ -26,34 +26,34 @@ using namespace std;
 // Helper functions
 
 // Constructors
-CollisionObject::CollisionObject()
+Shape::Shape()
 {
   
 }
 
-CollisionObject::~CollisionObject()
+Shape::~Shape()
 {
-  // cout << hex << "0x" << (int)this << " CollisionObject removed" << endl;  // DEBUG    
+  // cout << hex << "0x" << (int)this << " Shape removed" << endl;  // DEBUG    
 }
 
 // Accessors
 
 // Request
 /*! Returns true if this object is a simple non recursive collision object */
-bool CollisionObject::isSimple() const
+bool Shape::isSimple() const
 {
   return true;
 }
 
 // Calculations
 /*! 
-  True if object intersects circle. For CollisionObject this
+  True if object intersects circle. For Shape this
   always returns False and produce a warning. Because the method
   is not meant to be called on a collision object. But only
   on subclasses which define a simple shape. Hierarcical structures
   should return false as well as they should not handle this intersection test.
 */
-bool CollisionObject::intersect(const Circle& c) const
+bool Shape::intersect(const Circle& c) const
 {
   assert(false);
   cerr << "Error: intersect(const Circle& c) not supported for this class" << endl;
@@ -61,14 +61,14 @@ bool CollisionObject::intersect(const Circle& c) const
 }
 
 /*! 
-  True if object intersects Rect2. For CollisionObject this
+  True if object intersects Rect2. For Shape this
   always returns False and produce a warning. Because the method
   is not meant to be called on a collision object. But only
   on subclasses which define a simple shape. Hierarcical structures
   should return false as well as they should not handle this intersection test.
 */
 
-bool CollisionObject::intersect(const Rect2& r) const
+bool Shape::intersect(const Rect2& r) const
 {
   assert(false);  
   cerr << "Error: intersect(const Rect2& r) not supported for this class" << endl;  
@@ -76,20 +76,20 @@ bool CollisionObject::intersect(const Rect2& r) const
 }
 
 /*! 
-  True if object intersects Segment2. For CollisionObject this
+  True if object intersects Segment2. For Shape this
   always returns False and produce a warning. Because the method
   is not meant to be called on a collision object. But only
   on subclasses which define a simple shape. Hierarcical structures
   should return false as well as they should not handle this intersection test.
 */
-bool CollisionObject::intersect(const Segment2& s) const
+bool Shape::intersect(const Segment2& s) const
 {
   assert(false);  
   cerr << "Error: intersect(const Segment2& s) not supported for this class" << endl;    
   return false;  
 }
 
-bool CollisionObject::intersect(ConstPointIterator2 begin, ConstPointIterator2 end) const
+bool Shape::intersect(ConstPointIterator2 begin, ConstPointIterator2 end) const
 {
   assert(false);  
   cerr << "Error: intersect(ConstPointIterator2 begin, ConstPointIterator2 end) not supported for this class" << endl;    
@@ -101,7 +101,7 @@ bool CollisionObject::intersect(ConstPointIterator2 begin, ConstPointIterator2 e
   to be outside \a r then code does not need to draw object. This is a performance measure.
   Default implementation is to do nothing (draw nothing).
 */
-void CollisionObject::draw(const Rect2& r) const
+void Shape::draw(const Rect2& r) const
 {
   
 }
@@ -114,7 +114,7 @@ void CollisionObject::draw(const Rect2& r) const
   Default implementation doesn't do anythning since some objects might
   be static and not moveable.
 */
-void CollisionObject::update(real start_time, real delta_time)
+void Shape::update(real start_time, real delta_time)
 {
   // Do nothing
 }
