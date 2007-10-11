@@ -27,6 +27,8 @@ public:
 
   // Accessors
   virtual Rect2 boundingBox() const = 0;  
+  virtual int   noKids() const;  
+  
     
   // Request
   virtual bool isSimple() const;
@@ -42,6 +44,9 @@ public:
   virtual void draw(const Rect2& r) const;
    
   // Operations
+  virtual void addKid(Shape* shape);
+  virtual void removeKid(Shape* shape);
+  
   virtual void update(real start_time, real delta_time);  
 };
 
