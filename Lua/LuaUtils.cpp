@@ -46,14 +46,14 @@ void *popUserData (lua_State *L, int argnum, const char *tname) {
 Sprite *checkSprite(lua_State* L, int index)
 {
   Sprite* v;
-  pullClassInstance(L, index, "Lusion.Sprite", v);
+  pullClassInstance(L, index, "Lusion.Shape", v);
   return v;
 }
 
 Group *checkGroup(lua_State* L, int index)
 {
   Group* v;
-  pullClassInstance(L, index, "Lusion.Group", v);
+  pullClassInstance(L, index, "Lusion.Shape", v);
   return v;
 }
 

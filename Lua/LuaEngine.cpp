@@ -10,6 +10,7 @@
 #include "LuaEngine.h"
 #include "Engine.h"
 #include "Utils/PolygonUtils.h"
+#include "Utils/GLUtils.h"
 
 #include "Lua/Base/LuaSprite.h"
 #include "Lua/Base/LuaView.h"
@@ -221,7 +222,7 @@ static int isSprite(lua_State* L)
   bool has_meta = lua_getmetatable(L, 1);
   if (!has_meta)
     cout << "no sprite meta table" << endl;
-  luaL_getmetatable(L, "Lusion.Sprite"); 
+  luaL_getmetatable(L, "Lusion.Shape"); 
   bool eq = lua_rawequal(L, -1, -2);  
   lua_pushboolean(L, has_meta && eq);
   return 1;

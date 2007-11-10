@@ -41,7 +41,7 @@ static int newGroup(lua_State *L)
   Group **g = (Group **)lua_newuserdata(L, sizeof(Group *));
   *g = new Group;
 
-  setUserDataMetatable(L, "Lusion.Group");
+  setUserDataMetatable(L, "Lusion.Shape");
 
   // Handle user initialization
   lua_getfield(L, 1, "init"); 
@@ -252,7 +252,7 @@ static int collide(lua_State *L)
 static int destroyGroup(lua_State* L)
 {
   Group* group = 0;
-  checkUserData(L, "Lusion.Group", group);
+  checkUserData(L, "Lusion.Shape", group);
   group->release();
   return 0;
 }
@@ -290,7 +290,7 @@ static const luaL_Reg gGroupFuncs[] = {
 void initLuaGroup(lua_State *L)
 {    
   // Metatable to be used for userdata identification
-  luaL_newmetatable(L, "Lusion.Group");
+  luaL_newmetatable(L, "Lusion.Shape");
   luaL_register(L, 0, gDestroyGroupFuncs);      
   luaL_register(L, 0, gGroupFuncs);      
   lua_pushvalue(L,-1);

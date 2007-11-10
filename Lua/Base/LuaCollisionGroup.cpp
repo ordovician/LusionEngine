@@ -30,7 +30,7 @@
 ShapeGroup *checkShapeGroup(lua_State* L, int index)
 {
   ShapeGroup* v;
-  pullClassInstance(L, index, "Lusion.ShapeGroup", v);
+  pullClassInstance(L, index, "Lusion.Shape", v);
   return v;
 }
 
@@ -50,7 +50,7 @@ static int newShapeGroup(lua_State *L)
   assert(group != 0);
   *g = new ShapeGroup(group->shapeIterator());
 
-  setUserDataMetatable(L, "Lusion.ShapeGroup");
+  setUserDataMetatable(L, "Lusion.Shape");
 
   // Handle user initialization
   lua_getfield(L, 1, "init"); 
@@ -133,7 +133,7 @@ static int update(lua_State *L)
 static int destroyShapeGroup(lua_State* L)
 {
   ShapeGroup* group = 0;
-  checkUserData(L, "Lusion.ShapeGroup", group);
+  checkUserData(L, "Lusion.Shape", group);
   group->release();
   return 0;
 }
@@ -164,7 +164,7 @@ static const luaL_Reg gShapeGroupFuncs[] = {
 void initLuaShapeGroup(lua_State *L)
 {    
   // Metatable to be used for userdata identification
-  luaL_newmetatable(L, "Lusion.ShapeGroup");
+  luaL_newmetatable(L, "Lusion.Shape");
   luaL_register(L, 0, gDestroyShapeGroupFuncs);      
   luaL_register(L, 0, gShapeGroupFuncs);      
   lua_pushvalue(L,-1);
