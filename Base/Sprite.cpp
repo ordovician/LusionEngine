@@ -39,7 +39,7 @@ bool showCollision()
   return gShowCollision;
 }
 
-// Constructors
+#pragma mark Constructors
 Sprite::Sprite() 
 {
   init();
@@ -70,7 +70,7 @@ Sprite::~Sprite()
   }
 }
 
-// Initialization
+#pragma mark Initialization
 void Sprite::init(const Point2& pos, real deg, real speed)
 {
   iUpdateCommand = 0;
@@ -92,7 +92,7 @@ void Sprite::init(const Point2& pos, real deg, real speed)
   // cout << hex << "0x" << (int)this << " sprite created" << endl;  // DEBUG
 }
 
-// Accessors
+#pragma mark Accessors
 string Sprite::name()
 {
   return iName;
@@ -355,7 +355,7 @@ bool Sprite::visible() const
 	return iVisible;
 }
 
-// Calculations
+#pragma mark Calculations
 bool Sprite::collide(Shape* other, real t, real dt, SpriteCommand* command) 
 {
   if (!boundingBox().intersect(other->boundingBox()))
@@ -441,7 +441,7 @@ void Sprite::draw(const Rect2& r) const
 	}
 }
 
-// Operations
+#pragma mark Operations
 void Sprite::touch()
 {
   iNeedUpdate = true;

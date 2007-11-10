@@ -111,7 +111,7 @@ static int newSprite(lua_State *L)
   else
     *s = new Sprite; 
 
-  setUserDataMetatable(L, "Lusion.Sprite");
+  setUserDataMetatable(L, "Lusion.Shape");
 
   // Inherit view from parent
   if (n != 2)
@@ -145,7 +145,7 @@ static int init(lua_State *L)
 static int destroySprite(lua_State* L)
 {
   Sprite* sprite = 0;
-  checkUserData(L, "Lusion.Sprite", sprite);
+  checkUserData(L, "Lusion.Shape", sprite);
   sprite->release();
   return 0;
 }
@@ -1013,7 +1013,7 @@ static const luaL_Reg gSpriteFuncs[] = {
 void initLuaSprite(lua_State *L)
 {  
   // Metatable to be used for userdata identification
-  luaL_newmetatable(L, "Lusion.Sprite");
+  luaL_newmetatable(L, "Lusion.Shape");
   luaL_register(L, 0, gDestroySpriteFuncs);      
   luaL_register(L, 0, gSpriteFuncs);      
   lua_pushvalue(L,-1);
