@@ -14,7 +14,7 @@
 
 #include "Base/Sprite.h"
 #include "Base/Group.h"
-#include "Base/CollisionGroup.h"
+#include "Base/ShapeGroup.h"
 #include "Base/Command.h"
 
 #include "Engine.h"

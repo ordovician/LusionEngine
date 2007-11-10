@@ -7,7 +7,7 @@
  *
  */
 
-#include <Base/CollisionGroup.h>
+#include <Base/ShapeGroup.h>
 #include <Engine.h>
 #include <Base/Command.h>
 

@@ -15,7 +15,7 @@
 #include "Lua/Geometry/LuaSegment2.h"
 
 #include "Base/Sprite.h"
-#include "Base/CollisionGroup.h"
+#include "Base/ShapeGroup.h"
 #include "Base/Group.h"
 #include "Base/Command.h"
 

@@ -7,7 +7,7 @@
  *
  */
 
-#include "Base/CollisionObject.h"
+#include "Base/Shape.h"
 #include <iostream>
 
 #include <assert.h>

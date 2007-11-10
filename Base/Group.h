@@ -13,7 +13,7 @@
 #include "Base/Sprite.h"
 #include "Base/MotionState.h"
 #include <Core/SharedObject.hpp>
-#include <Base/CollisionObject.h>
+#include <Base/Shape.h>
 
 
 // Group used for rendering

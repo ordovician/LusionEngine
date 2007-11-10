@@ -11,7 +11,7 @@
 #include "Types.h"
 #include "Base/View.h"
 #include "Base/MotionState.h"
-#include "Base/CollisionObject.h"
+#include "Base/Shape.h"
 
 #include <string>
 

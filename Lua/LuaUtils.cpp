@@ -9,7 +9,7 @@
 
 #include "Lua/LuaUtils.h"
 
-#include "Base/CollisionObject.h"
+#include "Base/Shape.h"
 #include "Base/Sprite.h"
 #include "Base/View.h"
 #include "Base/Group.h"
