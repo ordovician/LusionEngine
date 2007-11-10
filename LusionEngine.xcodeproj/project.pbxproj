@@ -118,10 +118,10 @@
 		D5D7F4220CE3A1BB00A149A3 /* Iterator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D56E8EC70CDC69EC00260EC2 /* Iterator.cpp */; };
 		D5D7F4230CE3A1BF00A149A3 /* Algorithms.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5E7BA3D0B715761002E3AE8 /* Algorithms.cpp */; };
 		D5D7F50E0CE4F73700A149A3 /* Exception.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5D7F3BB0CE26B4C00A149A3 /* Exception.cpp */; };
-		D5DC3D410BDF808800430EFB /* CollisionGroup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5DC3D3B0BDF808700430EFB /* CollisionGroup.cpp */; };
-		D5DC3D420BDF808800430EFB /* CollisionGroup.h in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = D5DC3D3C0BDF808800430EFB /* CollisionGroup.h */; };
-		D5DC3D430BDF808800430EFB /* CollisionObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5DC3D3D0BDF808800430EFB /* CollisionObject.cpp */; };
-		D5DC3D440BDF808800430EFB /* CollisionObject.h in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = D5DC3D3E0BDF808800430EFB /* CollisionObject.h */; };
+		D5DC3D410BDF808800430EFB /* ShapeGroup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5DC3D3B0BDF808700430EFB /* ShapeGroup.cpp */; };
+		D5DC3D420BDF808800430EFB /* ShapeGroup.h in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = D5DC3D3C0BDF808800430EFB /* ShapeGroup.h */; };
+		D5DC3D430BDF808800430EFB /* Shape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5DC3D3D0BDF808800430EFB /* Shape.cpp */; };
+		D5DC3D440BDF808800430EFB /* Shape.h in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = D5DC3D3E0BDF808800430EFB /* Shape.h */; };
 		D5DC3D450BDF808800430EFB /* Command.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5DC3D3F0BDF808800430EFB /* Command.cpp */; };
 		D5DC3D460BDF808800430EFB /* Command.h in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = D5DC3D400BDF808800430EFB /* Command.h */; };
 		D5DC3D490BDF80C600430EFB /* LuaCollisionGroup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5DC3D470BDF80C600430EFB /* LuaCollisionGroup.cpp */; };
@@ -194,8 +194,8 @@
 				D5BD17D20BBD62E500BA3313 /* LuaTrapezoidNode2.h in Copy Frameworks into .app bundle */,
 				D5BD17D40BBD62E500BA3313 /* LuaVector2.h in Copy Frameworks into .app bundle */,
 				D5BD17E30BBD64F500BA3313 /* LuaMatrix2.h in Copy Frameworks into .app bundle */,
-				D5DC3D420BDF808800430EFB /* CollisionGroup.h in Copy Frameworks into .app bundle */,
-				D5DC3D440BDF808800430EFB /* CollisionObject.h in Copy Frameworks into .app bundle */,
+				D5DC3D420BDF808800430EFB /* ShapeGroup.h in Copy Frameworks into .app bundle */,
+				D5DC3D440BDF808800430EFB /* Shape.h in Copy Frameworks into .app bundle */,
 				D5DC3D460BDF808800430EFB /* Command.h in Copy Frameworks into .app bundle */,
 				D5DC3D4A0BDF80C600430EFB /* LuaCollisionGroup.h in Copy Frameworks into .app bundle */,
 				D593A27B0CA8546D00432061 /* LuaCircle.h in Copy Frameworks into .app bundle */,
@@ -239,6 +239,7 @@
 		32CA4F630368D1EE00C91783 /* LusionEngine_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LusionEngine_Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* LusionEngine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LusionEngine.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D504E20E0CE5C4490005AA7B /* ShapeIterator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShapeIterator.h; sourceTree = "<group>"; };
 		D52D9FDB0B86697E0011E248 /* PointsView.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = PointsView.cpp; sourceTree = "<group>"; };
 		D52D9FDC0B86697E0011E248 /* PointsView.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = PointsView.h; sourceTree = "<group>"; };
 		D542DF4C0CB41AE000AABC11 /* AutoreleasePool.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = AutoreleasePool.cpp; path = Core/AutoreleasePool.cpp; sourceTree = "<group>"; };
@@ -327,10 +328,10 @@
 		D5D7F3BB0CE26B4C00A149A3 /* Exception.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Exception.cpp; sourceTree = "<group>"; };
 		D5D7F4020CE3A0A900A149A3 /* IteratorTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IteratorTests.h; path = UnitTest/IteratorTests.h; sourceTree = "<group>"; };
 		D5D7F4030CE3A0A900A149A3 /* IteratorTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = IteratorTests.cpp; path = UnitTest/IteratorTests.cpp; sourceTree = "<group>"; };
-		D5DC3D3B0BDF808700430EFB /* CollisionGroup.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = CollisionGroup.cpp; sourceTree = "<group>"; };
-		D5DC3D3C0BDF808800430EFB /* CollisionGroup.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = CollisionGroup.h; sourceTree = "<group>"; };
-		D5DC3D3D0BDF808800430EFB /* CollisionObject.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = CollisionObject.cpp; sourceTree = "<group>"; };
-		D5DC3D3E0BDF808800430EFB /* CollisionObject.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = CollisionObject.h; sourceTree = "<group>"; };
+		D5DC3D3B0BDF808700430EFB /* ShapeGroup.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = ShapeGroup.cpp; sourceTree = "<group>"; };
+		D5DC3D3C0BDF808800430EFB /* ShapeGroup.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = ShapeGroup.h; sourceTree = "<group>"; };
+		D5DC3D3D0BDF808800430EFB /* Shape.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = Shape.cpp; sourceTree = "<group>"; };
+		D5DC3D3E0BDF808800430EFB /* Shape.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = Shape.h; sourceTree = "<group>"; };
 		D5DC3D3F0BDF808800430EFB /* Command.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = Command.cpp; sourceTree = "<group>"; };
 		D5DC3D400BDF808800430EFB /* Command.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = Command.h; sourceTree = "<group>"; };
 		D5DC3D470BDF80C600430EFB /* LuaCollisionGroup.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = LuaCollisionGroup.cpp; path = Base/LuaCollisionGroup.cpp; sourceTree = "<group>"; };
@@ -570,16 +571,17 @@
 		D5E7BA0D0B71570B002E3AE8 /* Base */ = {
 			isa = PBXGroup;
 			children = (
+				D504E20E0CE5C4490005AA7B /* ShapeIterator.h */,
 				D5E5478A0CBC367500D16BE5 /* CircleShape.cpp */,
 				D5E5478B0CBC367500D16BE5 /* CircleShape.h */,
 				D5E5478C0CBC367500D16BE5 /* RectShape2.cpp */,
 				D5E5478D0CBC367500D16BE5 /* RectShape2.h */,
 				D5E5478E0CBC367500D16BE5 /* SegmentShape2.cpp */,
 				D5E5478F0CBC367500D16BE5 /* SegmentShape2.h */,
-				D5DC3D3B0BDF808700430EFB /* CollisionGroup.cpp */,
-				D5DC3D3C0BDF808800430EFB /* CollisionGroup.h */,
-				D5DC3D3D0BDF808800430EFB /* CollisionObject.cpp */,
-				D5DC3D3E0BDF808800430EFB /* CollisionObject.h */,
+				D5DC3D3B0BDF808700430EFB /* ShapeGroup.cpp */,
+				D5DC3D3C0BDF808800430EFB /* ShapeGroup.h */,
+				D5DC3D3D0BDF808800430EFB /* Shape.cpp */,
+				D5DC3D3E0BDF808800430EFB /* Shape.h */,
 				D5DC3D3F0BDF808800430EFB /* Command.cpp */,
 				D5DC3D400BDF808800430EFB /* Command.h */,
 				D58EC2100BB9D57A00E85BAD /* MotionState.cpp */,
@@ -711,9 +713,11 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "LusionEngine" */;
+			compatibilityVersion = "Xcode 2.4";
 			hasScannedForEncodings = 1;
 			mainGroup = 29B97314FDCFA39411CA2CEA /* LusionEngine */;
 			projectDirPath = "";
+			projectRoot = "";
 			targets = (
 				8D1107260486CEB800E47090 /* LusionEngine */,
 				D5DCB1AA0CA071B6005C1355 /* LusionUnitTest */,
@@ -792,8 +796,8 @@
 				D5BD17D10BBD62E500BA3313 /* LuaTrapezoidNode2.cpp in Sources */,
 				D5BD17D30BBD62E500BA3313 /* LuaVector2.cpp in Sources */,
 				D5BD17E20BBD64F500BA3313 /* LuaMatrix2.cpp in Sources */,
-				D5DC3D410BDF808800430EFB /* CollisionGroup.cpp in Sources */,
-				D5DC3D430BDF808800430EFB /* CollisionObject.cpp in Sources */,
+				D5DC3D410BDF808800430EFB /* ShapeGroup.cpp in Sources */,
+				D5DC3D430BDF808800430EFB /* Shape.cpp in Sources */,
 				D5DC3D450BDF808800430EFB /* Command.cpp in Sources */,
 				D5DC3D490BDF80C600430EFB /* LuaCollisionGroup.cpp in Sources */,
 				D593A27D0CA854BC00432061 /* LuaCircle.cpp in Sources */,
@@ -958,6 +962,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(value)",
+					"$(DEVELOPER_FRAMEWORKS_DIR_QUOTED)",
+				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
@@ -984,6 +992,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(value)",
+					"$(DEVELOPER_FRAMEWORKS_DIR_QUOTED)",
+				);
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_MODEL_TUNING = G5;
