@@ -9,6 +9,7 @@
 
 #include "Base/PointsView.h"
 #include "Utils/PolygonUtils.h"
+#include "Utils/GLUtils.h"
 
 #include <Geometry/Vector2.hpp>
 

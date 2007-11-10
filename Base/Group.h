@@ -10,11 +10,7 @@
 #pragma once
 
 #include "Types.h"
-#include "Base/Sprite.h"
-#include "Base/MotionState.h"
-#include <Core/SharedObject.hpp>
 #include <Base/Shape.h>
-
 
 // Group used for rendering
 Group* renderGroup(); 

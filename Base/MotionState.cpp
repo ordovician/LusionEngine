@@ -11,6 +11,7 @@
 #include "Base/View.h"
 #include "Algorithms.h"
 #include "Utils/PolygonUtils.h"
+
 #include "Types.h"
 #include "Engine.h"
 

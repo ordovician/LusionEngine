@@ -10,6 +10,7 @@
 #include "Base/TrapezoidView.h"
 #include "Geometry/Trapezoid2.hpp"
 #include "Utils/PolygonUtils.h"
+#include "Utils/GLUtils.h"
 
 #include <OpenGL/gl.h>
 

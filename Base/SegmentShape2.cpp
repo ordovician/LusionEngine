@@ -92,7 +92,7 @@ bool SegmentShape2::intersect(ConstPointIterator2 begin, ConstPointIterator2 end
 */
 void SegmentShape2::draw(const Rect2& r) const
 {
-  glBegin(GL_LINES);      
-    gltVertex(iSeg);
-  glEnd();
+//  glBegin(GL_LINES);      
+//    gltVertex(iSeg);
+//  glEnd();
 }

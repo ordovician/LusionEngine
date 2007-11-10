@@ -92,7 +92,7 @@ bool RectShape2::intersect(ConstPointIterator2 begin, ConstPointIterator2 end) c
 */
 void RectShape2::draw(const Rect2& r) const
 {
-  glBegin(GL_LINES);    
-    gltVertex(iRect);
-  glEnd();
+//  glBegin(GL_LINES);    
+//    gltVertex(iRect);
+//  glEnd();
 }

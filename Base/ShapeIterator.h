@@ -17,7 +17,4 @@ typedef MutableIterator<Shape*>        MutableShapeIterator;
 typedef VectorIterator<Shape*>         VectorShapeIterator;
 typedef MutableVectorIterator<Shape*>  MutableVectorShapeIterator;
 
-typedef SetIterator<Shape*>                SetShapeIterator;
-
-//typedef StlIterator<Shape*, vector<Shape*, SpriteList>::iterator>    MapShapeIterator; // TODO: remove
-//typedef StlIterator<Shape*, multiset<Shape*, SpriteDepth>::iterator> MultiSetShapeIterator;
+typedef SetIterator<Shape*>            SetShapeIterator;

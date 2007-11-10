@@ -61,7 +61,8 @@ bool CircleShape::collide(Shape* other, real t, real dt, SpriteCommand* command)
 bool CircleShape::inside(const Point2& p, real t, real dt, SpriteCommand* command)
 {
   if (iCircle.inside(p)) {
-    command->execute(this, 0, t, dt);
+    if (command)
+      command->execute(this, 0, t, dt);
     return true;      
   }
   return false;
@@ -93,8 +94,8 @@ bool CircleShape::intersect(ConstPointIterator2 begin, ConstPointIterator2 end) 
 */
 void CircleShape::draw(const Rect2& r) const
 {
-  glPushMatrix();
-    gltTranslate(iCircle.center());
-    drawCircle(iCircle.radius());
-  glPopMatrix();  
+  // glPushMatrix();
+  //   gltTranslate(iCircle.center());
+  //   drawCircle(iCircle.radius());
+  // glPopMatrix();  
 }

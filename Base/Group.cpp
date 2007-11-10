@@ -13,6 +13,7 @@
 #include "Base/ShapeIterator.h"
 
 #include <iostream>
+#include <assert.h>
 
 using namespace std;
 
@@ -66,7 +67,7 @@ int Group::size() const
 
 Rect2 Group::boundingBox() const
 {
-  return iBBox; // TODO: Calculate the boundingbox
+  return iBBox;
 }
 
 // Request
@@ -83,9 +84,15 @@ bool Group::isSimple() const
 // Operations
 void Group::add(Shape* shape)
 {
+  assert(shape != 0);
+  
   if (!contains(shape)) {
     shape->retain();
     iCurShape = iShapes.insert(shape).first;
+    if (iShapes.size() == 0)
+      iBBox = shape->boundingBox();
+    else
+      iBBox.surround(shape->boundingBox());
   }
 }
 
@@ -98,12 +105,23 @@ void Group::remove(Shape* shape)
   }
 }
 
+/*!
+  Updates all child shapes as well as updateting the boundingbox for group
+*/
 void Group::update(real start_time, real delta_time)
 {
+  if (iShapes.size() == 0)
+    return;
+    
   set<Shape*>::iterator shape = iShapes.begin();
-  for (;shape != iShapes.end(); ++shape) {
+  (*shape)->update(start_time, delta_time);
+  Rect2 bbox = (*shape)->boundingBox();
+ 
+  for (++shape; shape != iShapes.end(); ++shape) {
     (*shape)->update(start_time, delta_time);
+    bbox.surround((*shape)->boundingBox());
   }
+  iBBox = bbox;
 }
 
 void Group::doPlanning(real start_time, real delta_time)

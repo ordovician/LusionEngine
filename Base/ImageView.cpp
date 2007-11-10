@@ -9,6 +9,7 @@
 
 #include "Base/ImageView.h"
 #include "Utils/PolygonUtils.h"
+#include "Utils/GLUtils.h"
 
 #include <SDL.h>
 #include <SDL_image.h>

@@ -13,9 +13,6 @@
 
 #include <Base/Shape.h>
 
-#include <Geometry/Circle.hpp>
-
-
 class ShapeGroup : public Shape
 {
 public:

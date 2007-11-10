@@ -15,6 +15,8 @@
 #include "Algorithms.h"
 #include "Types.h"
 #include "Utils/PolygonUtils.h"
+#include "Utils/GLUtils.h"
+
 #include "Engine.h"
 
 

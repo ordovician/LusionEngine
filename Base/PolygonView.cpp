@@ -9,6 +9,7 @@
 
 #include "Base/PolygonView.h"
 #include "Utils/PolygonUtils.h"
+#include "Utils/GLUtils.h"
 
 #include <CGAL/Polygon_2_algorithms.h> 
 

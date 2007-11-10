@@ -9,6 +9,7 @@
 
 #include "Base/SegmentView.h"
 #include "Utils/PolygonUtils.h"
+#include "Utils/GLUtils.h"
 
 #include <OpenGL/gl.h>
 
