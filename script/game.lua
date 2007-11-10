@@ -383,6 +383,6 @@ function setupCollisionHandling()
 end
 
 setupWorld()
--- setupCollisionHandling()
+setupCollisionHandling()
 -- setupSeek()
 -- setupRRTSearch()
