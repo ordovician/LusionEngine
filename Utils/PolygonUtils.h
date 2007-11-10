@@ -82,17 +82,4 @@ bool intersect(const Segment2& seg, ConstPointIterator2 begin, ConstPointIterato
 bool intersect(const Rect2& rect, ConstPointIterator2 begin, ConstPointIterator2 end);
 
 bool inside(ConstPointIterator2 pb, ConstPointIterator2 pe, const Point2& point);
-Rect2 boundingBox(ConstPointIterator2 pb, ConstPointIterator2 pe); 
-
-void gltTranslate(const Point2& pos);
-void gltVertex(const Point2& pos);
-void gltVertex(const Rect2& rect);
-void gltVertex(const Segment2& segment);
-void gltVertex(ConstPointIterator2 begin, ConstPointIterator2 end, const Point2& position, real angle);
-void gltVertex(ConstPointIterator2 begin, ConstPointIterator2 end);
-
-void drawCircle(double radius);
-
-// Debug
-void gltPerformanceTest(int n);
-void trigPerformanceTest(int n);
+Rect2 boundingBox(ConstPointIterator2 pb, ConstPointIterator2 pe);
