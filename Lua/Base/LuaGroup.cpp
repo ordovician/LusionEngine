@@ -74,17 +74,18 @@ static int size(lua_State *L)
   return 1;
 }
 
-static int sprites(lua_State *L) 
-{
-  int n = lua_gettop(L);  // Number of arguments
-  if (n != 1) 
-    return luaL_error(L, "Got %d arguments expected 1", n); 
-    
-  Group* group = checkGroup(L);      
-  ShallowSpriteSet sprites = group->sprites();  
-  for_each(sprites.first, sprites.second, PushUserData<Sprite*>(L,1));
-  return 1;
-}
+// TODO: reintroduce later?
+//static int sprites(lua_State *L) 
+//{
+//  int n = lua_gettop(L);  // Number of arguments
+//  if (n != 1) 
+//    return luaL_error(L, "Got %d arguments expected 1", n); 
+//    
+//  Group* group = checkGroup(L);      
+//  ShallowSpriteSet sprites = group->sprites();  
+//  for_each(sprites.first, sprites.second, PushUserData<Sprite*>(L,1));
+//  return 1;
+//}
 
 // Request
 static int contains(lua_State *L) 
@@ -186,33 +187,32 @@ static int clear(lua_State *L)
     return luaL_error(L, "Got %d arguments expected 1", n); 
       
   Group* group = checkGroup(L);   
-  ShallowSpriteSet sprites = group->sprites();
-  
-  // Remove all sprites from group table by setting them to nil
-  SpriteSet::const_iterator sprite;
-  for (sprite = sprites.first; sprite != sprites.second; ++sprite) {
-    lua_pushlightuserdata(L,*sprite);
+
+  // Remove all sprites from group table by setting them to nil  
+  ShapeIterator* it = group->shapeIterator();
+  while (it->hasNext()) {
+    lua_pushlightuserdata(L, it->next());
     lua_pushnil(L);
-    lua_settable(L, 1);
-  }
+    lua_settable(L, 1);  
+  }  
   group->clear();
   
   return 0;
 }
 
-static int nextSprite(lua_State *L) 
+static int nextShape(lua_State *L) 
 {
   int n = lua_gettop(L);  // Number of arguments
   if (n != 1) 
     return luaL_error(L, "Got %d arguments expected 1", n); 
       
   Group* group = checkGroup(L);   
-  Sprite* sprite = group->nextSprite();
+  Shape* shape = group->nextShape();
 
-  if (sprite == 0)  
+  if (shape == 0)  
     lua_pushnil(L);
   else {
-    lua_pushlightuserdata(L, sprite);
+    lua_pushlightuserdata(L, shape);
     lua_gettable(L, 1);    
   }
   return 1;
@@ -225,7 +225,7 @@ static int collide(lua_State *L)
     return luaL_error(L, "Got %d arguments expected 4 or 5 (self, collision_obj, start_time, delta_time [,function])", n); 
     
   Group* me = checkGroup(L, 1);    
-  ShapeGroup* other = checkShapeGroup(L, 2);
+  Shape* other = checkShape(L, 2);
 
   assert(me != 0);
   assert(other != 0);
@@ -269,7 +269,7 @@ static const luaL_Reg gGroupFuncs[] = {
 
   // Accessors
   {"size", size},
-  {"sprites", sprites},
+//  {"sprites", sprites}, TODO: reintroduce later
   
   // Request
   {"contains", contains},
@@ -281,7 +281,7 @@ static const luaL_Reg gGroupFuncs[] = {
   {"doPlanning", doPlanning},
   {"render", render},
   {"clear", clear},
-  {"nextSprite", nextSprite},  
+  {"nextShape", nextShape},  
   {"collide", collide},      
   {NULL, NULL}
 };

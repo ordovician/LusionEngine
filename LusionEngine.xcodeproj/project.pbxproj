@@ -45,8 +45,12 @@
 		D542DF870CB41AF500AABC11 /* TrapezoidNode2.hpp in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = D542DF6D0CB41AF500AABC11 /* TrapezoidNode2.hpp */; };
 		D542DF880CB41AF500AABC11 /* Vector2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D542DF6E0CB41AF500AABC11 /* Vector2.cpp */; };
 		D542DF890CB41AF500AABC11 /* Vector2.hpp in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = D542DF6F0CB41AF500AABC11 /* Vector2.hpp */; };
+		D546184B0CC541E300505BE3 /* LuaShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D54618490CC541E300505BE3 /* LuaShape.cpp */; };
+		D546184C0CC541E300505BE3 /* LuaShape.h in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = D546184A0CC541E300505BE3 /* LuaShape.h */; };
 		D5478B160B80A57900108909 /* TrapezoidView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5478B140B80A57900108909 /* TrapezoidView.cpp */; };
 		D5478B170B80A57900108909 /* TrapezoidView.h in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = D5478B150B80A57900108909 /* TrapezoidView.h */; };
+		D56E8EC90CDC69EC00260EC2 /* Iterator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D56E8EC70CDC69EC00260EC2 /* Iterator.cpp */; };
+		D56E8ECA0CDC69EC00260EC2 /* Iterator.h in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = D56E8EC80CDC69EC00260EC2 /* Iterator.h */; };
 		D56E8F5A0B7E08A800ABD8A3 /* SegmentView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D56E8F580B7E08A800ABD8A3 /* SegmentView.cpp */; };
 		D56E8F5B0B7E08A800ABD8A3 /* SegmentView.h in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = D56E8F590B7E08A800ABD8A3 /* SegmentView.h */; };
 		D58B9F2C0B380C9B00B3EE64 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D58B9F2A0B380C9B00B3EE64 /* main.cpp */; };
@@ -106,6 +110,14 @@
 		D5CA4DA20CB43125006261D6 /* TrapezoidalMap2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D542DF6A0CB41AF500AABC11 /* TrapezoidalMap2.cpp */; };
 		D5CA4DA40CB43125006261D6 /* TrapezoidNode2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D542DF6C0CB41AF500AABC11 /* TrapezoidNode2.cpp */; };
 		D5CA4DA60CB43125006261D6 /* Vector2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D542DF6E0CB41AF500AABC11 /* Vector2.cpp */; };
+		D5D7F3BC0CE26B4C00A149A3 /* Exception.h in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = D5D7F3BA0CE26B4C00A149A3 /* Exception.h */; };
+		D5D7F3BD0CE26B4C00A149A3 /* Exception.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5D7F3BB0CE26B4C00A149A3 /* Exception.cpp */; };
+		D5D7F4040CE3A0A900A149A3 /* IteratorTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5D7F4030CE3A0A900A149A3 /* IteratorTests.cpp */; };
+		D5D7F4200CE3A1AB00A149A3 /* AutoreleasePool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D542DF4C0CB41AE000AABC11 /* AutoreleasePool.cpp */; };
+		D5D7F4210CE3A1B000A149A3 /* SharedObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D542DF4F0CB41AE000AABC11 /* SharedObject.cpp */; };
+		D5D7F4220CE3A1BB00A149A3 /* Iterator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D56E8EC70CDC69EC00260EC2 /* Iterator.cpp */; };
+		D5D7F4230CE3A1BF00A149A3 /* Algorithms.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5E7BA3D0B715761002E3AE8 /* Algorithms.cpp */; };
+		D5D7F50E0CE4F73700A149A3 /* Exception.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5D7F3BB0CE26B4C00A149A3 /* Exception.cpp */; };
 		D5DC3D410BDF808800430EFB /* CollisionGroup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5DC3D3B0BDF808700430EFB /* CollisionGroup.cpp */; };
 		D5DC3D420BDF808800430EFB /* CollisionGroup.h in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = D5DC3D3C0BDF808800430EFB /* CollisionGroup.h */; };
 		D5DC3D430BDF808800430EFB /* CollisionObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5DC3D3D0BDF808800430EFB /* CollisionObject.cpp */; };
@@ -205,6 +217,9 @@
 				D5E547910CBC367500D16BE5 /* CircleShape.h in Copy Frameworks into .app bundle */,
 				D5E547930CBC367500D16BE5 /* RectShape2.h in Copy Frameworks into .app bundle */,
 				D5E547950CBC367500D16BE5 /* SegmentShape2.h in Copy Frameworks into .app bundle */,
+				D546184C0CC541E300505BE3 /* LuaShape.h in Copy Frameworks into .app bundle */,
+				D56E8ECA0CDC69EC00260EC2 /* Iterator.h in Copy Frameworks into .app bundle */,
+				D5D7F3BC0CE26B4C00A149A3 /* Exception.h in Copy Frameworks into .app bundle */,
 			);
 			name = "Copy Frameworks into .app bundle";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -255,8 +270,12 @@
 		D542DF6D0CB41AF500AABC11 /* TrapezoidNode2.hpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.h; name = TrapezoidNode2.hpp; path = Geometry/TrapezoidNode2.hpp; sourceTree = "<group>"; };
 		D542DF6E0CB41AF500AABC11 /* Vector2.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = Vector2.cpp; path = Geometry/Vector2.cpp; sourceTree = "<group>"; };
 		D542DF6F0CB41AF500AABC11 /* Vector2.hpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.h; name = Vector2.hpp; path = Geometry/Vector2.hpp; sourceTree = "<group>"; };
+		D54618490CC541E300505BE3 /* LuaShape.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = LuaShape.cpp; sourceTree = "<group>"; };
+		D546184A0CC541E300505BE3 /* LuaShape.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = LuaShape.h; sourceTree = "<group>"; };
 		D5478B140B80A57900108909 /* TrapezoidView.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = TrapezoidView.cpp; sourceTree = "<group>"; };
 		D5478B150B80A57900108909 /* TrapezoidView.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = TrapezoidView.h; sourceTree = "<group>"; };
+		D56E8EC70CDC69EC00260EC2 /* Iterator.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = Iterator.cpp; sourceTree = "<group>"; };
+		D56E8EC80CDC69EC00260EC2 /* Iterator.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = Iterator.h; sourceTree = "<group>"; };
 		D56E8F580B7E08A800ABD8A3 /* SegmentView.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = SegmentView.cpp; sourceTree = "<group>"; };
 		D56E8F590B7E08A800ABD8A3 /* SegmentView.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = SegmentView.h; sourceTree = "<group>"; };
 		D58B9F2A0B380C9B00B3EE64 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
@@ -304,6 +323,10 @@
 		D5BD17E10BBD64F500BA3313 /* LuaMatrix2.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = LuaMatrix2.h; sourceTree = "<group>"; };
 		D5C18F270B4B611A0079286F /* liblua.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = liblua.a; sourceTree = "<group>"; };
 		D5C410230B4DECAB00735BD0 /* libCGAL.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libCGAL.a; sourceTree = "<group>"; };
+		D5D7F3BA0CE26B4C00A149A3 /* Exception.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Exception.h; sourceTree = "<group>"; };
+		D5D7F3BB0CE26B4C00A149A3 /* Exception.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Exception.cpp; sourceTree = "<group>"; };
+		D5D7F4020CE3A0A900A149A3 /* IteratorTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IteratorTests.h; path = UnitTest/IteratorTests.h; sourceTree = "<group>"; };
+		D5D7F4030CE3A0A900A149A3 /* IteratorTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = IteratorTests.cpp; path = UnitTest/IteratorTests.cpp; sourceTree = "<group>"; };
 		D5DC3D3B0BDF808700430EFB /* CollisionGroup.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = CollisionGroup.cpp; sourceTree = "<group>"; };
 		D5DC3D3C0BDF808800430EFB /* CollisionGroup.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = CollisionGroup.h; sourceTree = "<group>"; };
 		D5DC3D3D0BDF808800430EFB /* CollisionObject.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = CollisionObject.cpp; sourceTree = "<group>"; };
@@ -478,6 +501,8 @@
 		D5BD17970BBD62D300BA3313 /* Base */ = {
 			isa = PBXGroup;
 			children = (
+				D54618490CC541E300505BE3 /* LuaShape.cpp */,
+				D546184A0CC541E300505BE3 /* LuaShape.h */,
 				D5BD17980BBD62D300BA3313 /* LuaGroup.cpp */,
 				D5BD17990BBD62D300BA3313 /* LuaGroup.h */,
 				D5BD179A0BBD62D300BA3313 /* LuaSprite.cpp */,
@@ -536,6 +561,8 @@
 				D5DCB2250CA1B4BD005C1355 /* Rect2Tests.cpp */,
 				D5DCB2270CA1B4DB005C1355 /* Ray2Tests.h */,
 				D5DCB2280CA1B4DB005C1355 /* Ray2Tests.cpp */,
+				D5D7F4020CE3A0A900A149A3 /* IteratorTests.h */,
+				D5D7F4030CE3A0A900A149A3 /* IteratorTests.cpp */,
 			);
 			name = UnitTest;
 			sourceTree = "<group>";
@@ -595,10 +622,14 @@
 		D5E7BA3C0B715761002E3AE8 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				D56E8EC70CDC69EC00260EC2 /* Iterator.cpp */,
+				D56E8EC80CDC69EC00260EC2 /* Iterator.h */,
 				D5E7BA3D0B715761002E3AE8 /* Algorithms.cpp */,
 				D5E7BA3E0B715761002E3AE8 /* Algorithms.h */,
 				D5E7BA3F0B715761002E3AE8 /* PolygonUtils.cpp */,
 				D5E7BA400B715761002E3AE8 /* PolygonUtils.h */,
+				D5D7F3BA0CE26B4C00A149A3 /* Exception.h */,
+				D5D7F3BB0CE26B4C00A149A3 /* Exception.cpp */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -783,6 +814,9 @@
 				D5E547900CBC367500D16BE5 /* CircleShape.cpp in Sources */,
 				D5E547920CBC367500D16BE5 /* RectShape2.cpp in Sources */,
 				D5E547940CBC367500D16BE5 /* SegmentShape2.cpp in Sources */,
+				D546184B0CC541E300505BE3 /* LuaShape.cpp in Sources */,
+				D56E8EC90CDC69EC00260EC2 /* Iterator.cpp in Sources */,
+				D5D7F3BD0CE26B4C00A149A3 /* Exception.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -790,6 +824,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5D7F50E0CE4F73700A149A3 /* Exception.cpp in Sources */,
+				D5D7F4230CE3A1BF00A149A3 /* Algorithms.cpp in Sources */,
+				D5D7F4220CE3A1BB00A149A3 /* Iterator.cpp in Sources */,
+				D5D7F4210CE3A1B000A149A3 /* SharedObject.cpp in Sources */,
+				D5D7F4200CE3A1AB00A149A3 /* AutoreleasePool.cpp in Sources */,
 				D5CA4D900CB43125006261D6 /* Circle.cpp in Sources */,
 				D5CA4D920CB43125006261D6 /* Graph2.cpp in Sources */,
 				D5CA4D940CB43125006261D6 /* IO.cpp in Sources */,
@@ -807,6 +846,7 @@
 				D5DCB3180CA1BBDB005C1355 /* Segment2Tests.cpp in Sources */,
 				D5DCB3190CA1BBDB005C1355 /* Rect2Tests.cpp in Sources */,
 				D5DCB31A0CA1BBDB005C1355 /* Ray2Tests.cpp in Sources */,
+				D5D7F4040CE3A0A900A149A3 /* IteratorTests.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

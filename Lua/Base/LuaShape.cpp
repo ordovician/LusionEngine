@@ -12,6 +12,7 @@
 #include "Lua/Geometry/LuaMotionState.h"
 #include "Lua/Geometry/LuaRect2.h"
 #include "Lua/Geometry/LuaVector2.h"
+#include "Lua/Geometry/LuaSegment2.h"
 
 #include "Base/Sprite.h"
 #include "Base/CollisionGroup.h"
@@ -52,10 +53,7 @@ static int newShapeGroup(lua_State *L)
   
   Group* group = checkGroup(L,2);
   assert(group != 0);
-  ShallowSpriteSet sprites = group->sprites();
-  Shapes objs(distance(sprites.first, sprites.second));
-  copy(sprites.first, sprites.second, objs.begin());
-  *g = new Shape(objs.begin(), objs.end());
+  *g = new ShapeGroup(group->shapeIterator());
 
   setUserDataMetatable(L, "Lusion.Shape");
 
@@ -101,7 +99,7 @@ static int newRectShape2(lua_State *L)
   
   RectShape2 **s = (RectShape2 **)lua_newuserdata(L, sizeof(Sprite *));  
   
-  *s = new RectShape2(Rect2(Vector2_pull(L,2), (Vector2_pull(L,3)));    
+  *s = new RectShape2(Rect2(Vector2_pull(L,2), (Vector2_pull(L,3))));    
 
   setUserDataMetatable(L, "Lusion.Shape");
   
@@ -121,7 +119,7 @@ static int newSegmentShape2(lua_State *L)
   
   SegmentShape2 **s = (SegmentShape2 **)lua_newuserdata(L, sizeof(Sprite *));  
   
-  *s = new SegmentShape2(Segment2(Vector2_pull(L,2), (Vector2_pull(L,3)));    
+  *s = new SegmentShape2(Segment2(Vector2_pull(L,2), (Vector2_pull(L,3))));    
 
   setUserDataMetatable(L, "Lusion.Shape");
   

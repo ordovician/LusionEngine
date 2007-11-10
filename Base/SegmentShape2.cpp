@@ -56,6 +56,15 @@ bool SegmentShape2::collide(Shape* other, real t, real dt, SpriteCommand* comman
   return is_colliding;  
 }
 
+bool SegmentShape2::inside(const Point2& p, real t, real dt, SpriteCommand* command)
+{
+  if (iSeg.isOn(p)) {
+    command->execute(this, 0, t, dt);
+    return true;      
+  }
+  return false;
+}
+
 
 // Calculations
 bool SegmentShape2::intersect(const Circle& c) const

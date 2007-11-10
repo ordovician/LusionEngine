@@ -48,10 +48,7 @@ static int newShapeGroup(lua_State *L)
   
   Group* group = checkGroup(L,2);
   assert(group != 0);
-  ShallowSpriteSet sprites = group->sprites();
-  Shapes objs(distance(sprites.first, sprites.second));
-  copy(sprites.first, sprites.second, objs.begin());
-  *g = new ShapeGroup(objs.begin(), objs.end());
+  *g = new ShapeGroup(group->shapeIterator());
 
   setUserDataMetatable(L, "Lusion.ShapeGroup");
 

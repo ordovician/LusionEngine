@@ -56,6 +56,15 @@ bool RectShape2::collide(Shape* other, real t, real dt, SpriteCommand* command)
   return is_colliding;  
 }
 
+bool RectShape2::inside(const Point2& p, real t, real dt, SpriteCommand* command)
+{
+  if (iRect.inside(p)) {
+    command->execute(this, 0, t, dt);
+    return true;      
+  }
+  return false;
+}
+
 
 // Calculations
 bool RectShape2::intersect(const Circle& c) const
