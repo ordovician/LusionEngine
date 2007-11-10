@@ -22,8 +22,13 @@ function PrmNode:new(pos, radius)
 end
 
 function PrmNode:init(pos, radius)
-  self.pos = pos
-  self.radius = radius
+  -- self.pos = pos
+  -- self.radius = radius
+  self.circle = Shape:newCircle(pos, radius)
+end
+
+function PrmNode:toString()
+  return "pos "..self.circle:center().." radius "..self.circle:radius()
 end
 
 --[[
@@ -104,9 +109,9 @@ function ProbablisticRoadMap:construct(samples, retract_quotient)
   for _,n in pairs(self.nodes) do
     for _,m in pairs(self.nodes) do
       -- check whether spheres are overlapping and the nodes are not connected by an edge yet
-		  if (n.pos - m.pos):length() < n.radius + m.radius and self:checkNodesForEdge(n, m) then
+		  if n.circle:collide(m.circle) and self:checkNodesForEdge(n, m) then
 		    -- To prevent edges through obstacles perform an additional collision check
-				if not self:lineCollision(n.pos, m.pos) then
+				if not self:lineCollision(n, m) then
 				  n.edges[m] = m
 				  m.edges[n] = n
 				end
@@ -189,14 +194,22 @@ function ProbablisticRoadMap:cleanUp()
 	return true
 end
 
-
-
- -- 
- -- FindDisc
- -- 
- -- Uses brute force search to find the sphere in the roadmap closest to position: pos
- -- NOTE: Need to implement a quad tree 
+ --[[
+  Search hierarcial bounding volume consisting of Axis Aligned Bounding boxes where the
+  leafes contain circles, to find circle center closest to query point.
+ 
+  In a hierarcical bounding volume a search for boxes containing point will give us all
+  circles which potentially have center closest to point. Because centers which dont have
+  their circles containing query point can possibly be reachable from position either.
+ ]]--
 function ProbablisticRoadMap:findDisc(pos)
+  local closestShape = nil
+  function locateClosestDisc(shape, other, t, dt)
+    if not closestShape or shape:
+  end
+  
+	self.nodes:inside(pos, locateClosestDisc)
+	
 	int ret = -1;
 	Vector3 v;
 
