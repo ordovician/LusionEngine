@@ -16,6 +16,8 @@
 
 #include <Core/SharedObject.hpp>
 
+#include <Base/ShapeIterator.h>
+
 class SpriteCommand;
 
 class Shape : public SharedObject
@@ -27,8 +29,8 @@ public:
 
   // Accessors
   virtual Rect2 boundingBox() const = 0;  
-  virtual int   noKids() const;  
-  
+  virtual int   noShapes() const;  
+  virtual ShapeIterator* shapeIterator() const;
     
   // Request
   virtual bool isSimple() const;
@@ -49,7 +51,3 @@ public:
   
   virtual void update(real start_time, real delta_time);  
 };
-
-typedef vector<Shape*> Shapes;
-typedef Shapes::iterator ShapeIterator;
-typedef Shapes::const_iterator ConstShapeIterator;

@@ -27,14 +27,13 @@ public:
   virtual ~Group();
 
   // Accessors
-  int size() const;
-  ShallowSpriteSet sprites() const;
-  MutableShallowSpriteSet sprites();
   Rect2 boundingBox() const;  
-
-    
+  int   noShapes() const;  
+  ShapeIterator* shapeIterator() const;
+  int   size() const;
+  
   // Request
-  bool contains(Sprite* sprite) const;
+  bool contains(Shape* shape) const;
   bool isSimple() const;
   
   // Calculations
@@ -43,18 +42,17 @@ public:
   void draw(const Rect2& r) const;
         
   // Operations
-  void add(Sprite* sprite);
-  void remove(Sprite* sprite);
+  void add(Shape* shape);
+  void remove(Shape* shape);
   void update(real start_time, real delta_time);
   void doPlanning(real start_time, real delta_time);
   void clear();
-    
-public: 
-  Sprite* nextSprite();  // NOTE: consider making private
-  
+
+  Shape* nextShape();
+      
 private:
-  SpriteSet iSprites;
-  SpriteSet::iterator iCurSprite;
+  std::set<Shape*> iShapes;
+  std::set<Shape*>::iterator iCurShape;
   
   Rect2 iBBox;
 };

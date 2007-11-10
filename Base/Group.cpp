@@ -10,6 +10,7 @@
 #include "Base/Group.h"
 #include "Engine.h"
 #include "Base/Command.h"
+#include "Base/ShapeIterator.h"
 
 #include <iostream>
 
@@ -17,11 +18,11 @@ using namespace std;
 
 /*!
     \class Group Group.h
-    \brief Collection for Sprites. 
+    \brief Collection for Shapes. 
 
     Is in many ways similar to ShapeGroup. However ShapeGroup is not mutable
-    Once it is created Sprites can't be added or removed. A Group on the otherhand
-    can have Sprites added and removed at any time. The downside of this is that
+    Once it is created Shapes can't be added or removed. A Group on the otherhand
+    can have Shapes added and removed at any time. The downside of this is that
     the structure can be as efficient in handling collision, because one can't create
     an optimized hierarchical structure.
 */
@@ -35,7 +36,7 @@ Group* renderGroup()
 }
 
 // Constructors
-Group::Group() : iCurSprite(0)
+Group::Group() : iCurShape(0)
 {
   
 }
@@ -46,19 +47,21 @@ Group::~Group()
 }
 
 // Accessors
+int Group::noShapes() const
+{
+  return iShapes.size();
+}
+
+ShapeIterator* Group::shapeIterator() const
+{
+  ShapeIterator* itr = new SetShapeIterator(iShapes);
+  itr->autorelease();
+  return itr;
+}
+
 int Group::size() const
 {
-  return iSprites.size();
-}
-
-ShallowSpriteSet Group::sprites() const
-{
-  return make_pair(iSprites.begin(), iSprites.end());
-}
-
-MutableShallowSpriteSet Group::sprites()
-{
-  return make_pair(iSprites.begin(), iSprites.end());
+  return iShapes.size();
 }
 
 Rect2 Group::boundingBox() const
@@ -67,9 +70,9 @@ Rect2 Group::boundingBox() const
 }
 
 // Request
-bool Group::contains(Sprite* sprite) const
+bool Group::contains(Shape* shape) const
 {
-  return iSprites.find(sprite) != iSprites.end();
+  return iShapes.find(shape) != iShapes.end();
 }
 
 bool Group::isSimple() const
@@ -78,65 +81,63 @@ bool Group::isSimple() const
 }
 
 // Operations
-void Group::add(Sprite* sprite)
+void Group::add(Shape* shape)
 {
-  if (!contains(sprite)) {
-    sprite->retain();
-    iCurSprite = iSprites.insert(sprite);
-    sprite->add(this);
+  if (!contains(shape)) {
+    shape->retain();
+    iCurShape = iShapes.insert(shape).first;
   }
 }
 
-void Group::remove(Sprite* sprite)
+void Group::remove(Shape* shape)
 {
-  if (contains(sprite)) {
-    if (*iCurSprite == sprite) nextSprite();
-    iSprites.erase(sprite);
-    sprite->remove(this);
-    sprite->release();
+  if (contains(shape)) {
+    if (*iCurShape == shape) nextShape();
+    iShapes.erase(shape);
+    shape->release();
   }
 }
 
 void Group::update(real start_time, real delta_time)
 {
-  SpriteSet::iterator sprite = iSprites.begin();
-  for (;sprite != iSprites.end(); ++sprite) {
-    (*sprite)->update(start_time, delta_time);
+  set<Shape*>::iterator shape = iShapes.begin();
+  for (;shape != iShapes.end(); ++shape) {
+    (*shape)->update(start_time, delta_time);
   }
 }
 
 void Group::doPlanning(real start_time, real delta_time)
 {
-  Sprite* sprite = nextSprite();
-  if (sprite && sprite->planCommand())
-    sprite->planCommand()->execute(sprite, 0, start_time, delta_time);
+//  Shape* shape = nextShape();
+//  if (shape && shape->planCommand())
+//    shape->planCommand()->execute(shape, 0, start_time, delta_time);
 }
   
 void Group::draw(const Rect2& r) const
 {
-  SpriteSet::iterator sprite = iSprites.begin();
-  for (;sprite != iSprites.end(); ++sprite) {
-    (*sprite)->draw(r);
+  set<Shape*>::iterator shape = iShapes.begin();
+  for (;shape != iShapes.end(); ++shape) {
+    (*shape)->draw(r);
   }  
 }
 
 void Group::clear()
 {
-  iSprites.clear();
+  iShapes.clear();
 }
 
 /*! 
-  Does a round robin for sprites in group. That means at each call it will return
-  a different sprite in the group, until all the sprites have been returned at which
-  point it start returning the first sprites again.
+  Does a round robin for shapes in group. That means at each call it will return
+  a different shape in the group, until all the shapes have been returned at which
+  point it start returning the first shapes again.
 */
-Sprite* Group::nextSprite()
+Shape* Group::nextShape()
 {
-  if (iSprites.empty())
+  if (iShapes.empty())
     return 0;
-  Sprite* s = *iCurSprite;
-  if (++iCurSprite == iSprites.end())
-    iCurSprite = iSprites.begin();
+  Shape* s = *iCurShape;
+  if (++iCurShape == iShapes.end())
+    iCurShape = iShapes.begin();
   return s;
 }
   
@@ -144,16 +145,16 @@ Sprite* Group::nextSprite()
 bool Group::collide(Shape* other, real t, real dt, SpriteCommand* command)
 {
   bool is_col = false;
-  SpriteSet::iterator it;  
-  for (it = iSprites.begin(); it != iSprites.end(); ++it) {
-    Sprite* sprite = *it;
+  set<Shape*>::iterator it;  
+  for (it = iShapes.begin(); it != iShapes.end(); ++it) {
+    Shape* shape = *it;
     if (secondsPassed() > t+dt)
       break;
       
-    if (sprite == other)
+    if (shape == other)
       continue;
 
-    if(sprite->collide(other, t, dt, command))
+    if(shape->collide(other, t, dt, command))
       is_col = true;
   }    
   return is_col;
@@ -162,14 +163,14 @@ bool Group::collide(Shape* other, real t, real dt, SpriteCommand* command)
 bool Group::inside(const Point2& p, real t, real dt, SpriteCommand* command)
 {
   bool is_col = false;
-  SpriteSet::iterator it;  
-  for (it = iSprites.begin(); it != iSprites.end(); ++it) {
-    Sprite* sprite = *it;
+  set<Shape*>::iterator it;  
+  for (it = iShapes.begin(); it != iShapes.end(); ++it) {
+    Shape* shape = *it;
 
     if (secondsPassed() > t+dt)
       break;
       
-    if(sprite->inside(p, t, dt, command))
+    if(shape->inside(p, t, dt, command))
       is_col = true;
   }    
   return is_col;  

@@ -37,6 +37,16 @@ Shape::~Shape()
 }
 
 // Accessors
+int Shape::noShapes() const
+{
+  return 0;
+} 
+ 
+ShapeIterator* Shape::shapeIterator() const
+{
+  static NullIterator<Shape*> nullIterator;
+  return &nullIterator;
+}
 
 // Request
 /*! Returns true if this object is a simple non recursive collision object */
@@ -107,6 +117,16 @@ void Shape::draw(const Rect2& r) const
 }
 
 // Operations
+void Shape::addKid(Shape* shape)
+{
+  // Do nothing
+}
+
+void Shape::removeKid(Shape* shape)
+{
+  // Do nothing  
+}
+
 /*!
   Update position orientation, speed etc of object based on
   time passed. 

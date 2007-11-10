@@ -11,6 +11,9 @@
 #include <Engine.h>
 #include <Base/Command.h>
 
+#include <Utils/Algorithms.h>
+#include "Utils/Exception.h"
+
 #include <iostream>
 
 using namespace std;
@@ -22,18 +25,20 @@ using namespace std;
   placed right before the center of spatial sort. "Kind of" means that it is not fully sorted
   only the first half is sorted well enough to establish pivot iterator.
 */
-static ShapeIterator qsplit(ShapeIterator begin, 
-                                             ShapeIterator end,
-                                             real pivot, int axis)
+static vector<Shape*>::iterator qsplit(
+  vector<Shape*>::iterator begin, 
+  vector<Shape*>::iterator end,
+  real pivot, 
+  int axis)
 {
     Rect2 bbox;
     real centroid;
-    ShapeIterator ret_value = begin;
+    vector<Shape*>::iterator ret_value = begin;
     
     // Loop through and make sure bounding boxes are in spatialy ordered along 'axis'
     // such that the ones spatially to the left of pivot comes eariler in list than
     // those spatially to the right of pivot.
-    ShapeIterator it;     
+    vector<Shape*>::iterator it;     
     for (it = begin; it != end; ++it) {
         bbox = (*it)->boundingBox();
         centroid = bbox.center()[axis];   //  Order rectangles on center line throug rectangle (centroid)
@@ -56,7 +61,16 @@ ShapeGroup::ShapeGroup()
   init();
 }
 
-ShapeGroup::ShapeGroup(ShapeIterator begin, ShapeIterator end)
+ShapeGroup::ShapeGroup(ShapeIterator* source)
+{
+  vector<Shape*> shapes;
+  MutableVectorShapeIterator dest(shapes);
+  
+  Util::insert(source, &dest); 
+  init(shapes.begin(), shapes.end());
+}
+
+ShapeGroup::ShapeGroup(vector<Shape*>::iterator begin, vector<Shape*>::iterator end)
 {
   init(begin, end);   
 }
@@ -82,6 +96,40 @@ ShapeGroup::~ShapeGroup()
 Rect2 ShapeGroup::boundingBox() const
 {
   return iBox;
+}
+
+/*!
+  Returns number of shapes in group, but this is not a supported operation on
+  ShapeGroup so calling method will cause an exception.
+  
+  While group might have more than one shape inside it will always return 0 and
+  throw an exception because it is only possible to discover the number of shapes
+  by traversing the hierarchy, but that requires knowing the types of the 
+  child shapes which is not allowed.
+  
+  \throw UnsuportedMethodException
+*/
+int ShapeGroup::noShapes() const
+{
+  throw UnsuportedMethodException();
+  return 0; 
+}
+
+/*!
+  Returns an iterator for group, but this is not a supported operation on
+  ShapeGroup so calling method will cause an exception.
+
+  While group might have more than one shape inside it will always return 0 and
+  throw an exception because it is only possible to discover the number of shapes
+  by traversing the hierarchy, but that requires knowing the types of the 
+  child shapes which is not allowed.
+  
+  \throw UnsuportedMethodException
+*/
+ShapeIterator* ShapeGroup::shapeIterator() const
+{
+  throw UnsuportedMethodException();  
+  return 0;
 }
 
 // Request
@@ -172,7 +220,7 @@ void ShapeGroup::init(Shape *left, Shape *right, const Rect2& box)
   iBox = box;
 }
 
-void ShapeGroup::init(ShapeIterator begin, ShapeIterator end)
+void ShapeGroup::init(vector<Shape*>::iterator begin, vector<Shape*>::iterator end)
 {
   init();
     
@@ -188,12 +236,12 @@ void ShapeGroup::init(ShapeIterator begin, ShapeIterator end)
   
   // Find the midpoint of the bounding box to use as a qsplit pivot
   iBox = (*begin)->boundingBox();
-  ShapeIterator it = begin;
+  vector<Shape*>::iterator it = begin;
   while (++it != end) {
       iBox = iBox.surround((*it)->boundingBox());
   }
   Point2 pivot = iBox.center();
-  ShapeIterator mid_point = qsplit(begin, end, pivot.x(), 0);
+  vector<Shape*>::iterator mid_point = qsplit(begin, end, pivot.x(), 0);
   
   // Create a new bounding volume
   iLeft = buildBranch(begin, mid_point, 1);
@@ -203,9 +251,10 @@ void ShapeGroup::init(ShapeIterator begin, ShapeIterator end)
   iRight->retain(); 
 }
 
-Shape* ShapeGroup::buildBranch(ShapeIterator begin, 
-                              ShapeIterator end, 
-                              int axis)
+Shape* ShapeGroup::buildBranch(
+  vector<Shape*>::iterator begin,
+  vector<Shape*>::iterator end,
+  int axis)
 {
   Shape* ret_obj = 0;  
   int no_nodes = end-begin;      
@@ -222,14 +271,14 @@ Shape* ShapeGroup::buildBranch(ShapeIterator begin,
   else {
     // Find the midpoint of the bounding box to use as a qsplit pivot
     Rect2 box = (*begin)->boundingBox();
-    ShapeIterator it = begin;
+    vector<Shape*>::iterator it = begin;
     while (++it != end) {
         box = box.surround((*it)->boundingBox());
     }
     Vector2 pivot = box.center();
 
     // Now split according to correct axis
-    ShapeIterator mid_point = qsplit(begin, end, pivot[axis], axis);
+    vector<Shape*>::iterator mid_point = qsplit(begin, end, pivot[axis], axis);
 
     // Create a new bounding volume
     Shape* left = buildBranch(begin, mid_point, (axis+1)%2);

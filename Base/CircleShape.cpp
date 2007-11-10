@@ -58,6 +58,14 @@ bool CircleShape::collide(Shape* other, real t, real dt, SpriteCommand* command)
   return is_colliding;  
 }
 
+bool CircleShape::inside(const Point2& p, real t, real dt, SpriteCommand* command)
+{
+  if (iCircle.inside(p)) {
+    command->execute(this, 0, t, dt);
+    return true;      
+  }
+  return false;
+}
 
 // Calculations
 bool CircleShape::intersect(const Circle& c) const

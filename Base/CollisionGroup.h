@@ -21,7 +21,8 @@ class ShapeGroup : public Shape
 public:
   // Constructors
   ShapeGroup();
-  ShapeGroup(ShapeIterator begin, ShapeIterator end);
+  ShapeGroup(ShapeIterator* iterator);
+  ShapeGroup(vector<Shape*>::iterator begin, vector<Shape*>::iterator end);
   ShapeGroup(Shape *left, Shape *right);  
   ShapeGroup(Shape *left, Shape *right, const Rect2& box);
   
@@ -29,6 +30,8 @@ public:
 
   // Accessors
   Rect2 boundingBox() const;
+  int   noShapes() const;  
+  ShapeIterator* shapeIterator() const;
     
   // Request
   bool isSimple() const;
@@ -42,10 +45,10 @@ public:
   void update(real start_time, real delta_time);  
   
   void init();
-  void init(ShapeIterator begin, ShapeIterator end);
+  void init(vector<Shape*>::iterator begin, vector<Shape*>::iterator end);
   void init(Shape *left, Shape *right);
   void init(Shape *left, Shape *right, const Rect2& box);
-  Shape* buildBranch(ShapeIterator begin, ShapeIterator end, int axis);
+  Shape* buildBranch(vector<Shape*>::iterator begin, vector<Shape*>::iterator end, int axis);
   
 private:
   Shape *iLeft, *iRight;
