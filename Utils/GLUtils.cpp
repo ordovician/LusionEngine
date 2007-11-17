@@ -74,6 +74,22 @@ void drawCircle(double r)
   glPopMatrix();       
 }
 
+void draw(const Rect2& box)
+{
+  glColor3d(1.0, 0.0, 1.0);
+  glBegin(GL_LINE_LOOP);
+    gltVertex(box);
+  glEnd();
+}
+
+void draw(const Polygon2& poly)
+{
+  glColor3d(1.0, 0.0, 1.0);
+  glBegin(GL_POLYGON);  
+    gltVertex(poly.begin(), poly.end());
+  glEnd();
+}
+
 // Debug
 void gltPerformanceTest(int n)
 {

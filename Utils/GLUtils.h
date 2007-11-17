@@ -19,6 +19,9 @@ void gltVertex(ConstPointIterator2 begin, ConstPointIterator2 end, const Point2&
 void gltVertex(ConstPointIterator2 begin, ConstPointIterator2 end);
 
 void drawCircle(double radius);
+void draw(const Rect2& box);
+void draw(const Polygon2& poly);
+
 
 // Debug
 void gltPerformanceTest(int n);

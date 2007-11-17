@@ -123,13 +123,13 @@ bool inside(ConstPointIterator2 pb, ConstPointIterator2 pe, const Point2& q)
 */
 Rect2 boundingBox(ConstPointIterator2 pb, ConstPointIterator2 pe)
 {
-  real min = numeric_limits<real>::min();
+  real min = -numeric_limits<real>::max();
   real max = numeric_limits<real>::max();
     
   Rect2 r(Vector2(max, max), Vector2(min, min));
   Polygon2::const_iterator p;
   for (p = pb; p != pe; ++p) {
-    r.surround(*p);
+    r = r.surround(*p);
   }
   return r;
 }
