@@ -12,6 +12,7 @@
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
 
+#include "Timing.h"
 #include "Types.h"
 
 class Sprite;
@@ -30,10 +31,6 @@ void setWorldView(const Rect2& rect);
 void lookAt(const Point2& p);
 Rect2 worldView();
 
-int     ticksPerFrame();
-void    setTicksPerFrame(int noTicks);
-real    secondsPerFrame();
-real    secondsPassed();
 int     ticksLeft(int start_ticks);
 void    startTimer();
 int     stopTimer();

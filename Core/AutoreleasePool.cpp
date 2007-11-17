@@ -137,7 +137,6 @@ void AutoreleasePool::end()
 
 AutoreleasePool *AutoreleasePool::currentPool()
 {
-    if (sPoolStack.empty())
-        return 0;
+    assert(!sPoolStack.empty());
     return sPoolStack.top();
 }
