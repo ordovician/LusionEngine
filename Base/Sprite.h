@@ -98,7 +98,6 @@ public:
 	// Request
 	void  setVisible(bool aVisible);
 	bool  visible() const;
-  bool  viewCollide() const;
   
 	// Calculations
   bool  collide(Shape* other, real t, real dt, SpriteCommand* command = 0);
@@ -151,39 +150,3 @@ private:
   mutable bool        iNeedUpdate;  // indicate whether collision poly needs update
   mutable Rect2       iBBox;        // Bounding box
 };
-
-struct SpriteDepth : public binary_function<Sprite*, Sprite*, bool>
-{
-  bool operator()(const Sprite* a, const Sprite* b) const
-  { 
-    return a->depth() < b->depth(); 
-  }
-};
-
-typedef vector<Sprite*> SpriteList;
-typedef map<Sprite*,SpriteList> SpriteMap;
-typedef multiset<Sprite*, SpriteDepth> SpriteSet;
-
-// Shallow SpriteList
-typedef SpriteList::iterator SpriteListIterator;
-typedef SpriteList::const_iterator ConstSpriteListIterator;
-typedef pair<ConstSpriteListIterator, ConstSpriteListIterator> ConstSpriteListIteratorPair;
-typedef pair<SpriteListIterator, SpriteListIterator> SpriteListIteratorPair;
-typedef ConstSpriteListIteratorPair  ShallowSpriteList;
-typedef SpriteListIteratorPair       MutableShallowSpriteList;
-
-// Shallow SpriteMap
-typedef SpriteMap::iterator SpriteMapIterator;
-typedef SpriteMap::const_iterator ConstSpriteMapIterator;
-typedef pair<ConstSpriteMapIterator, ConstSpriteMapIterator> ConstSpriteMapIteratorPair;
-typedef pair<SpriteMapIterator, SpriteMapIterator> SpriteMapIteratorPair;
-typedef ConstSpriteMapIteratorPair  ShallowSpriteMap;
-typedef SpriteMapIteratorPair       MutableShallowSpriteMap;
-
-// Shallow SpriteSet
-typedef SpriteSet::iterator SpriteSetIterator;
-typedef SpriteSet::const_iterator ConstSpriteSetIterator;
-typedef pair<ConstSpriteSetIterator, ConstSpriteSetIterator> ConstSpriteSetIteratorPair;
-typedef pair<SpriteSetIterator, SpriteSetIterator> SpriteSetIteratorPair;
-typedef ConstSpriteSetIteratorPair  ShallowSpriteSet;
-typedef SpriteSetIteratorPair       MutableShallowSpriteSet;

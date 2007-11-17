@@ -129,18 +129,22 @@ ImageView::~ImageView()
 }
 
 // Calculations
-void ImageView::draw(int image_index) const
+void ImageView::draw(const Point2& pos, real rot, int image_index) const
 {      
   assert(image_index < iTextures.size());
-  glBindTexture( GL_TEXTURE_2D, iTextures[image_index]);   // Select our texture  
-  glBegin(GL_QUADS);
-      glTexCoord2d(0.0, 1.0); 
-      gltVertex(iBottomLeft);
-      glTexCoord2d(1.0, 1.0);
-      gltVertex(iBottomRight);        
-      glTexCoord2d(1.0, 0.0); 
-      gltVertex(iTopRight);
-      glTexCoord2d(0.0, 0.0);
-      gltVertex(iTopLeft);                
-  glEnd();    
+  glPushMatrix();
+    gltTranslate(pos);
+    glRotated(rot, 0.0, 0.0, 1.0);    
+    glBindTexture( GL_TEXTURE_2D, iTextures[image_index]);   // Select our texture  
+    glBegin(GL_QUADS);
+        glTexCoord2d(0.0, 1.0); 
+        gltVertex(iBottomLeft);
+        glTexCoord2d(1.0, 1.0);
+        gltVertex(iBottomRight);        
+        glTexCoord2d(1.0, 0.0); 
+        gltVertex(iTopRight);
+        glTexCoord2d(0.0, 0.0);
+        gltVertex(iTopLeft);                
+    glEnd();
+ glPopMatrix();      
 }

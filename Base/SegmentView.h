@@ -28,7 +28,7 @@ public:
   bool arrowVisible() const;
 
   // Calculations
-	virtual void draw(int image_index = 0) const;
+	virtual void draw(const Point2& pos, real rot, int image_index = 0) const;
   
   // Operations
   void addSegment(const Segment2& aSeg);

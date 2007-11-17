@@ -37,11 +37,16 @@ static void drawPoint(const Point2& p) {
 }
 
 // Calculations
-void PointsView::draw(int) const
+void PointsView::draw(const Point2& pos, real rot, int) const
 {  
-  glColor3dv(iColor);  
-  glPointSize(4.0f);
-  glBegin(GL_POINTS);
-    for_each(iPoints.begin(), iPoints.end(), drawPoint);    
-  glEnd();
+  glPushMatrix();
+    gltTranslate(pos);
+    glRotated(rot, 0.0, 0.0, 1.0); 
+
+    glColor3dv(iColor);  
+    glPointSize(4.0f);
+    glBegin(GL_POINTS);
+      for_each(iPoints.begin(), iPoints.end(), drawPoint);    
+    glEnd();
+  glPopMatrix();  
 }

@@ -36,7 +36,7 @@ public:
 	// Request
 
 	// Calculations
-	virtual void draw(int image_index = 0) const = 0;
+	virtual void draw(const Point2& pos, real rot, int image_index = 0) const = 0;
 		  
 private:
 	Point2    iOrigin;

@@ -62,17 +62,22 @@ static void drawArrowHead(const Segment2& s)
 }
 
 // Calculations
-void SegmentView::draw(int) const
+void SegmentView::draw(const Point2& pos, real rot, int) const
 {
-  glColor3dv(iColor);	
-  glBegin(GL_LINES);  
-    for_each(iSegments.begin(), iSegments.end(), drawSegment);
-  glEnd();
-  if (iShowArrowHead) {
-    glBegin(GL_TRIANGLES);
-      for_each(iSegments.begin(), iSegments.end(), drawArrowHead);  
-    glEnd();    
-  }
+  glPushMatrix();
+    gltTranslate(pos);
+    glRotated(rot, 0.0, 0.0, 1.0);
+
+    glColor3dv(iColor);	
+    glBegin(GL_LINES);  
+      for_each(iSegments.begin(), iSegments.end(), drawSegment);
+    glEnd();
+    if (iShowArrowHead) {
+      glBegin(GL_TRIANGLES);
+        for_each(iSegments.begin(), iSegments.end(), drawArrowHead);  
+      glEnd();    
+    }
+  glPopMatrix(); 
 }
 
 // Operations

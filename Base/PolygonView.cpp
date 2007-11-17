@@ -43,13 +43,18 @@ GLenum PolygonView::drawStyle() const
 }
 
 // Calculations
-void PolygonView::draw(int) const
+void PolygonView::draw(const Point2& pos, real rot, int) const
 {
-  ShallowPoints2 poly = collisionPolygon();
-  glColor3dv(iColor);	
-  glBegin(iStyle);  
-    gltVertex(poly.first, poly.second);  
-  glEnd();
+  glPushMatrix();
+    gltTranslate(pos);
+    glRotated(rot, 0.0, 0.0, 1.0);
+
+    ShallowPoints2 poly = collisionPolygon();
+    glColor3dv(iColor);	
+    glBegin(iStyle);  
+      gltVertex(poly.first, poly.second);  
+    glEnd();
+  glPopMatrix(); 
 }
 
 // Operations

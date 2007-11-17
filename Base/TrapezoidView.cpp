@@ -37,22 +37,27 @@ TrapezoidView::~TrapezoidView()
 
 
 // Calculations
-void TrapezoidView::draw(int) const
+void TrapezoidView::draw(const Point2& pos, real rot, int) const
 {
   assert(iTrapezoid != 0);
   
-  glColor3dv(iColor);
-  glLineWidth(2.0f);  
-  glBegin(GL_LINES);  
-    gltVertex(iTrapezoid->top());
-    gltVertex(iTrapezoid->bottom());    
-  glEnd();
-  
-  glColor3d(1.0, 1.0, 1.0);	
-  
-  glPointSize(4.0f);
-  glBegin(GL_POINTS);
-    gltVertex(iTrapezoid->left());
-    gltVertex(iTrapezoid->right());    
-  glEnd();
+  glPushMatrix();
+    gltTranslate(pos);
+    glRotated(rot, 0.0, 0.0, 1.0);
+
+    glColor3dv(iColor);
+    glLineWidth(2.0f);  
+    glBegin(GL_LINES);  
+      gltVertex(iTrapezoid->top());
+      gltVertex(iTrapezoid->bottom());    
+    glEnd();
+    
+    glColor3d(1.0, 1.0, 1.0);	
+    
+    glPointSize(4.0f);
+    glBegin(GL_POINTS);
+      gltVertex(iTrapezoid->left());
+      gltVertex(iTrapezoid->right());    
+    glEnd();
+  glPopMatrix();   
 }

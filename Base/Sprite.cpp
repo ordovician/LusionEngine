@@ -15,10 +15,7 @@
 #include "Algorithms.h"
 #include "Types.h"
 #include "Utils/PolygonUtils.h"
-#include "Utils/GLUtils.h"
-
-#include "Engine.h"
-
+#include "Timing.h"
 
 #include <assert.h>
 #include <iostream>
@@ -337,16 +334,6 @@ SpriteCommand* Sprite::planCommand()
 }
 
 // Request
-bool Sprite::viewCollide() const
-{
-  Rect2 view = worldView();
-  return 
-    view.right()-position().x() < radius() ||
-    position().x()-view.left() < radius() ||
-    view.top()-position().y() < radius() ||
-    position().y() - view.bottom() < radius();
-}	
-
 void Sprite::setVisible(bool aVisible)
 {
 	iVisible = aVisible;
@@ -412,35 +399,13 @@ bool Sprite::intersect(ConstPointIterator2 begin, ConstPointIterator2 end) const
   return ::intersect(poly.first, poly.second, begin, end);  
 }
 
-static void draw(const Rect2& box)
-{
-  glColor3d(1.0, 0.0, 1.0);
-  glBegin(GL_LINE_LOOP);
-    gltVertex(box);
-  glEnd();
-}
-
-static void draw(const Polygon2& poly)
-{
-  glColor3d(1.0, 0.0, 1.0);
-  glBegin(GL_POLYGON);  
-    gltVertex(poly.begin(), poly.end());
-  glEnd();
-}
-
+/*!
+  Draws sprite if it is visible and has a view intersecting \a r
+*/
 void Sprite::draw(const Rect2& r) const
 {
-	if (iVisible && iView != 0 && r.intersect(boundingBox())) {
-    glPushMatrix();
-      if (gShowCollision)
-        ::draw(iPolygon);    // To see collision polygon
-      gltTranslate(position());
-      if (gShowCollision)      
-        drawCircle(radius());   // To see collision circle           
-      glRotated(iState->rotation(), 0.0, 0.0, 1.0);
-		  iView->draw(iCurSubViewIndex);	  
-    glPopMatrix();    
-	}
+	if (iVisible && iView != 0 && r.intersect(boundingBox()))
+    iView->draw(position(), rotation(), iCurSubViewIndex);
 }
 
 #pragma mark Operations
