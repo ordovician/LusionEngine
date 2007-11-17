@@ -87,7 +87,7 @@ public:
     void moveTo(real aX, real aT);
     void moveTo(const Vector2 &aP); 
     void moveCenter(const Vector2& aP);
-    
+        
 private:
     Point2 iPos[2];
 };
@@ -270,4 +270,11 @@ inline
 bool Rect2::isValid() const
 { 
   return left() <= right() && bottom() <= top(); 
+}
+
+// Operators
+inline 
+bool operator==( const Rect2& r1, const Rect2& r2 )
+{
+  return r1.min() == r2.min() && r1.max() == r2.max();
 }

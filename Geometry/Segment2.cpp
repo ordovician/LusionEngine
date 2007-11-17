@@ -1,16 +1,18 @@
 #include <Geometry/Segment2.hpp>
+#include <cmath>
+
+#include <iostream>
+
+using namespace std;
 
 /*!
     \class Segment2 Segment2.h
     \brief Describes a 2d line segment.
 
-    \mainclass
-
+    The purpose is to do different geometric computations on line segments
+    with each other or other geometric primitives. Instances of the class
+    can not display itself on screen nor is the class meant to be subclassed.
 */
-
-#include <cmath>
-
-using namespace std;
 
 // Constructors
 Segment2::Segment2() : iData(0)
@@ -243,7 +245,7 @@ real Segment2::slope() const
 
 real Segment2::distance(const Point2& p) const
 {
-  return nearestPoint(p).length();
+  return (nearestPoint(p) - p).length();
 }
 
 /*!
@@ -251,7 +253,7 @@ real Segment2::distance(const Point2& p) const
   can be either on the segment, or at one of the end points.
 */
 Point2 Segment2::nearestPoint(const Point2& p) const
-{
+{   
   const Vector2 v = toVector();
   real dot_s = (p-source()).dot(v);
 
