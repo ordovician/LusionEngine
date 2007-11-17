@@ -98,7 +98,25 @@ void CircleTests::testPolygonIntersect()
   CPTAssert(c1.intersect(poly.begin(), poly.end()));
   CPTAssert(!c2.intersect(poly.begin(), poly.end()));
   CPTAssert(!c3.intersect(poly.begin(), poly.end()));
-  CPTAssert(!c4.intersect(poly.begin(), poly.end()));      
+  CPTAssert(!c4.intersect(poly.begin(), poly.end()));
+  
+  // Test against standard collision polygon
+  Circle c5(Vector2(10.0f, 0.0f), 2.0f);
+  Point2 points[] = {Point2(-1.0, -1.0), Point2(1.0, 0.0), Point2(-1.0, 1.0)};
+  
+  // Make the test that will be performed against polygon by circle
+  Segment2 
+    seg1(points[0], points[1]), 
+    seg2(points[1], points[2]),
+    seg3(points[2], points[0]);    
+  
+  CPTAssert(!c5.intersect(seg1));
+  CPTAssert(!c5.intersect(seg2));
+  CPTAssert(!c5.intersect(seg3));
+      
+  Polygon2 colPoly(points, points+3);
+  
+  CPTAssert(!c5.intersect(colPoly.begin(), colPoly.end()));  
 }
 
 void CircleTests::testRayIntersect()

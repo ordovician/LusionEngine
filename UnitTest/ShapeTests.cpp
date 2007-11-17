@@ -9,9 +9,15 @@
 
 #include "ShapeTests.h"
 
- #include "Base/CircleShape.h"
- #include "Base/RectShape2.h"
- #include "Base/SegmentShape2.h"
+#include "Utils/PolygonUtils.h"
+
+#include "Base/CircleShape.h"
+#include "Base/RectShape2.h"
+#include "Base/SegmentShape2.h"
+
+#include <numeric>
+
+using namespace std;
 
 static real t = 0.0f;
 static real dt = 1.0f;
@@ -58,6 +64,23 @@ void ShapeTests::testIntersections()
 
 void ShapeTests::testMovement()
 {
+  // Test bounding box calculations
+  Point2 points[] = {Point2(-1.0f, -1.0f), Point2(1.0f, 0.0f), Point2(-1.0f, 1.0f)};
+  
+  real min = -numeric_limits<real>::max();
+  real max = numeric_limits<real>::max();
+    
+  Vector2 minvec = Vector2(min, min);
+  Vector2 maxvec = Vector2(max, max);
+  Rect2 r(maxvec, minvec);
+  CPTAssert(r.min() == maxvec && r.max() == minvec); 
+  Point2* p = points;
+  for (; p != points+3; ++p) {
+    r = r.surround(*p);
+  }
+   
+  CPTAssert(r.min() == points[0]);
+  CPTAssert(r.max() == Vector2(1.0f, 1.0f));    
 }
 
 void ShapeTests::testHierarchyIntersections()
