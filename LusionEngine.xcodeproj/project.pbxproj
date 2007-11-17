@@ -49,6 +49,13 @@
 		D546184C0CC541E300505BE3 /* LuaShape.h in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = D546184A0CC541E300505BE3 /* LuaShape.h */; };
 		D5478B160B80A57900108909 /* TrapezoidView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5478B140B80A57900108909 /* TrapezoidView.cpp */; };
 		D5478B170B80A57900108909 /* TrapezoidView.h in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = D5478B150B80A57900108909 /* TrapezoidView.h */; };
+		D55AC3500CE640DA00983871 /* ShapeTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D55AC34F0CE640DA00983871 /* ShapeTests.cpp */; };
+		D55AC3600CE6428A00983871 /* GLUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D55AC35F0CE6428A00983871 /* GLUtils.cpp */; };
+		D55AC3940CE644CF00983871 /* CircleShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5E5478A0CBC367500D16BE5 /* CircleShape.cpp */; };
+		D55AC3950CE644CF00983871 /* RectShape2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5E5478C0CBC367500D16BE5 /* RectShape2.cpp */; };
+		D55AC3960CE644CF00983871 /* SegmentShape2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5E5478E0CBC367500D16BE5 /* SegmentShape2.cpp */; };
+		D55AC3A70CE646A400983871 /* Shape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5DC3D3D0BDF808800430EFB /* Shape.cpp */; };
+		D55AC3A90CE646C100983871 /* PolygonUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5E7BA3F0B715761002E3AE8 /* PolygonUtils.cpp */; };
 		D56E8EC90CDC69EC00260EC2 /* Iterator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D56E8EC70CDC69EC00260EC2 /* Iterator.cpp */; };
 		D56E8ECA0CDC69EC00260EC2 /* Iterator.h in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = D56E8EC80CDC69EC00260EC2 /* Iterator.h */; };
 		D56E8F5A0B7E08A800ABD8A3 /* SegmentView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D56E8F580B7E08A800ABD8A3 /* SegmentView.cpp */; };
@@ -110,6 +117,15 @@
 		D5CA4DA20CB43125006261D6 /* TrapezoidalMap2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D542DF6A0CB41AF500AABC11 /* TrapezoidalMap2.cpp */; };
 		D5CA4DA40CB43125006261D6 /* TrapezoidNode2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D542DF6C0CB41AF500AABC11 /* TrapezoidNode2.cpp */; };
 		D5CA4DA60CB43125006261D6 /* Vector2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D542DF6E0CB41AF500AABC11 /* Vector2.cpp */; };
+		D5CAD4C80CE66D96002828D0 /* Timing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5CAD4C70CE66D96002828D0 /* Timing.cpp */; };
+		D5CAD54D0CE716D3002828D0 /* SpriteTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5CAD54C0CE716D3002828D0 /* SpriteTests.cpp */; };
+		D5CAD5520CE71786002828D0 /* Sprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5E7BA140B71570B002E3AE8 /* Sprite.cpp */; };
+		D5CAD5650CE71870002828D0 /* MotionState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D58EC2100BB9D57A00E85BAD /* MotionState.cpp */; };
+		D5CAD5690CE7188D002828D0 /* Group.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5E7BA0E0B71570B002E3AE8 /* Group.cpp */; };
+		D5CAD56D0CE718AF002828D0 /* Timing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5CAD4C70CE66D96002828D0 /* Timing.cpp */; };
+		D5CAD5780CE71F19002828D0 /* View.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5E7BA160B71570B002E3AE8 /* View.cpp */; };
+		D5CAD5830CE73A34002828D0 /* MockView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5CAD5820CE73A34002828D0 /* MockView.cpp */; };
+		D5CAD7980CEBAD70002828D0 /* ShapeGroup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5DC3D3B0BDF808700430EFB /* ShapeGroup.cpp */; };
 		D5D7F3BC0CE26B4C00A149A3 /* Exception.h in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = D5D7F3BA0CE26B4C00A149A3 /* Exception.h */; };
 		D5D7F3BD0CE26B4C00A149A3 /* Exception.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5D7F3BB0CE26B4C00A149A3 /* Exception.cpp */; };
 		D5D7F4040CE3A0A900A149A3 /* IteratorTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5D7F4030CE3A0A900A149A3 /* IteratorTests.cpp */; };
@@ -275,6 +291,10 @@
 		D546184A0CC541E300505BE3 /* LuaShape.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = LuaShape.h; sourceTree = "<group>"; };
 		D5478B140B80A57900108909 /* TrapezoidView.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = TrapezoidView.cpp; sourceTree = "<group>"; };
 		D5478B150B80A57900108909 /* TrapezoidView.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = TrapezoidView.h; sourceTree = "<group>"; };
+		D55AC34E0CE640DA00983871 /* ShapeTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShapeTests.h; path = UnitTest/ShapeTests.h; sourceTree = "<group>"; };
+		D55AC34F0CE640DA00983871 /* ShapeTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ShapeTests.cpp; path = UnitTest/ShapeTests.cpp; sourceTree = "<group>"; };
+		D55AC35E0CE6428A00983871 /* GLUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLUtils.h; sourceTree = "<group>"; };
+		D55AC35F0CE6428A00983871 /* GLUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GLUtils.cpp; sourceTree = "<group>"; };
 		D56E8EC70CDC69EC00260EC2 /* Iterator.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = Iterator.cpp; sourceTree = "<group>"; };
 		D56E8EC80CDC69EC00260EC2 /* Iterator.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = Iterator.h; sourceTree = "<group>"; };
 		D56E8F580B7E08A800ABD8A3 /* SegmentView.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = SegmentView.cpp; sourceTree = "<group>"; };
@@ -324,6 +344,12 @@
 		D5BD17E10BBD64F500BA3313 /* LuaMatrix2.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = LuaMatrix2.h; sourceTree = "<group>"; };
 		D5C18F270B4B611A0079286F /* liblua.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = liblua.a; sourceTree = "<group>"; };
 		D5C410230B4DECAB00735BD0 /* libCGAL.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libCGAL.a; sourceTree = "<group>"; };
+		D5CAD4C60CE66D96002828D0 /* Timing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timing.h; sourceTree = "<group>"; };
+		D5CAD4C70CE66D96002828D0 /* Timing.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Timing.cpp; sourceTree = "<group>"; };
+		D5CAD54B0CE716D3002828D0 /* SpriteTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SpriteTests.h; path = UnitTest/SpriteTests.h; sourceTree = "<group>"; };
+		D5CAD54C0CE716D3002828D0 /* SpriteTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SpriteTests.cpp; path = UnitTest/SpriteTests.cpp; sourceTree = "<group>"; };
+		D5CAD5810CE73A34002828D0 /* MockView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MockView.h; path = UnitTest/MockView.h; sourceTree = "<group>"; };
+		D5CAD5820CE73A34002828D0 /* MockView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MockView.cpp; path = UnitTest/MockView.cpp; sourceTree = "<group>"; };
 		D5D7F3BA0CE26B4C00A149A3 /* Exception.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Exception.h; sourceTree = "<group>"; };
 		D5D7F3BB0CE26B4C00A149A3 /* Exception.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Exception.cpp; sourceTree = "<group>"; };
 		D5D7F4020CE3A0A900A149A3 /* IteratorTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IteratorTests.h; path = UnitTest/IteratorTests.h; sourceTree = "<group>"; };
@@ -455,6 +481,8 @@
 				D58B9F300B380CF500B3EE64 /* Engine.cpp */,
 				D5E7BA3B0B715761002E3AE8 /* Types.h */,
 				D5DCB1AC0CA071B6005C1355 /* LusionUnitTest-Info.plist */,
+				D5CAD4C60CE66D96002828D0 /* Timing.h */,
+				D5CAD4C70CE66D96002828D0 /* Timing.cpp */,
 			);
 			name = LusionEngine;
 			sourceTree = "<group>";
@@ -564,6 +592,12 @@
 				D5DCB2280CA1B4DB005C1355 /* Ray2Tests.cpp */,
 				D5D7F4020CE3A0A900A149A3 /* IteratorTests.h */,
 				D5D7F4030CE3A0A900A149A3 /* IteratorTests.cpp */,
+				D55AC34E0CE640DA00983871 /* ShapeTests.h */,
+				D55AC34F0CE640DA00983871 /* ShapeTests.cpp */,
+				D5CAD54B0CE716D3002828D0 /* SpriteTests.h */,
+				D5CAD54C0CE716D3002828D0 /* SpriteTests.cpp */,
+				D5CAD5810CE73A34002828D0 /* MockView.h */,
+				D5CAD5820CE73A34002828D0 /* MockView.cpp */,
 			);
 			name = UnitTest;
 			sourceTree = "<group>";
@@ -571,6 +605,7 @@
 		D5E7BA0D0B71570B002E3AE8 /* Base */ = {
 			isa = PBXGroup;
 			children = (
+				D58EC2100BB9D57A00E85BAD /* MotionState.cpp */,
 				D504E20E0CE5C4490005AA7B /* ShapeIterator.h */,
 				D5E5478A0CBC367500D16BE5 /* CircleShape.cpp */,
 				D5E5478B0CBC367500D16BE5 /* CircleShape.h */,
@@ -584,7 +619,6 @@
 				D5DC3D3E0BDF808800430EFB /* Shape.h */,
 				D5DC3D3F0BDF808800430EFB /* Command.cpp */,
 				D5DC3D400BDF808800430EFB /* Command.h */,
-				D58EC2100BB9D57A00E85BAD /* MotionState.cpp */,
 				D58EC2110BB9D57A00E85BAD /* MotionState.h */,
 				D52D9FDB0B86697E0011E248 /* PointsView.cpp */,
 				D52D9FDC0B86697E0011E248 /* PointsView.h */,
@@ -632,6 +666,8 @@
 				D5E7BA400B715761002E3AE8 /* PolygonUtils.h */,
 				D5D7F3BA0CE26B4C00A149A3 /* Exception.h */,
 				D5D7F3BB0CE26B4C00A149A3 /* Exception.cpp */,
+				D55AC35E0CE6428A00983871 /* GLUtils.h */,
+				D55AC35F0CE6428A00983871 /* GLUtils.cpp */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -821,6 +857,8 @@
 				D546184B0CC541E300505BE3 /* LuaShape.cpp in Sources */,
 				D56E8EC90CDC69EC00260EC2 /* Iterator.cpp in Sources */,
 				D5D7F3BD0CE26B4C00A149A3 /* Exception.cpp in Sources */,
+				D55AC3600CE6428A00983871 /* GLUtils.cpp in Sources */,
+				D5CAD4C80CE66D96002828D0 /* Timing.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -828,6 +866,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5CAD7980CEBAD70002828D0 /* ShapeGroup.cpp in Sources */,
+				D5CAD5780CE71F19002828D0 /* View.cpp in Sources */,
+				D5CAD56D0CE718AF002828D0 /* Timing.cpp in Sources */,
+				D5CAD5690CE7188D002828D0 /* Group.cpp in Sources */,
+				D5CAD5650CE71870002828D0 /* MotionState.cpp in Sources */,
+				D5CAD5520CE71786002828D0 /* Sprite.cpp in Sources */,
+				D55AC3A90CE646C100983871 /* PolygonUtils.cpp in Sources */,
+				D55AC3A70CE646A400983871 /* Shape.cpp in Sources */,
+				D55AC3940CE644CF00983871 /* CircleShape.cpp in Sources */,
+				D55AC3950CE644CF00983871 /* RectShape2.cpp in Sources */,
+				D55AC3960CE644CF00983871 /* SegmentShape2.cpp in Sources */,
 				D5D7F50E0CE4F73700A149A3 /* Exception.cpp in Sources */,
 				D5D7F4230CE3A1BF00A149A3 /* Algorithms.cpp in Sources */,
 				D5D7F4220CE3A1BB00A149A3 /* Iterator.cpp in Sources */,
@@ -851,6 +900,9 @@
 				D5DCB3190CA1BBDB005C1355 /* Rect2Tests.cpp in Sources */,
 				D5DCB31A0CA1BBDB005C1355 /* Ray2Tests.cpp in Sources */,
 				D5D7F4040CE3A0A900A149A3 /* IteratorTests.cpp in Sources */,
+				D55AC3500CE640DA00983871 /* ShapeTests.cpp in Sources */,
+				D5CAD54D0CE716D3002828D0 /* SpriteTests.cpp in Sources */,
+				D5CAD5830CE73A34002828D0 /* MockView.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

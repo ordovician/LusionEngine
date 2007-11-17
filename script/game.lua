@@ -1,4 +1,4 @@
--- dofile("script/unittester.lua")
+dofile("script/unittester.lua")
 -- dofile("script/gametest.lua")
 -- Sprite.setShowCollision(true)
 
@@ -382,7 +382,7 @@ function setupCollisionHandling()
   end)
 end
 
-setupWorld()
-setupCollisionHandling()
+-- setupWorld()
+-- setupCollisionHandling()
 -- setupSeek()
 -- setupRRTSearch()

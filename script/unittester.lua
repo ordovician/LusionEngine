@@ -34,6 +34,7 @@
 --]]
 
 local testfiles = {
+  "script/UnitTest/circletest.lua",
   "script/UnitTest/spritetest.lua"
 }
 

@@ -1,11 +1,35 @@
 SpriteTest = {}
 
+function eq(a, b)
+  return math.abs(a-b) < 0.0000000001
+end
+
+function SpriteTest.hierarchyTests()
+  Debug.testHierarchyIntersect()
+end
+
+function SpriteTest.testBoundinBox()
+  local sprite = Sprite:new(PolygonView:new())
+
+  local bbox1 = Rect:new(vec(-1, -1), vec(1, 1))
+  assert(sprite:boundingBox() == bbox1)
+  
+  sprite:setSpeed(2)
+  sprite:update(0, 5)
+
+  local bbox2 = Rect:new(vec(9, -1), vec(11, 1))
+
+  assert(sprite:position() == vec(10, 0))
+  assert(sprite:boundingBox() == bbox2)
+
+end
+
 function SpriteTest.testInitialization()
   local x = 0
   local y = 0  
   local angle = 0
   local speed = 0
-  local view = View:new()
+  local view = PolygonView:new()
   local s = {}
   
   -- Testing init
@@ -14,16 +38,14 @@ function SpriteTest.testInitialization()
     s[i]:setView(view)
     s[i]:setName("sprite"..i)
   
-    local tx,  ty = s[i]:position()
-    assert(tx == x and ty == y, "Position condition failed! sprite"..i)
+    local pos =  s[i]:position()
+    assert(pos.x == x and pos.y == y, "Position condition failed! sprite"..i)
 
     local tangle = s[i]:rotation()
     assert(tangle == angle, "Angle condition failed! sprite"..i)
 
     local tspeed = s[i]:speed()
     assert(tspeed == speed, "Speed condition failed! sprite"..i.." "..tspeed.." == "..speed)
-    g:add(s[i])
-    assert(not s[i]:viewCollide(), "Screen collision test failed")
   end
 
 end
@@ -44,9 +66,12 @@ function SpriteTest.testCollision()
     s[i]:setName("sprite"..i)
   end
   
-  assert(s[1]:collide(s[2]), "Sprite collisiontest 1 failed")
-  assert(s[3]:collide(s[2]), "Sprite collisiontest 2 failed")  
-  assert(s[3]:collide(s[1]), "Sprite collisiontest 3 failed")    
+  local t  = Engine.seconds()
+  local dt = 1
+  
+  assert(s[1]:collide(s[2], t, dt), "Sprite collisiontest 1 failed")
+  assert(s[3]:collide(s[2], t, dt), "Sprite collisiontest 2 failed")  
+  assert(s[3]:collide(s[1], t, dt), "Sprite collisiontest 3 failed")    
 end
 
 function SpriteTest.testMovement()
@@ -54,10 +79,10 @@ function SpriteTest.testMovement()
   local y = 0  
   local angle = 0
   local speed = 0
-  local view = View:new()  
+  local view = PolygonView:new()  
   local s = Sprite:new(x, y, angle, speed)
   s:setView(view)
-  s:setName("sprite"..i)
+  s:setName("sprite")
   
   for i=1,4 do
     for j=1,4 do
@@ -69,18 +94,18 @@ function SpriteTest.testMovement()
       s:setPosition(x, y)
       s:setVelocity(dx, dy)
 
-      local tdx, tdy = s:velocity()
-      assert(eq(tdx,dx) and eq(tdy,dy))
-      local tx, ty = s:position()
-      assert(tx == x and ty == y)
+      local dv = s:velocity()
+      assert(eq(dv.x, dx) and eq(dv.y, dy))
+      local pos = s:position()
+      assert(pos.x == x and pos.y == y)
 
-      s:update()
-      tx, ty = s:position()
-      assert(eq(tx, x+dx) and eq(ty,y+dy), "Update test1: "..tx.."="..(x+dx).." "..ty.."="..(x+dy))
+      s:update(Engine.seconds(), 1)
+      pos = s:position()
+      assert(eq(pos.x, x+dx) and eq(pos.y, y+dy), "Update test1: "..pos.x.."="..(x+dx).." "..pos.y.."="..(x+dy))
       s:rotate(90)
-      s:update()
-      tx, ty = s:position()        
-      assert(eq(tx, x+dx-dy) and eq(ty, y+dy+dx), "Update test2: "..tx.."="..(x+dx-dy).." "..ty.."="..(x+dy+dx))  
+      s:update(Engine.seconds(), 1)
+      local pos = s:position()        
+      assert(eq(pos.x, x+dx-dy) and eq(pos.y, y+dy+dx), "Update test2: "..pos.x.."="..(x+dx-dy).." "..pos.y.."="..(x+dy+dx))  
     end
   end
 end
