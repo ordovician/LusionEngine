@@ -229,6 +229,15 @@ static int halfSize(lua_State *L)
 }
 
 // Request
+static int equal(lua_State *L) 
+{
+  checkArguments(L);
+  Rect2 r1 = Rect2_pull(L, 1);
+  Rect2 r2 = Rect2_pull(L, 2); 
+  lua_pushboolean(L, r1 == r2); 
+  return 1; 
+}
+
 static int isNull(lua_State *L) 
 {
   int n = lua_gettop(L);  // Number of arguments
@@ -289,6 +298,7 @@ static const luaL_Reg gRectFuncs[] = {
   {"halfSize", halfSize},                  
 
   // Request
+  {"__eq", equal},                  
   {"isNull", isNull},                  
   {"isEmpty", isEmpty},                  
   {"isValid", isValid},                  

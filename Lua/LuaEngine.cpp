@@ -9,6 +9,7 @@
 
 #include "LuaEngine.h"
 #include "Engine.h"
+#include "Timing.h"
 #include "Utils/PolygonUtils.h"
 #include "Utils/GLUtils.h"
 
@@ -33,6 +34,11 @@
 #include "Lua/Geometry/LuaMatrix2.h"
 
 #include "Lua/LuaUtils.h"
+
+// For testing Sprite Hierarchy test
+#include "Base/PolygonView.h"
+#include "Base/Sprite.h"
+#include "Base/ShapeGroup.h"
 
 #include <lua.hpp>
 #include <iostream>
@@ -315,11 +321,38 @@ static int projectPolygon(lua_State* L)
   return 1;
 }
 
+static int testHierarchyIntersect(lua_State* L)
+{
+  int n = lua_gettop(L);
+  if (n != 0)
+    return luaL_error(L, "Got %d arguments expected 0", n);     
+    
+  vector<Shape*> sprites;
+
+  View* view = new PolygonView;
+  for (int i=0; i<5; ++i) {
+    Sprite* sp = new Sprite(view);
+    sp->setPosition(Vector2(4.0f*i, 4.0f*i));
+    sprites.push_back(sp);
+  }
+
+  ShapeGroup* group = new ShapeGroup(sprites.begin(), sprites.end());
+
+  Rect2 r1(Vector2(-1.0f, -1.0f), Vector2(17.0f, 17.0f));    
+
+  assert(group->boundingBox() == r1);
+
+  group->release();
+  view->release();
+
+  return 0;
+}
+
 static int polygonCollision(lua_State* L)
 {
   int n = lua_gettop(L);
   if (n != 2)
-    return luaL_error(L, "Got %d arguments expected 2 (poly1, poly2)", n);    
+    return luaL_error(L, "Got %d arguments expected 2 (poly1, poly2)", n);   
     
   Polygon2 p1, p2;
   getPolygon(L, 1, p1);
@@ -329,6 +362,8 @@ static int polygonCollision(lua_State* L)
   lua_pushboolean(L, is_col);
   return 1;
 }
+
+
 
 // functions that will show up in our Lua environment
 static const luaL_Reg gEngineFuncs[] = {
@@ -359,7 +394,8 @@ static const luaL_Reg gDebugFuncs[] = {
   {"projectPoint", projectPoint},    
   {"calcDirection", calcDirection},    
   {"projectPolygon", projectPolygon}, 
-  {"polygonCollision", polygonCollision},                     
+  {"polygonCollision", polygonCollision},
+  {"testHierarchyIntersect", testHierarchyIntersect},                       
   {NULL, NULL}
 };
 

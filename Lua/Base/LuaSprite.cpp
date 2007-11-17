@@ -581,6 +581,18 @@ static int groups(lua_State* L)
   return 1;
 }
 
+static int boundingBox(lua_State *L) 
+{
+  int n = lua_gettop(L);  // Number of arguments
+  if (n != 1)
+    return luaL_error(L, "Got %d arguments expected 1", n); 
+  Sprite* sprite = checkSprite(L);
+  Rect2 r = sprite->boundingBox();
+  pushTable(L, r);
+
+  return 1;
+}
+
 static int setCollisionHandler(lua_State* L)
 {
   int n = lua_gettop(L);
@@ -698,19 +710,6 @@ static int setVisible(lua_State *L)
     luaL_error(L, "Got %d arguments expected 2", n); 
   
   return 0;
-}
-
-static int viewCollide(lua_State *L) 
-{
-  int n = lua_gettop(L);  // Number of arguments
-  if (n == 1) {
-    Sprite* sprite = checkSprite(L);
-    assert(sprite != 0);
-    lua_pushboolean(L, sprite->viewCollide());
-  }
-  else
-    return luaL_error(L, "Got %d arguments expected 1", n); 
-  return 1;
 }
 
 // Calculations
@@ -974,6 +973,7 @@ static const luaL_Reg gSpriteFuncs[] = {
   {"id", id},        
   {"groups", groups},        
 
+  {"boundingBox", boundingBox},
   {"setCollisionHandler", setCollisionHandler},
   {"setInsideHandler", setInsideHandler},
   {"setUpdateHandler", setUpdateHandler},
@@ -982,7 +982,6 @@ static const luaL_Reg gSpriteFuncs[] = {
   // Request
   {"visible", visible},
   {"setVisible", setVisible},    
-  {"viewCollide", viewCollide}, 
     
   // Calculations
   {"collide", collide},    
