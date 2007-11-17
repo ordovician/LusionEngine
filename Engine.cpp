@@ -15,6 +15,7 @@
 #include "Base/Group.h"
 #include "Base/PolygonView.h"
 #include "Utils/PolygonUtils.h"
+#include "Utils/GLUtils.h"
 
 #include <Core/SharedObject.hpp>
 #include <Core/AutoreleasePool.hpp>
@@ -32,8 +33,6 @@ using namespace std;
 static const int RUN_GAME_LOOP = 1;
 static const int ENGINE_STATS = 2;
 static SDL_TimerID gTimer;
-//static SDL_TimerID gStatTimer;
-static int gTicksPerFrame = 30;  // milliseconds per frame
 static int gStartTime = 0;
 
 static bool       gDone;
@@ -210,7 +209,7 @@ static void installTimer()
 {
     // Called almost for each frame if we assume 60 frames per second
 
-    gTimer = SDL_AddTimer(gTicksPerFrame, engineLoopTimer, NULL);
+    gTimer = SDL_AddTimer(ticksPerFrame(), engineLoopTimer, NULL);
 
   #ifdef PRINT_AVG_LOOP_TIME  
     // Called each 2 sec to show statistics
@@ -313,29 +312,10 @@ Rect2 worldView()
   return gView;
 }
 
-void setTicksPerFrame(int noTicks)
-{
-  gTicksPerFrame = noTicks;
-}
-
-int ticksPerFrame()
-{
-  return gTicksPerFrame;
-}
-
-real secondsPerFrame()
-{
-  return gTicksPerFrame*(1.0/1000.0);
-}
-
-real secondsPassed()
-{
-  return SDL_GetTicks()*(1.0/1000.0);
-}
 
 int ticksLeft(int start_ticks)
 {
-  return gTicksPerFrame - (SDL_GetTicks()-start_ticks);
+  return ticksPerFrame() - (SDL_GetTicks()-start_ticks);
 }
 
 void startTimer()
