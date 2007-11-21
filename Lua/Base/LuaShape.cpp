@@ -7,7 +7,8 @@
  *
  */
 
-#include "Lua/Base/LuaCollisionGroup.h"
+#include "Lua/Base/LuaShape.h"
+
 #include "Lua/LuaUtils.h"
 #include "Lua/Geometry/LuaMotionState.h"
 #include "Lua/Geometry/LuaRect2.h"
@@ -54,6 +55,28 @@ static int newShapeGroup(lua_State *L)
   Group* group = checkGroup(L,2);
   assert(group != 0);
   *g = new ShapeGroup(group->shapeIterator());
+
+  setUserDataMetatable(L, "Lusion.Shape");
+
+  // Handle user initialization
+  lua_getfield(L, 1, "init"); 
+  lua_pushvalue(L, -2);     // Our new instance should be lying on stack right below function 'init'
+  lua_call(L, 1, 0);     
+
+  return 1; 
+}
+
+static int newGroup(lua_State *L) 
+{
+  int n = lua_gettop(L);  // Number of arguments
+  if (n != 1)
+    return luaL_error(L, "Wrong number of arguments in Group constructor. Should be 0"); 
+  luaL_checktype(L, 1, LUA_TTABLE); 
+
+  pushClassInstance(L);
+    
+  Group **g = (Group **)lua_newuserdata(L, sizeof(Group *));
+  *g = new Group;
 
   setUserDataMetatable(L, "Lusion.Shape");
 
@@ -251,6 +274,43 @@ static int update(lua_State *L)
   return 0;
 }
 
+// group:addKid(sprite)
+static int addKid(lua_State *L) 
+{
+  int n = lua_gettop(L);  // Number of arguments
+  if (n != 2) 
+    return luaL_error(L, "Got %d arguments expected 2", n); 
+    
+  Shape* shape = checkShape(L, 1);    
+  Shape* kid   = checkShape(L, 2);    
+  shape->addKid(kid);
+  
+  // Store sprite in group table using its address as key
+  lua_pushlightuserdata(L, kid);
+  lua_pushvalue(L,2);
+  lua_settable(L,1);
+  
+  return 0;
+}
+
+static int removeKid(lua_State *L) 
+{
+  int n = lua_gettop(L);  // Number of arguments
+  if (n != 2) 
+    return luaL_error(L, "Got %d arguments expected 2", n); 
+    
+  Shape* shape = checkShape(L, 1);    
+  Shape* kid   = checkShape(L, 2);    
+  shape->addKid(kid);
+
+  // Remove the sprite from group table by setting it to nil
+  lua_pushlightuserdata(L, kid);
+  lua_pushnil(L);
+  lua_settable(L,1);
+
+  return 0;
+}
+
 // __gc
 static int destroyShape(lua_State* L)
 {
@@ -267,7 +327,8 @@ static const luaL_Reg gDestroyShapeFuncs[] = {
 };
 
 static const luaL_Reg gShapeFuncs[] = {
-  {"newGroup", newShapeGroup},
+  {"newShapeGroup", newShapeGroup},
+  {"newGroup", newGroup},  
   {"newCircle", newCircleShape},  
   {"newRect", newRectShape2},  
   {"newSegment", newSegmentShape2},      
@@ -287,6 +348,8 @@ static const luaL_Reg gShapeFuncs[] = {
     
   // Operations  
   {"update", update},
+  {"private_add", addKid},
+  {"private_remove", removeKid},    
   {NULL, NULL}
 };
 

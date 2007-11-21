@@ -10,8 +10,8 @@
 #include "Lua/Geometry/LuaMotionState.h"
 #include "Lua/Geometry/LuaVector2.h"
 #include "Lua/Geometry/LuaRect2.h"
+#include "Lua/Base/LuaShape.h"
 #include "Lua/Base/LuaSprite.h"
-#include "Lua/Base/LuaCollisionGroup.h"
 #include "Lua/LuaUtils.h"
 #include "LuaEngine.h"
 #include "Engine.h"
@@ -101,7 +101,7 @@ static int newSprite(lua_State *L)
     real speed = luaL_checknumber (L, 4); 
     *s = new Sprite(Vector2_pull(L,2), dir, speed);    
   }
-  else if (n == 2){
+  else if (n == 2) {
     View* view = checkView(L,2);
     *s = new Sprite(view);  
     lua_pushvalue(L, 2);
@@ -138,15 +138,6 @@ static int init(lua_State *L)
   // 
   // cout << "initializing sprite: 0x" << hex << (int)sprite << endl;
   
-  return 0;
-}
-
-// __gc for Sprite
-static int destroySprite(lua_State* L)
-{
-  Sprite* sprite = 0;
-  checkUserData(L, "Lusion.Shape", sprite);
-  sprite->release();
   return 0;
 }
 
@@ -719,8 +710,7 @@ static int collide(lua_State* L)
   if (n != 5 && n != 4)
     return luaL_error(L, "Got %d arguments expected 5 or 4 (self, group, start_time, delta_time [, function])", n); 
   Sprite* sprite = checkSprite(L,1);
-//  Shape* obj = checkShape(L,2); 
-  ShapeGroup* obj = checkShapeGroup(L,2);   
+  Shape*  obj = checkShape(L,2);   
   assert(sprite != 0);    
   assert(obj != 0);      
 
@@ -921,13 +911,6 @@ static int dummy(lua_State *L)
   return 0;
 }
 
-// functions that will show up in our Lua environment
-static const luaL_Reg gDestroySpriteFuncs[] = {
-  // Destruction
-  {"__gc", destroySprite},
-  {NULL, NULL}
-};
-
 static const luaL_Reg gSpriteFuncs[] = {
   // Creation
   {"new", newSprite},
@@ -1012,11 +995,10 @@ static const luaL_Reg gSpriteFuncs[] = {
 void initLuaSprite(lua_State *L)
 {  
   // Metatable to be used for userdata identification
-  luaL_newmetatable(L, "Lusion.Shape");
-  luaL_register(L, 0, gDestroySpriteFuncs);      
-  luaL_register(L, 0, gSpriteFuncs);      
-  lua_pushvalue(L,-1);
-  lua_setfield(L,-2, "__index");  
+  // luaL_newmetatable(L, "Lusion.Shape");
+  // luaL_register(L, 0, gSpriteFuncs);      
+  // lua_pushvalue(L,-1);
+  // lua_setfield(L,-2, "__index");  
   
   luaL_register(L, "Sprite", gSpriteFuncs);  
   

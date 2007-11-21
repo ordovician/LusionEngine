@@ -60,11 +60,6 @@ ShapeIterator* Group::shapeIterator() const
   return itr;
 }
 
-int Group::size() const
-{
-  return iShapes.size();
-}
-
 Rect2 Group::boundingBox() const
 {
   return iBBox;
@@ -82,7 +77,7 @@ bool Group::isSimple() const
 }
 
 // Operations
-void Group::add(Shape* shape)
+void Group::addKid(Shape* shape)
 {
   assert(shape != 0);
   
@@ -96,8 +91,10 @@ void Group::add(Shape* shape)
   }
 }
 
-void Group::remove(Shape* shape)
+void Group::removeKid(Shape* shape)
 {
+  assert(shape != 0);
+  
   if (contains(shape)) {
     if (*iCurShape == shape) nextShape();
     iShapes.erase(shape);

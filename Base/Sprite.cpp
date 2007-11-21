@@ -65,7 +65,7 @@ Sprite::~Sprite()
   
   GroupSet::iterator group = iGroups.begin();
   for (;group != iGroups.end(); ++group) {
-    (*group)->remove(this);
+    (*group)->removeKid(this);
   }
 }
 
@@ -86,7 +86,7 @@ void Sprite::init(const Point2& pos, real deg, real speed)
   iState = new MotionState(pos, deg, speed);
 
   updateCache();  
-  renderGroup()->add(this); // all sprites should be in this since they need to be rendered    
+  renderGroup()->addKid(this); // all sprites should be in this since they need to be rendered    
 
   // cout << hex << "0x" << (int)this << " sprite created" << endl;  // DEBUG
 }
@@ -474,7 +474,7 @@ void Sprite::kill()
   GroupSet::iterator group = iGroups.begin();
   // NOTE: not sure if iterator will be valid through this
   for (;group != iGroups.end(); ++group) {
-    (*group)->remove(this);
+    (*group)->removeKid(this);
   }
 }
    

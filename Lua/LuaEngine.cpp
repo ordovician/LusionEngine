@@ -15,8 +15,7 @@
 
 #include "Lua/Base/LuaSprite.h"
 #include "Lua/Base/LuaView.h"
-#include "Lua/Base/LuaGroup.h"
-#include "Lua/Base/LuaCollisionGroup.h"
+#include "Lua/Base/LuaShape.h"
 
 #include "Lua/Geometry/LuaVector2.h"
 #include "Lua/Geometry/LuaSegment2.h"
@@ -418,11 +417,10 @@ void initLua()
   
   luaL_register(gLuaState, "Engine", gEngineFuncs);
   luaL_register(gLuaState, "Debug", gDebugFuncs);
-  
+
+  initLuaShape(gLuaState);  
   initLuaSprite(gLuaState);
   initLuaView(gLuaState);
-  initLuaGroup(gLuaState);
-  initLuaShapeGroup(gLuaState);
     
   initLuaVector2(gLuaState);
   initLuaSegment2(gLuaState);  
@@ -439,8 +437,6 @@ void initLua()
   initLuaKeyStates(gLuaState);    
   initLuaMatrix2(gLuaState);    
     
-  // initLuaTrapezoidNode2(gLuaState);  
-
   if (luaL_dofile(gLuaState, gEngineScript)) {
     cerr << "Error when executing engine init script " 
          << lua_tostring(gLuaState, -1) << endl;

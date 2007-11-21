@@ -51,16 +51,6 @@ static int newGroup(lua_State *L)
   return 1; 
 }
 
-static int init(lua_State *L) 
-{
-  // int n = lua_gettop(L);  // Number of arguments
-  // if (n != 1) 
-  //   return luaL_error(L, "Got %d arguments expected 1 (self)", n); 
-  // Group* g = checkGroup(L);
-  // cout << "Initializing group: " << (int)g << endl;
-  return 0;
-}
-
 // Accessors
 static int size(lua_State *L) 
 {
@@ -102,57 +92,6 @@ static int contains(lua_State *L)
 }
 
 
-// Operations
-// group:add(sprite)
-static int add(lua_State *L) 
-{
-  int n = lua_gettop(L);  // Number of arguments
-  if (n != 2) 
-    return luaL_error(L, "Got %d arguments expected 2", n); 
-    
-  Group* group = checkGroup(L, 1);    
-  Sprite* sprite = checkSprite(L, 2);
-  group->add(sprite);
-  
-  // Store sprite in group table using its address as key
-  lua_pushlightuserdata(L, sprite);
-  lua_pushvalue(L,2);
-  lua_settable(L,1);
-  
-  return 0;
-}
-
-static int remove(lua_State *L) 
-{
-  int n = lua_gettop(L);  // Number of arguments
-  if (n != 2) 
-    return luaL_error(L, "Got %d arguments expected 2", n); 
-    
-  Group* group = checkGroup(L, 1);    
-  Sprite* sprite = checkSprite(L, 2);
-  group->remove(sprite);
-
-  // Remove the sprite from group table by setting it to nil
-  lua_pushlightuserdata(L, sprite);
-  lua_pushnil(L);
-  lua_settable(L,1);
-
-  return 0;
-}
-
-static int update(lua_State *L) 
-{
-  int n = lua_gettop(L);  // Number of arguments
-  if (n != 3) 
-    return luaL_error(L, "Got %d arguments expected 3 (self, start_time, delta_time)", n); 
-    
-  Group* group = checkGroup(L);      
-  assert(group != 0);
-  
-  group->update(luaL_checknumber(L,2), luaL_checknumber(L,3));
-  
-  return 0;
-}
 
 static int doPlanning(lua_State *L) 
 {
@@ -166,17 +105,6 @@ static int doPlanning(lua_State *L)
   group->doPlanning(luaL_checknumber(L,2), luaL_checknumber(L,3));
   
   return 0;  
-}
-
-static int render(lua_State *L) 
-{
-  int n = lua_gettop(L);  // Number of arguments
-  if (n != 1) 
-    return luaL_error(L, "Got %d arguments expected 1", n); 
-    
-  Group* group = checkGroup(L);    
-  group->draw(worldView());
-  return 0;
 }
 
 // clear helper
@@ -218,55 +146,13 @@ static int nextShape(lua_State *L)
   return 1;
 }
 
-static int collide(lua_State *L) 
-{
-  int n = lua_gettop(L);  // Number of arguments
-  if (n != 4 && n != 5) 
-    return luaL_error(L, "Got %d arguments expected 4 or 5 (self, collision_obj, start_time, delta_time [,function])", n); 
-    
-  Group* me = checkGroup(L, 1);    
-  Shape* other = checkShape(L, 2);
-
-  assert(me != 0);
-  assert(other != 0);
-  
-  real t = luaL_checknumber(L, 3);
-  real dt = luaL_checknumber(L, 4);
-
-  bool ret = false;
-  
-  if (n == 4) {
-    ret = me->collide(other, t, dt);
-  }
-  else if (n == 5) {
-    lua_pushvalue(L, 5);
-    LuaCommand cmd(L);
-    ret = me->collide(other, t, dt, &cmd);
-  }
-
-  lua_pushboolean(L, ret);
-  return 1;
-}
-
-// __gc
-static int destroyGroup(lua_State* L)
-{
-  Group* group = 0;
-  checkUserData(L, "Lusion.Shape", group);
-  group->release();
-  return 0;
-}
-
 // functions that will show up in our Lua environment
-static const luaL_Reg gDestroyGroupFuncs[] = {
-  {"__gc", destroyGroup},  
-  {NULL, NULL}  
+static const luaL_Reg gGroupClassFuncs[] = {
+  {"new", newGroup},
+  {NULL, NULL}
 };
 
 static const luaL_Reg gGroupFuncs[] = {
-  {"new", newGroup},
-  {"init", init},
-
   // Accessors
   {"size", size},
 //  {"sprites", sprites}, TODO: reintroduce later
@@ -277,12 +163,9 @@ static const luaL_Reg gGroupFuncs[] = {
   // Operations
   {"private_add", add},
   {"private_remove", remove},
-  {"update", update},
   {"doPlanning", doPlanning},
-  {"render", render},
   {"clear", clear},
   {"nextShape", nextShape},  
-  {"collide", collide},      
   {NULL, NULL}
 };
 
@@ -291,10 +174,9 @@ void initLuaGroup(lua_State *L)
 {    
   // Metatable to be used for userdata identification
   luaL_newmetatable(L, "Lusion.Shape");
-  luaL_register(L, 0, gDestroyGroupFuncs);      
   luaL_register(L, 0, gGroupFuncs);      
   lua_pushvalue(L,-1);
   lua_setfield(L,-2, "__index");  
 
-  luaL_register(L, "Group", gGroupFuncs);  
+  luaL_register(L, "Group", gGroupClassFuncs);  
 }

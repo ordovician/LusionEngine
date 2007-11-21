@@ -38,12 +38,23 @@ end
 	Extra methods for the sprite class.
 --]]
 
-function Group:add(sprite)
+Group = {}
+ShapeGroup = {}
+
+function Group:new()
+  return Shape:newGroup()
+end
+
+function ShapeGroup:new(group)
+  return Shape:newShapeGroup(group)
+end
+
+function Shape:add(sprite)
   sprite[self.__self] = self  -- Add group to sprite
   self:private_add(sprite)
 end
 
-function Group:remove(sprite)
+function Shape:remove(sprite)
   sprite[self.__self] = nil -- Remove group from sprite
   self:private_remove(sprite)
 end

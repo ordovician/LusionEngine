@@ -26,7 +26,6 @@ public:
   Rect2 boundingBox() const;  
   int   noShapes() const;  
   ShapeIterator* shapeIterator() const;
-  int   size() const;
   
   // Request
   bool contains(Shape* shape) const;
@@ -38,8 +37,8 @@ public:
   void draw(const Rect2& r) const;
         
   // Operations
-  void add(Shape* shape);
-  void remove(Shape* shape);
+  void addKid(Shape* shape);
+  void removeKid(Shape* shape);
   void update(real start_time, real delta_time);
   void doPlanning(real start_time, real delta_time);
   void clear();
