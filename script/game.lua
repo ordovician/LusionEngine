@@ -31,36 +31,36 @@ end
 -- Creates a random number of obstacles and return the sprite group containing them
 function createRandomObstacles(noObstacles)  
   local obstacles = Group:new()
-  print("a")
+
   for i=1,noObstacles do
     local angle = math.random(0,360)
     local speed = 0  
     local obstacle = Sprite:new()
-    print("b")
+
     -- Create a random shape for view
     local m = 0.6
     local w = math.random(2,10)*m;
     local h = math.random(2,10)*m; 
 
     local obstacleView = PolygonView:new(Polygon:rect(w, h))        
-    print("c")    
+
     obstacleView:setColor(1,1,0.3)
       
     obstacle:setView(obstacleView)
     obstacle:setName("Obstacle"..i)
     obstacle:setSpeed(speed)
     obstacle:setRotation(angle)    
-    print("d")    
+
     local x,y
     repeat       
       x = math.random(xmin+5, xmax-5)
       y = math.random(ymin+5, ymax-5)    
       obstacle:setPosition(x,y) 
-      print("e")      
+
     until not obstacles:collide(obstacle, Engine.seconds(), 1)
-    print("f")
+
     obstacles:add(obstacle)
-  print("g")    
+
     -- obstacle:setVisible(false)
   end
   return obstacles
@@ -129,7 +129,7 @@ function update(start_time)
   -- actors:collide(obstacles, start_time, delta_time, function(self, other, t, dt) print("collision!") end)
   actors:collide(obstacles, start_time, delta_time)
   
-  if obstacles:collide(currentNPC(), start_time, Engine.secondsPerFrame()) then print("collision") end
+  -- if obstacles:collide(currentNPC(), start_time, Engine.secondsPerFrame()) then print("collision") end
 end
 
 function setupRRTSearch()
@@ -350,20 +350,18 @@ function displayTrajectories(angvel_min, angvel_max, angvel_steps, dt, steps)
 end
 
 function setupWorld()
-  print("0")
   obstacles = createRandomObstacles(10)
-  print("1")
   obstacles = ShapeGroup:new(obstacles)
   -- boxes = Collection:new(unpack(col_objs:boundingBoxes()))
   -- boxes = boxes:map(function(x) return Sprite:new(OutlineView:new(x:toPolygon())) end)
-  print("2")  
+
   actors = Group:new()
-  print("3")  
+
   local view = PolygonView:new()
   npcs = {}
   npcs[1] = actors:addNPC(view)
   npcs[2] = actors:addNPC(view)  
-  print("4")  
+
   selectedNPC = 2
   -- trailingLine = Sprite:new()
   -- trailingLine:setView(SegmentView:new())
@@ -372,11 +370,11 @@ function setupWorld()
   -- npc:setPosition(vec(0, 0))
   Engine.registerKeyClickEvent(Key.z, makePlayerSwitch)  
   Engine.update = update  
-  print("5")  
+
   Engine.registerKeyClickEvent(Key.v, function()
     Engine.setView(Rect:new(-20,-20, 20, 20))
   end)  
-  print("5")  
+
 end
 
 function setupCollisionHandling()
@@ -384,11 +382,11 @@ function setupCollisionHandling()
   npc:setCollisionHandler(function(self, other, t, dt)
     npc:setPosition(npc:prevPosition())
     npc:stop()
-    print("Big ass!!")
+
   end)
 end
 
 setupWorld()
--- setupCollisionHandling()
+setupCollisionHandling()
 -- setupSeek()
--- setupRRTSearch()
+setupRRTSearch()
