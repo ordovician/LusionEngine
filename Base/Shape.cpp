@@ -138,3 +138,19 @@ void Shape::update(real start_time, real delta_time)
 {
   // Do nothing
 }
+
+
+/*!  
+  Should be overriden by subclasses which represent simple shapes. A simple shape
+  is a shape that is not a composite (consiting of serval other shapes).
+  
+  This method will typically be called in collide method of subclasses to handle
+  collision once it has been determined that a collision has occured. 
+  
+  If you implement your own collide method in a subclass, you should call 
+  handleCollision on each involved shape to let the shape handle the collision. 
+*/
+void Shape::handleCollision(Shape* other, real start_time, real delta_time)
+{
+  // Do nothing
+}

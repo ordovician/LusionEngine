@@ -50,4 +50,5 @@ public:
   virtual void removeKid(Shape* shape);
   
   virtual void update(real start_time, real delta_time);  
+  virtual void handleCollision(Shape* other, real start_time, real delta_time);    
 };

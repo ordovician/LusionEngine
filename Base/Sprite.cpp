@@ -345,20 +345,38 @@ bool Sprite::visible() const
 }
 
 #pragma mark Calculations
+/*!
+  Check if there is a collision between two sprites and if there
+  is performs collision handling either described by \a command or
+  by collision command set on each sprite object. 
+  
+  \param other sprite we are checking for collision against.
+  \param command may be 0. In which case commands stored on each sprite is executed.
+  if command is not 0 then this command is performed instead.
+  
+  \see setCollisionCommand
+  \see collisionCommand  
+*/
 bool Sprite::collide(Shape* other, real t, real dt, SpriteCommand* command) 
 {
+  assert( other != 0);
+  
   if (!boundingBox().intersect(other->boundingBox()))
     return false;
   if (!other->isSimple())
     return other->collide(this, t, dt, command);
 
   ShallowPoints2 poly = collisionPolygon();    
-  bool is_colliding = other->intersect(poly.first, poly.second);
-  if (is_colliding && command != 0) 
-    command->execute(this, other, t, dt);
-  else if (is_colliding && iCollisionCommand != 0)
-    iCollisionCommand->execute(this, other, t, dt);
-  return is_colliding;
+  if (other->intersect(poly.first, poly.second)) {
+    if (command) command->execute(this, other, t, dt);
+    else {
+      handleCollision(other, t, dt);
+      other->handleCollision(this, t, dt);
+    }
+    return true;
+  }
+  
+  return false;
 }
 
 bool Sprite::inside(const Point2& p, real t, real dt,  SpriteCommand* command)
@@ -477,7 +495,19 @@ void Sprite::kill()
     (*group)->removeKid(this);
   }
 }
-   
+
+/*!
+  Handles collision. Call when one has determined that a collision has happened and
+  want to perform the sprites collision command. Only makes sure that collision command
+  has been set before performing it. 
+*/   
+void Sprite::handleCollision(Shape* other, real t, real dt)
+{
+  if (iCollisionCommand)
+    iCollisionCommand->execute(this, other, t, dt);
+}
+     
+#pragma mark Only for internal use   
 /*! This should only be called from Group.add(sprite) */
 void Sprite::add(Group* group)
 {

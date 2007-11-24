@@ -119,7 +119,9 @@ public:
   void  reverse();
   void  stop();
   void  kill();
-    
+  
+  void  handleCollision(Shape* other, real t, real dt);
+   
   // Only for internal use
   void  add(Group* group);
   void  remove(Group* group);
