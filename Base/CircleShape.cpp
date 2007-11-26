@@ -9,7 +9,7 @@
 
 #include <Base/CircleShape.h>
 #include <Engine.h>
-#include <Base/Command.h>
+#include <Base/Action.h>
 #include <Utils/PolygonUtils.h>
 
 #include <iostream>
@@ -45,7 +45,7 @@ Rect2 CircleShape::boundingBox() const
 }
   
 // Request
-bool CircleShape::collide(Shape* other, real t, real dt, SpriteCommand* command)
+bool CircleShape::collide(Shape* other, real t, real dt, CollisionAction* command)
 {
   if (!boundingBox().intersect(other->boundingBox()))
     return false;
@@ -58,11 +58,11 @@ bool CircleShape::collide(Shape* other, real t, real dt, SpriteCommand* command)
   return is_colliding;  
 }
 
-bool CircleShape::inside(const Point2& p, real t, real dt, SpriteCommand* command)
+bool CircleShape::inside(const Point2& p, real t, real dt, Action* command)
 {
   if (iCircle.inside(p)) {
     if (command)
-      command->execute(this, 0, t, dt);
+      command->execute(this, t, dt);
     return true;      
   }
   return false;

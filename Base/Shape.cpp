@@ -154,3 +154,15 @@ void Shape::handleCollision(Shape* other, real start_time, real delta_time)
 {
   // Do nothing
 }
+
+/*!
+  Should be overriden by subclasses which wants particular actions to be performed with
+  a certain regularity but which is not time critical enough to be performed each frame
+  of game or step in simulation.
+  
+  Default implementation is to do nothing. 
+*/
+void Shape::doPlanning(real start_time, real delta_time)
+{
+  // Do nothing
+}

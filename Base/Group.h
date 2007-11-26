@@ -32,8 +32,8 @@ public:
   bool isSimple() const;
   
   // Calculations
-  bool collide(Shape* other, real t, real dt, SpriteCommand* command = 0);
-  bool inside(const Point2& p, real t, real dt, SpriteCommand* command);
+  bool collide(Shape* other, real t, real dt, CollisionAction* command = 0);
+  bool inside(const Point2& p, real t, real dt, Action* command);
   void draw(const Rect2& r) const;
         
   // Operations

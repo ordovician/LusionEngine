@@ -18,7 +18,8 @@
 
 #include <Base/ShapeIterator.h>
 
-class SpriteCommand;
+class CollisionAction;
+class Action;
 
 class Shape : public SharedObject
 {
@@ -34,8 +35,8 @@ public:
     
   // Request
   virtual bool isSimple() const;
-  virtual bool collide(Shape* other, real t, real dt, SpriteCommand* command = 0) = 0;  
-  virtual bool inside(const Point2& p, real t, real dt, SpriteCommand* command = 0) = 0;
+  virtual bool collide(Shape* other, real t, real dt, CollisionAction* command = 0) = 0;  
+  virtual bool inside(const Point2& p, real t, real dt, Action* command = 0) = 0;
     
   // Calculations
   virtual bool intersect(const Circle& c) const;
@@ -48,7 +49,8 @@ public:
   // Operations
   virtual void addKid(Shape* shape);
   virtual void removeKid(Shape* shape);
-  
+
   virtual void update(real start_time, real delta_time);  
   virtual void handleCollision(Shape* other, real start_time, real delta_time);    
+  virtual void doPlanning(real start_time, real delta_time);  
 };

@@ -9,7 +9,7 @@
 
 #include <Base/ShapeGroup.h>
 #include <Engine.h>
-#include <Base/Command.h>
+#include <Base/Action.h>
 
 #include <Utils/Algorithms.h>
 #include "Utils/Exception.h"
@@ -146,7 +146,7 @@ bool ShapeGroup::isSimple() const
   this group. If calculations take too long time, meaning more than \a dt time is spent since
   time \a t and now, then false will be returned even if there really was a collision.
 */
-bool ShapeGroup::collide(Shape* other, real t, real dt, SpriteCommand* command)
+bool ShapeGroup::collide(Shape* other, real t, real dt, CollisionAction* command)
 {
   if (!iBox.intersect(other->boundingBox()))
     return false;
@@ -160,7 +160,7 @@ bool ShapeGroup::collide(Shape* other, real t, real dt, SpriteCommand* command)
   return hit_right || hit_left;  
 }
 
-bool ShapeGroup::inside(const Point2& p, real t, real dt, SpriteCommand* command)
+bool ShapeGroup::inside(const Point2& p, real t, real dt, Action* command)
 {
   if (!iBox.inside(p))
     return false;

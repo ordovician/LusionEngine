@@ -9,7 +9,7 @@
 
 #include <Base/SegmentShape2.h>
 #include <Engine.h>
-#include <Base/Command.h>
+#include <Base/Action.h>
 #include <Utils/PolygonUtils.h>
 
 #include <iostream>
@@ -43,7 +43,7 @@ Rect2 SegmentShape2::boundingBox() const
 }
   
 // Request
-bool SegmentShape2::collide(Shape* other, real t, real dt, SpriteCommand* command)
+bool SegmentShape2::collide(Shape* other, real t, real dt, CollisionAction* command)
 {
   if (!boundingBox().intersect(other->boundingBox()))
     return false;
@@ -56,10 +56,10 @@ bool SegmentShape2::collide(Shape* other, real t, real dt, SpriteCommand* comman
   return is_colliding;  
 }
 
-bool SegmentShape2::inside(const Point2& p, real t, real dt, SpriteCommand* command)
+bool SegmentShape2::inside(const Point2& p, real t, real dt, Action* command)
 {
   if (iSeg.isOn(p)) {
-    command->execute(this, 0, t, dt);
+    command->execute(this, t, dt);
     return true;      
   }
   return false;

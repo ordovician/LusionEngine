@@ -9,7 +9,7 @@
 
 #include "Base/Group.h"
 #include "Timing.h"
-#include "Base/Command.h"
+#include "Base/Action.h"
 #include "Base/ShapeIterator.h"
 
 #include <iostream>
@@ -121,11 +121,14 @@ void Group::update(real start_time, real delta_time)
   iBBox = bbox;
 }
 
+/*!
+  Do a round robin calling doPlanning on one shape at a time.
+*/
 void Group::doPlanning(real start_time, real delta_time)
 {
-//  Shape* shape = nextShape();
-//  if (shape && shape->planCommand())
-//    shape->planCommand()->execute(shape, 0, start_time, delta_time);
+  Shape* shape = nextShape();
+  if (shape)
+    shape->doPlanning(start_time, delta_time);
 }
   
 void Group::draw(const Rect2& r) const
@@ -157,7 +160,7 @@ Shape* Group::nextShape()
 }
   
 
-bool Group::collide(Shape* other, real t, real dt, SpriteCommand* command)
+bool Group::collide(Shape* other, real t, real dt, CollisionAction* command)
 {
   bool is_col = false;
   set<Shape*>::iterator it;  
@@ -175,7 +178,7 @@ bool Group::collide(Shape* other, real t, real dt, SpriteCommand* command)
   return is_col;
 }
 
-bool Group::inside(const Point2& p, real t, real dt, SpriteCommand* command)
+bool Group::inside(const Point2& p, real t, real dt, Action* command)
 {
   bool is_col = false;
   set<Shape*>::iterator it;  

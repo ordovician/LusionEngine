@@ -15,7 +15,7 @@
 
 #include <Geometry/Rect2.hpp>
 
-class SpriteCommand;
+class CollisionAction;
 
 class RectShape2 : public Shape
 {
@@ -28,8 +28,8 @@ public:
   Rect2 boundingBox() const;  
     
   // Request
-  bool collide(Shape* other, real t, real dt, SpriteCommand* command = 0);  
-  bool inside(const Point2& p, real t, real dt, SpriteCommand* command = 0);
+  bool collide(Shape* other, real t, real dt, CollisionAction* command = 0);  
+  bool inside(const Point2& p, real t, real dt, Action* command = 0);
   
   // Calculations
   bool intersect(const Circle& c) const;

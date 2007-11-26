@@ -16,7 +16,7 @@
 #include "LuaEngine.h"
 #include "Engine.h"
 #include "Base/Group.h"
-#include "Base/Command.h"
+#include "Base/Action.h"
 #include "Base/Sprite.h"
 #include "Base/ShapeGroup.h"
 
@@ -593,12 +593,12 @@ static int setCollisionHandler(lua_State* L)
   assert(sprite != 0);  
   
   if (lua_isnil(L, 2)) {
-    sprite->setCollisionCommand(0);
+    sprite->setCollisionAction(0);
   }
   else {
     lua_pushvalue(L,2);
-    SpriteCommand* cmd = new LuaCommand(L);
-    sprite->setCollisionCommand(cmd);
+    CollisionAction* cmd = new LuaCollisionAction(L);
+    sprite->setCollisionAction(cmd);
     cmd->release();    
   }
 
@@ -614,12 +614,12 @@ static int setInsideHandler(lua_State* L)
   assert(sprite != 0);  
   
   if (lua_isnil(L, 2)) {
-    sprite->setInsideCommand(0);
+    sprite->setInsideAction(0);
   }
   else {
     lua_pushvalue(L,2);
-    SpriteCommand* cmd = new LuaCommand(L);
-    sprite->setInsideCommand(cmd);
+    Action* cmd = new LuaAction(L);
+    sprite->setInsideAction(cmd);
     cmd->release();    
   }
 
@@ -635,12 +635,12 @@ static int setUpdateHandler(lua_State* L)
   assert(sprite != 0);  
   
   if (lua_isnil(L, 2)) {
-    sprite->setUpdateCommand(0);
+    sprite->setUpdateAction(0);
   }
   else {
     lua_pushvalue(L,2);
-    SpriteCommand* cmd = new LuaCommand(L);
-    sprite->setUpdateCommand(cmd);
+    Action* cmd = new LuaAction(L);
+    sprite->setUpdateAction(cmd);
     cmd->release();    
   }
 
@@ -658,12 +658,12 @@ static int setPlanningHandler(lua_State* L)
   assert(sprite != 0);  
   
   if (lua_isnil(L, 2)) {
-    sprite->setPlanCommand(0);
+    sprite->setPlanAction(0);
   }
   else {
     lua_pushvalue(L,2);
-    SpriteCommand* cmd = new LuaCommand(L);
-    sprite->setPlanCommand(cmd);
+    Action* cmd = new LuaAction(L);
+    sprite->setPlanAction(cmd);
     cmd->release();    
   }
 
@@ -722,7 +722,7 @@ static int collide(lua_State* L)
     ret = sprite->collide(obj, t, dt);
   else if (n == 5) {
     lua_pushvalue(L,5);
-    LuaCommand cmd(L);
+    LuaCollisionAction cmd(L);
     ret = sprite->collide(obj, t, dt, &cmd);
   }
     

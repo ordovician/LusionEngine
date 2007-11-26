@@ -15,7 +15,7 @@
 
 #include <string>
 
-class SpriteCommand;
+class CollisionAction;
  
 void setShowCollision(bool shouldShow);
 bool showCollision();
@@ -83,25 +83,25 @@ public:
   
   Rect2 boundingBox() const;  
   
-  void  setCollisionCommand(SpriteCommand* command);
-  SpriteCommand* collisionCommand();
+  void  setCollisionAction(CollisionAction* command);
+  CollisionAction* collisionAction();
 
-  void  setInsideCommand(SpriteCommand* command);
-  SpriteCommand* insideCommand();
+  void  setInsideAction(Action* command);
+  Action* insideAction();
   
-  void  setUpdateCommand(SpriteCommand* command);
-  SpriteCommand* updateCommand();
+  void  setUpdateAction(Action* command);
+  Action* updateAction();
 
-  void  setPlanCommand(SpriteCommand* command);
-  SpriteCommand* planCommand();
+  void  setPlanAction(Action* command);
+  Action* planAction();
   
 	// Request
 	void  setVisible(bool aVisible);
 	bool  visible() const;
   
 	// Calculations
-  bool  collide(Shape* other, real t, real dt, SpriteCommand* command = 0);
-  bool  inside(const Point2& p, real t, real dt, SpriteCommand* command = 0);
+  bool  collide(Shape* other, real t, real dt, CollisionAction* command = 0);
+  bool  inside(const Point2& p, real t, real dt, Action* command = 0);
   
   bool  intersect(const Circle& c) const;
   bool  intersect(const Rect2& r) const;
@@ -121,7 +121,8 @@ public:
   void  kill();
   
   void  handleCollision(Shape* other, real t, real dt);
-   
+  void  doPlanning(real t, real dt); 
+  
   // Only for internal use
   void  add(Group* group);
   void  remove(Group* group);
@@ -139,11 +140,11 @@ private:
 
   GroupSet iGroups;
 
-  // Commands
-  SpriteCommand*  iUpdateCommand;
-  SpriteCommand*  iCollisionCommand;
-  SpriteCommand*  iInsideCommand;  
-  SpriteCommand*  iPlanCommand;
+  // Actions
+  Action*  iUpdateAction;
+  CollisionAction*  iCollisionAction;
+  Action*  iInsideAction;  
+  Action*  iPlanAction;
   
   // Cached values
   Point2              iPrevPosition;

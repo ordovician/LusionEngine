@@ -9,7 +9,7 @@
 
 #include "Base/Sprite.h"
 #include "Base/View.h"
-#include "Base/Command.h"
+#include "Base/Action.h"
 #include "Base/Group.h"
 
 #include "Algorithms.h"
@@ -58,9 +58,9 @@ Sprite::Sprite(const Point2& aPos, real aDeg, real aSpeed)
 Sprite::~Sprite()
 {
   cout << hex << "0x" << (int)this << " sprite removed" << endl;  // DEBUG  
-  iUpdateCommand->release();
-  iCollisionCommand->release();
-  iInsideCommand->release();
+  iUpdateAction->release();
+  iCollisionAction->release();
+  iInsideAction->release();
   iState->release();
   
   GroupSet::iterator group = iGroups.begin();
@@ -72,10 +72,10 @@ Sprite::~Sprite()
 #pragma mark Initialization
 void Sprite::init(const Point2& pos, real deg, real speed)
 {
-  iUpdateCommand = 0;
-  iCollisionCommand = 0;
-  iInsideCommand = 0;
-  iPlanCommand = 0;
+  iUpdateAction = 0;
+  iCollisionAction = 0;
+  iInsideAction = 0;
+  iPlanAction = 0;
   iView = 0;
   iCurSubViewIndex = 0;
   iDepth = gNextDepth++;
@@ -276,61 +276,61 @@ Rect2 Sprite::boundingBox() const
   return iBBox;
 }
 
-void Sprite::setCollisionCommand(SpriteCommand *command)
+void Sprite::setCollisionAction(CollisionAction *command)
 {
-  if (command != iCollisionCommand) {
-    iCollisionCommand->release();
-    iCollisionCommand = command; 
+  if (command != iCollisionAction) {
+    iCollisionAction->release();
+    iCollisionAction = command; 
     command->retain();       
   }
 }
 
-SpriteCommand* Sprite::collisionCommand()
+CollisionAction* Sprite::collisionAction()
 {
-  return iCollisionCommand;
+  return iCollisionAction;
 }
 
-void Sprite::setInsideCommand(SpriteCommand *command)
+void Sprite::setInsideAction(Action *command)
 {
-  if (command != iInsideCommand) {
-    iInsideCommand->release();
-    iInsideCommand = command; 
+  if (command != iInsideAction) {
+    iInsideAction->release();
+    iInsideAction = command; 
     command->retain();       
   }
 }
 
-SpriteCommand* Sprite::insideCommand()
+Action* Sprite::insideAction()
 {
-  return iInsideCommand;
+  return iInsideAction;
 }
 
 
-void Sprite::setUpdateCommand(SpriteCommand *command)
+void Sprite::setUpdateAction(Action *command)
 {
-  if (command != iUpdateCommand) {
-    iUpdateCommand->release();
-    iUpdateCommand = command;    
+  if (command != iUpdateAction) {
+    iUpdateAction->release();
+    iUpdateAction = command;    
     command->retain();       
   }
 }
 
-SpriteCommand* Sprite::updateCommand()
+Action* Sprite::updateAction()
 {
-  return iUpdateCommand;
+  return iUpdateAction;
 }
 
-void Sprite::setPlanCommand(SpriteCommand *command)
+void Sprite::setPlanAction(Action *command)
 {
-  if (command != iPlanCommand) {
-    iPlanCommand->release();
-    iPlanCommand = command;    
+  if (command != iPlanAction) {
+    iPlanAction->release();
+    iPlanAction = command;    
     command->retain();       
   }
 }
 
-SpriteCommand* Sprite::planCommand()
+Action* Sprite::planAction()
 {
-  return iPlanCommand;
+  return iPlanAction;
 }
 
 // Request
@@ -354,10 +354,10 @@ bool Sprite::visible() const
   \param command may be 0. In which case commands stored on each sprite is executed.
   if command is not 0 then this command is performed instead.
   
-  \see setCollisionCommand
-  \see collisionCommand  
+  \see setCollisionAction
+  \see collisionAction  
 */
-bool Sprite::collide(Shape* other, real t, real dt, SpriteCommand* command) 
+bool Sprite::collide(Shape* other, real t, real dt, CollisionAction* command) 
 {
   assert( other != 0);
   
@@ -379,7 +379,7 @@ bool Sprite::collide(Shape* other, real t, real dt, SpriteCommand* command)
   return false;
 }
 
-bool Sprite::inside(const Point2& p, real t, real dt,  SpriteCommand* command)
+bool Sprite::inside(const Point2& p, real t, real dt,  Action* command)
 {
   if (!boundingBox().inside(p))
     return false;
@@ -387,9 +387,9 @@ bool Sprite::inside(const Point2& p, real t, real dt,  SpriteCommand* command)
   
   bool is_inside = ::inside(col_poly.first, col_poly.second, p);
   if (is_inside && command != 0)
-    command->execute(this, 0, t, dt);
-  else if (is_inside && iInsideCommand != 0)
-    iInsideCommand->execute(this, 0, t, dt);
+    command->execute(this, t, dt);
+  else if (is_inside && iInsideAction != 0)
+    iInsideAction->execute(this, t, dt);
   return is_inside;
 }
 
@@ -443,9 +443,9 @@ void Sprite::update(real start_time, real delta_time)
   advance(delta_time);
   touch();
   
-  SpriteCommand* sc = updateCommand();
+  Action* sc = updateAction();
   if (sc)
-    sc->execute(this, 0, start_time, delta_time);
+    sc->execute(this, start_time, delta_time);
   
 }
 
@@ -503,10 +503,19 @@ void Sprite::kill()
 */   
 void Sprite::handleCollision(Shape* other, real t, real dt)
 {
-  if (iCollisionCommand)
-    iCollisionCommand->execute(this, other, t, dt);
+  if (iCollisionAction)
+    iCollisionAction->execute(this, other, t, dt);
 }
-     
+
+/*!
+  Will call execute on the planning action if it is not NULL.
+*/
+void Sprite::doPlanning(real t, real dt)
+{
+  if (iPlanAction)
+    iPlanAction->execute(this, t, dt);
+}
+       
 #pragma mark Only for internal use   
 /*! This should only be called from Group.add(sprite) */
 void Sprite::add(Group* group)

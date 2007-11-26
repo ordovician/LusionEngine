@@ -18,7 +18,7 @@
 #include "Base/Sprite.h"
 #include "Base/ShapeGroup.h"
 #include "Base/Group.h"
-#include "Base/Command.h"
+#include "Base/Action.h"
 
 #include "Base/CircleShape.h"
 #include "Base/RectShape2.h"
@@ -192,7 +192,7 @@ static int collide(lua_State *L)
     ret = shape->collide(other, t, dt);
   else if (n == 5) {
     lua_pushvalue(L,5);
-    LuaCommand cmd(L);
+    LuaCollisionAction cmd(L);
     ret = shape->collide(other, t, dt, &cmd);
   }
     
@@ -274,6 +274,19 @@ static int update(lua_State *L)
   return 0;
 }
 
+static int doPlanning(lua_State *L) 
+{
+  int n = lua_gettop(L);  // Number of arguments
+  if (n != 3) 
+    return luaL_error(L, "Got %d arguments expected 3 (self, start_time, delta_time)", n); 
+    
+  Shape* shape = checkShape(L, 1);    
+
+  shape->doPlanning(luaL_checknumber(L, 2), luaL_checknumber(L, 3));
+  
+  return 0;
+}
+
 // group:addKid(sprite)
 static int addKid(lua_State *L) 
 {
@@ -348,6 +361,7 @@ static const luaL_Reg gShapeFuncs[] = {
     
   // Operations  
   {"update", update},
+  {"doPlanning", doPlanning},  
   {"private_add", addKid},
   {"private_remove", removeKid},    
   {NULL, NULL}

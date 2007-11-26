@@ -14,7 +14,7 @@
 #include "Base/RectShape2.h"
 #include "Base/SegmentShape2.h"
 #include "Base/ShapeGroup.h"
-#include "Base/Command.h"
+#include "Base/Action.h"
 
 #include "Core/AutoreleasePool.hpp"
 
@@ -23,7 +23,7 @@
 static real t = 0.0f;
 static real dt = 1.0f;
 
-struct TestCmd : public SpriteCommand {
+struct TestCmd : public CollisionAction {
   bool execute(Shape* me, Shape* other, real start_time, real delta_time) {
     CPTAssert(me == expectedMe);
     CPTAssert(other == expectedOther);
