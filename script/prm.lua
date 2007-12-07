@@ -1,3 +1,5 @@
+require("script/algorithm")
+
 --[[
 	PrmNode class
 	-------------------------
@@ -25,6 +27,7 @@ function PrmNode:init(pos, radius)
   -- self.pos = pos
   -- self.radius = radius
   self.circle = Shape:newCircle(pos, radius)
+  self.edges = {}
 end
 
 function PrmNode:toString()
@@ -125,83 +128,65 @@ function ProbablisticRoadMap:construct(samples, retract_quotient)
 	return true;  
 end
 
--- 
--- CleanUp
--- 
--- Uses BFSearches to find the largest connected component in the roadmap, and removes all other edges and nodes.
--- 
+--[[
+  Use a breath first search among all added nodes to find the
+  largest connected component of nodes. Remove all nodes not 
+  belonging to this component.
+  
+  Algorithm works by constantly looking for a node that hasn't been
+  visistet then search through all nodes reachable from it and count
+  that as a component. This is recorded as one component with start node
+  and number of nodes in it.
+  
+  Next component is found in similar way. We only keep the largest
+  component at each iteration so that at the end we are left with
+  the largest component.
+]]--
 function ProbablisticRoadMap:cleanUp()
-	local componentsizes = Collection:new()
 	local visited = {}
-	
-	function visit(n)
-	  visited[n] = true
-	  n.componentIndex = #componentsizes+1
+
+  -- To keep track of largest component found thus far
+  -- a component is a group of connected nodes
+  local comp         = {n_start = self.nodes:first(), size = 0}
+  local comp_largest = {n_start = n_start, size = 0}
+  
+  function largest(c1, c2)
+    if c1.size > c2.size then return c1 else return c2 end
+  end
+  
+	while comp.n_start do
+	  Graph.breathFirstSearch(comp.n_start, function(n)
+	    visited[n] = true
+	    comp.size = comp.size + 1
+	  end)
+	  
+	  comp_largest = largest(comp, comp_largest)
+	  
+	  comp = { 
+	    n_start = self.nodes:find(function(n) 
+	      not visited[n] 
+	    end),
+	    size = 0
+	  }	  
 	end
 	
-	local n_start = self.nodes:first()
-
-	-- while there are unmarked nodes in the roadmap
-	while n_start do
-    visit(n_start)
-
-		local queue = Queue:new()
-    local componentsize = 0		
-		queue.push( n_start )
-
-		-- do a depth first search from 'n_start' node and count up all nodes it is connected to
-		while not queue:empty() do
-			local n = queue:pop()
-      componentsize = componentsize+1
-			 
-			for _,m in pairs(n.edges) do
-			  if not visisted[m] then
-          visit(m)
-				  queue.push(m)
-			  end
-			end
-		end
-    
-    componentsizes.append(componentsize)
-    
-    -- check whether there are nodes that haven't been visised (marked)
-    -- select first "unvisited" node as next one to determine component size of
-		function isNotVisited(n) return not visited[n] end
-		n_start = self.nodes:find(isNotVisited)
-	end
-
-  print("Components: ", componentsizes:size())
-
-  local component_maxindex = componentsizes:maxIndex()
-
-	print("Max Component Size:", componentsizes[component_maxindex])
-		
-	-- remove all nodes and edges not belonging to the maximum connected component
-	local old_nodes = self.nodes
+	-- Remove all nodes and only add nodes for
+	-- largest component
 	self.nodes = Collection:new()
-	
-	local no_removed = 0
-	for _,n in pairs(old_nodes) do
-	  if n.componentIndex == component_maxindex then 
-	    self.nodes[n]
-	  else
-	    no_removed = no_removed+1
-	  end
-	end
-	
-  print( "Nr of unconnected nodes removed:", no_removed)
-
-	return true
+  Graph.breathFirstSearch(comp_largest.n_start, function(n)
+    self.nodes:append(n)
+  end)
 end
 
- --[[
+
+--[[
   Search hierarcial bounding volume consisting of Axis Aligned Bounding boxes where the
   leafes contain circles, to find circle center closest to query point.
  
   In a hierarcical bounding volume a search for boxes containing point will give us all
   circles which potentially have center closest to point. Because centers which dont have
   their circles containing query point can possibly be reachable from position either.
- ]]--
+]]--
 function ProbablisticRoadMap:findDisc(pos)
   local closestShape = nil
   function locateClosestDisc(shape, other, t, dt)
@@ -279,12 +264,13 @@ int RoadMap::UpdateSphere(lua_State *VM, const Vector3 *pos, const int prevneare
 	return ret;
 }
 
- -- 
- -- PickSample
- -- 
- -- Returns a sample for roadmap construction. Uses random sampling.
- -- TODO: Implement Gaussian Sampling?
- -- TODO: Implement uniform (grid based) sampling (maybe even by using octtree)?
+--[[
+  Picks a random sample. The sample is a point within the boundaries
+  of the world. 
+  
+  Sampling is done with random function. This can be changed
+  to use regular grid for sampling, jitter etc instead.
+]]--
 function ProbablisticRoadMap:pickSample()
   local pos = vec(0,0)
   pos.x = math.random(self.bbox.min.x, self.bbox.max.x)
@@ -294,19 +280,28 @@ function ProbablisticRoadMap:pickSample()
 end
 
 
- -- 
- -- RetractSample
- -- 
- -- Moves the node to a plane in the voronoi diagram, returns the new position
- -- 
+ --[[
+ Returns a new point, which is on the voronoi lines/edges between the obstacles.
+ It is gotten by moving our sample point c, until we hit the voronoi line running
+ between the obstacles.
+ 
+ Algorithms work by using distance from sample point to nearest obstacle
+ as step size and then move one step at a time in opposite direction from
+ sample point c, until nearest obstacle to c1 is different from nearest obstacle
+ to c.
+ 
+ When other obstacle is found we use equidistantVertex to find the point between
+ the two points with different closest obstacle to find the point right in the middle
+ between the two obstacles.
+ --]] 
 function ProbablisticRoadMap::retractSample(c)
 	local c_close = self:nearestObstacle(c)
 
 	-- init Step vector ds (stepsize may not be larget than 0.5f * maxdist)
   local ds = c - c_close
   
-  if step:squaredLength() * 2 > MAX_DIST_SQUARED then
-    step = step:unit()*0.5*MAX_DIST
+  if ds:squaredLength() * 2 > MAX_DIST_SQUARED then
+    ds = ds:unit()*0.5*MAX_DIST
   end
   
   -- init second point to find second nearest obstacle
@@ -336,11 +331,17 @@ function ProbablisticRoadMap::retractSample(c)
 	return c_v
 end
 
- -- 
- -- ComputeEquidistantVertex
- -- 
- -- Performs a binary search between c1 and c2 to find the point 
- -- where the two nearest obstacles are equidistant.
+ --[[
+ Performs a binary search between c1 and c2 to find the point 
+ where the two nearest obstacles are equidistant.
+ 
+ The algorithm works alternating between moving a point c_v
+ towards and away from c1. At each alternation the step taken
+ is smaller so that one eventually comes very close to the equividistant vertex.
+ Due to numerical inaccuracies one will never get there exactly
+ to it is approximated by saying we reached it when the steps
+ taken are below a certain minimum length.
+]]--
 function ProbablisticRoadMap:equidistantVertex(c1, c2)
   -- init step vector
   local ds = (c2-c1)*0.5
@@ -355,9 +356,9 @@ function ProbablisticRoadMap:equidistantVertex(c1, c2)
 
 		-- update test position
 		if (c2_obst - c1_obst):squareLength() < ACCURACY )
-			c_v = c_v + ds
+			c_v = c_v + ds  -- c1 and c_v probably had the same obstacle closest
 		else
-			c_v = c_v - ds
+			c_v = c_v - ds  -- They had different closest obstacles, so move c_v close to c1
     end  
 
 		-- update nearest obstacle to test position
@@ -367,11 +368,10 @@ function ProbablisticRoadMap:equidistantVertex(c1, c2)
 	return c_v
 end
 
- -- 
- -- nearestObstacle
- -- 
- -- returns the point (on an obstacle) that is nearest to pos
- -- 
+ --[[
+ returns the point (on an obstacle) that is nearest to pos
+ if none is found nil is returned.
+]]--
 function ProbablisticRoadMap:nearestObstacle(c)
 	local is_collision = false
 	local radius
@@ -485,11 +485,11 @@ function RoadMap:resizeEdge(n1, n2)
 	end
 end
 
--- 
---  checkNodesForEdge(n1, n2)
--- 
---  Checks whether two nodes are connected by an edge
--- 
+
+
+--[[
+  Checks whether two nodes are connected by an edge
+]]--
 function ProbablisticRoadMap:checkNodesForEdge(n1, n2)
   return n1.edges[n2] == n2
 end
@@ -500,8 +500,8 @@ end
  -- Checks whether a line from p1 to p2 (cylinder with a small radius) has collision. 
  -- 
 function ProbablisticRoadMap:lineCollision(p1, p2)
-
-
+  local seg = Shape:newSegment(p1, p2)
+  return self.obstacles:collide(seg)
 end
 
 --[[
@@ -509,6 +509,12 @@ end
   at location 'c' and with radius 'radius'
 ]]--
 function ProbablisticRoadMap:discCollision(c, radius)
-  -- pseudocode
-  return self.obstacles:intersect(Circle:new(c, radius))
+  local circle = Shape:newCircle(c, radius)
+  local intersection_point = nil
+  self.obstacles:collide(circle, Engine.seconds(), 1, function(me, other, points, t, dt)
+      if points then intersection_point = points[1]
+      return true
+    end
+  )
+  return intersection_point
 end

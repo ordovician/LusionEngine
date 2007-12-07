@@ -125,7 +125,7 @@ function update(start_time)
   actors:update(start_time, delta_time)
   -- Engine.lookAt(currentNPC():position())
   -- drawTrailingLine()
-  -- actors:doPlanning(start_time, delta_time)
+  actors:doPlanning(start_time, delta_time)
   -- actors:collide(obstacles, start_time, delta_time, function(self, other, t, dt) print("collision!") end)
   actors:collide(obstacles, start_time, delta_time)
   
@@ -226,7 +226,7 @@ function setupSeek()
   sprite_state:setName("sprite state")
   sprite_state:setView(npc:view())
   
-  npc:setUpdateHandler(function(self, other, start_time, dt)  
+  npc:setUpdateHandler(function(self, start_time, dt)  
     self.currentStep = self.currentStep+1
     if self.currentStep <= steps then return end
     self.currentStep = 1
@@ -245,7 +245,7 @@ function setupSeek()
   end)
   
   
-  npc:setPlanningHandler(function(self, other, start_time, dt)
+  npc:setPlanningHandler(function(self, start_time, dt)
     -- Return low value for collision paths
     function avoidCollision(s0, s1)
       sprite_state:setMotionState(s1)
@@ -379,7 +379,7 @@ end
 
 function setupCollisionHandling()
   local npc = currentNPC()
-  npc:setCollisionHandler(function(self, other, t, dt)
+  npc:setCollisionHandler(function(self, other, points, t, dt)
     npc:setPosition(npc:prevPosition())
     npc:stop()
 
@@ -388,5 +388,5 @@ end
 
 setupWorld()
 setupCollisionHandling()
--- setupSeek()
-setupRRTSearch()
+setupSeek()
+-- setupRRTSearch()
