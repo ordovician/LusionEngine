@@ -50,9 +50,10 @@ bool SegmentShape2::collide(Shape* other, real t, real dt, CollisionAction* comm
   if (!other->isSimple())
     return other->collide(this, t, dt, command);
 
-  bool is_colliding = other->intersect(iSeg);
+  Points2 points;
+  bool is_colliding = other->intersection(iSeg, points);
   if (is_colliding && command != 0) 
-    command->execute(this, other, t, dt);
+    command->execute(this, other, points, t, dt);
   return is_colliding;  
 }
 
@@ -67,22 +68,22 @@ bool SegmentShape2::inside(const Point2& p, real t, real dt, Action* command)
 
 
 // Calculations
-bool SegmentShape2::intersect(const Circle& c) const
+bool SegmentShape2::intersection(const Circle& c, Points2& points) const
 {
   return c.intersect(iSeg);
 }
 
-bool SegmentShape2::intersect(const Rect2& r) const
+bool SegmentShape2::intersection(const Rect2& r, Points2& points) const
 {
   return iSeg.intersect(r);  
 }
 
-bool SegmentShape2::intersect(const Segment2& s) const
+bool SegmentShape2::intersection(const Segment2& s, Points2& points) const
 {
   return iSeg.intersect(s);  
 }
 
-bool SegmentShape2::intersect(ConstPointIterator2 begin, ConstPointIterator2 end) const
+bool SegmentShape2::intersection(ConstPointIterator2 begin, ConstPointIterator2 end, Points2& points) const
 {
   return ::intersect(iSeg, begin, end);
 }

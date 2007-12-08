@@ -16,11 +16,17 @@ using namespace std;
 
 /*!
    \class Shape Shape.h
-   \brief A node in the scene graph. 
+   \brief A node in a 2D scene graph. 
 
    The scene graph is used for rendering. The node is also used for collision
-   detection.
-
+   detection. Collision tests and intersection tests have interfaces that
+   indicate that all the points in the intersection\collision is reported.
+   
+   However that is only the case for certain subclasses and combinations.
+   Only Sprite and CircleShape collisions will produce intersection points.
+   And it that case only one of the intersection points. Not all.
+   
+   However in the future it will be possible for all shapes.
 */
  
 // Helper functions
@@ -63,7 +69,7 @@ bool Shape::isSimple() const
   on subclasses which define a simple shape. Hierarcical structures
   should return false as well as they should not handle this intersection test.
 */
-bool Shape::intersect(const Circle& c) const
+bool Shape::intersection(const Circle& c, Points2& points) const
 {
   assert(false);
   cerr << "Error: intersect(const Circle& c) not supported for this class" << endl;
@@ -78,7 +84,7 @@ bool Shape::intersect(const Circle& c) const
   should return false as well as they should not handle this intersection test.
 */
 
-bool Shape::intersect(const Rect2& r) const
+bool Shape::intersection(const Rect2& r, Points2& points) const
 {
   assert(false);  
   cerr << "Error: intersect(const Rect2& r) not supported for this class" << endl;  
@@ -92,14 +98,14 @@ bool Shape::intersect(const Rect2& r) const
   on subclasses which define a simple shape. Hierarcical structures
   should return false as well as they should not handle this intersection test.
 */
-bool Shape::intersect(const Segment2& s) const
+bool Shape::intersection(const Segment2& s, Points2& points) const
 {
   assert(false);  
   cerr << "Error: intersect(const Segment2& s) not supported for this class" << endl;    
   return false;  
 }
 
-bool Shape::intersect(ConstPointIterator2 begin, ConstPointIterator2 end) const
+bool Shape::intersection(ConstPointIterator2 begin, ConstPointIterator2 end, Points2& points) const
 {
   assert(false);  
   cerr << "Error: intersect(ConstPointIterator2 begin, ConstPointIterator2 end) not supported for this class" << endl;    
@@ -150,7 +156,7 @@ void Shape::update(real start_time, real delta_time)
   If you implement your own collide method in a subclass, you should call 
   handleCollision on each involved shape to let the shape handle the collision. 
 */
-void Shape::handleCollision(Shape* other, real start_time, real delta_time)
+void Shape::handleCollision(Shape* other, Points2& points, real start_time, real delta_time)
 {
   // Do nothing
 }

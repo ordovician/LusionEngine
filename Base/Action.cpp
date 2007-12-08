@@ -118,7 +118,7 @@ LuaCollisionAction::~LuaCollisionAction()
 }
 
 // Operations
-bool LuaCollisionAction::execute(Shape* me_obj, Shape* other_obj, real t, real dt) 
+bool LuaCollisionAction::execute(Shape* me_obj, Shape* other_obj, Points2& points, real t, real dt) 
 {      
   Sprite* me = dynamic_cast<Sprite*>(me_obj);
   Sprite* other = dynamic_cast<Sprite*>(other_obj);
@@ -132,9 +132,15 @@ bool LuaCollisionAction::execute(Shape* me_obj, Shape* other_obj, real t, real d
     retrieveSpriteTable(L, other);  
   else
     lua_pushnil(L);
+  
+  // Create table for all points on stack
+  for_each(points.begin(), points.end(), PushValue<Point2>(L));  
+
+  // Push time variables on stack
   lua_pushnumber(L, t);
   lua_pushnumber(L, dt);  
-  lua_call(L, 4, 1);     
+  
+  lua_call(L, 5, 1);     
   bool ret = lua_toboolean(L,-1);
   lua_pop(L,1);
   

@@ -707,18 +707,25 @@ static int setVisible(lua_State *L)
 static int collide(lua_State* L)
 {
   int n = lua_gettop(L);
-  if (n != 5 && n != 4)
-    return luaL_error(L, "Got %d arguments expected 5 or 4 (self, group, start_time, delta_time [, function])", n); 
+  if (n != 5 && n != 4 && n != 2)
+    return luaL_error(L, "Got %d arguments expected 5, 4 or 2 (self, shape [,start_time, delta_time [, function]])", n); 
   Sprite* sprite = checkSprite(L,1);
   Shape*  obj = checkShape(L,2);   
   assert(sprite != 0);    
   assert(obj != 0);      
 
-  real t = luaL_checknumber(L, 3);
-  real dt = luaL_checknumber(L, 4);
+  real t, dt;
+  if (n > 2) {
+    t = luaL_checknumber(L, 3);
+    dt = luaL_checknumber(L, 4);    
+  }
+  else {
+    t = secondsPassed();
+    dt = 1.0f;
+  }
   
   bool ret = false;
-  if (n == 4)
+  if (n <= 4)
     ret = sprite->collide(obj, t, dt);
   else if (n == 5) {
     lua_pushvalue(L,5);

@@ -27,7 +27,7 @@ class CollisionAction : public SharedObject
 {
 public:    
   // Operations
-  virtual bool execute(Shape* me, Shape* other, real start_time, real delta_time) = 0;
+  virtual bool execute(Shape* me, Shape* other, Points2& points, real start_time, real delta_time) = 0;
   
 };
 
@@ -56,7 +56,7 @@ public:
  virtual ~LuaCollisionAction();
 
  // Operations
- bool execute(Shape* me, Shape* other, real start_time, real delta_time);
+ bool execute(Shape* me, Shape* other, Points2& points, real start_time, real delta_time);
  
 private:
   lua_State* L;

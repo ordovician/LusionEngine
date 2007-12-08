@@ -17,6 +17,7 @@
 
 #include "Base/Sprite.h"
 #include "Base/ShapeGroup.h"
+#include "Timing.h"
 #include "Base/Group.h"
 #include "Base/Action.h"
 
@@ -172,23 +173,66 @@ static int boundingBox(lua_State *L)
   return 1;
 }
 
+static int center(lua_State *L) 
+{
+  int n = lua_gettop(L);  // Number of arguments
+  if (n != 1) 
+    return luaL_error(L, "Got %d arguments expected 1", n); 
+    
+  CircleShape* shape = dynamic_cast<CircleShape*>(checkShape(L)); 
+
+  // This upcast can in theory fail even if we programmed correctl
+  // so we don't do an assert. User might not know that center is not
+  // allowed for other shapes except by reading docs.
+  if (shape == 0)
+    return luaL_error(L, "Shape is not of type circle and method 'center' is thus not supported");    
+  Vector2_push(L, shape->center());
+      
+  return 1;
+}
+
+static int radius(lua_State *L) 
+{
+  int n = lua_gettop(L);  // Number of arguments
+  if (n != 1) 
+    return luaL_error(L, "Got %d arguments expected 1", n); 
+    
+  CircleShape* shape = dynamic_cast<CircleShape*>(checkShape(L)); 
+
+  // This upcast can in theory fail even if we programmed correctl
+  // so we don't do an assert. User might not know that center is not
+  // allowed for other shapes except by reading docs.
+  if (shape == 0)
+    return luaL_error(L, "Shape is not of type circle and method 'radius' is thus not supported");    
+  lua_pushnumber(L, shape->radius());
+      
+  return 1;
+}
+
 // Request
 static int collide(lua_State *L) 
 {
   int n = lua_gettop(L);  // Number of arguments
-  if (n != 5 && n != 4)
-    return luaL_error(L, "Got %d arguments expected 5 or 4 (self, shape, start_time, delta_time [, function])", n); 
+  if (n != 5 && n != 4 && n != 2)
+    return luaL_error(L, "Got %d arguments expected 5, 4 or 2 (self, shape [,start_time, delta_time [, function]])", n); 
     
   Shape* shape = checkShape(L,1); 
   Shape* other = checkShape(L,2);      
        
   assert(shape != 0 && other != 0);  
-   
-  real t = luaL_checknumber(L, 3);
-  real dt = luaL_checknumber(L, 4);
+
+  real t, dt;
+  if (n > 2) {
+    t = luaL_checknumber(L, 3);
+    dt = luaL_checknumber(L, 4);    
+  }
+  else {
+    t = secondsPassed();
+    dt = 1.0f;
+  }
   
   bool ret = false;
-  if (n == 4)
+  if (n <= 4)
     ret = shape->collide(other, t, dt);
   else if (n == 5) {
     lua_pushvalue(L,5);
@@ -210,8 +254,11 @@ static int circleIntersect(lua_State *L)
   Shape* shape = checkShape(L);      
   assert(shape != 0);  
    
-  bool ret = shape->intersect(Circle(Vector2_pull(L, 2), luaL_checknumber(L, 3)));    
-  lua_pushboolean(L, ret);
+  Points2 points;   
+  if (shape->intersection(Circle(Vector2_pull(L, 2), luaL_checknumber(L, 3)), points))
+    for_each(points.begin(), points.end(), PushValue<Point2>(L));    
+  else
+    lua_pushnil(L);
   
   return 1;
 }
@@ -225,9 +272,11 @@ static int rectIntersect(lua_State *L)
   Shape* shape = checkShape(L);      
   assert(shape != 0);  
    
-  bool ret = shape->intersect(Rect2(Rect2_pull(L, 2)));    
-  lua_pushboolean(L, ret);
-  
+  Points2 points;
+  if (shape->intersection(Rect2(Rect2_pull(L, 2)), points)) 
+    for_each(points.begin(), points.end(), PushValue<Point2>(L));    
+  else
+    lua_pushnil(L);  
   return 1;
 }
 
@@ -240,7 +289,8 @@ static int segmentIntersect(lua_State *L)
   Shape* shape = checkShape(L);      
   assert(shape != 0);  
    
-  bool ret = shape->intersect(Segment2(Segment2_pull(L, 2)));    
+  Points2 points;   
+  bool ret = shape->intersection(Segment2(Segment2_pull(L, 2)), points);    
   lua_pushboolean(L, ret);
   
   return 1;
@@ -349,7 +399,9 @@ static const luaL_Reg gShapeFuncs[] = {
 
   // Accessors
   {"boundingBox", boundingBox},
-    
+  {"center", center},
+  {"radius", radius},
+        
   // Request
   {"collide", collide},
   {"circleIntersect", circleIntersect},

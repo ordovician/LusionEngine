@@ -366,12 +366,13 @@ bool Sprite::collide(Shape* other, real t, real dt, CollisionAction* command)
   if (!other->isSimple())
     return other->collide(this, t, dt, command);
 
+  Points2 points; // Intersection points
   ShallowPoints2 poly = collisionPolygon();    
-  if (other->intersect(poly.first, poly.second)) {
-    if (command) command->execute(this, other, t, dt);
+  if (other->intersection(poly.first, poly.second, points)) {
+    if (command) command->execute(this, other, points, t, dt);
     else {
-      handleCollision(other, t, dt);
-      other->handleCollision(this, t, dt);
+      handleCollision(other, points, t, dt);
+      other->handleCollision(this, points, t, dt);
     }
     return true;
   }
@@ -393,25 +394,37 @@ bool Sprite::inside(const Point2& p, real t, real dt,  Action* command)
   return is_inside;
 }
 
-bool Sprite::intersect(const Circle& c) const
+/*!
+  \return true if we have an intersection
+  \param points the intersection points of the intersection
+*/
+bool Sprite::intersection(const Circle& c, Points2& points) const
 {
   ShallowPoints2 poly = collisionPolygon();
-  return ::intersect(c, poly.first, poly.second);    
+  return c.intersection(poly.first, poly.second, points);    
 }
 
-bool Sprite::intersect(const Rect2& r) const
+/*!
+  Does not return intersection points.
+  \return true if we have an intersection
+*/
+bool Sprite::intersection(const Rect2& r, Points2& points) const
 {
   ShallowPoints2 poly = collisionPolygon();
   return ::intersect(r, poly.first, poly.second);  
 }
 
-bool Sprite::intersect(const Segment2& s) const
+/*!
+  Does not return intersection points.
+  \return true if we have an intersection
+*/
+bool Sprite::intersection(const Segment2& s, Points2& points) const
 {
   ShallowPoints2 poly = collisionPolygon();
   return ::intersect(s, poly.first, poly.second);  
 }
 
-bool Sprite::intersect(ConstPointIterator2 begin, ConstPointIterator2 end) const
+bool Sprite::intersection(ConstPointIterator2 begin, ConstPointIterator2 end, Points2& points) const
 {
   ShallowPoints2 poly = collisionPolygon();
   return ::intersect(poly.first, poly.second, begin, end);  
@@ -501,10 +514,10 @@ void Sprite::kill()
   want to perform the sprites collision command. Only makes sure that collision command
   has been set before performing it. 
 */   
-void Sprite::handleCollision(Shape* other, real t, real dt)
+void Sprite::handleCollision(Shape* other, Points2& points, real t, real dt)
 {
   if (iCollisionAction)
-    iCollisionAction->execute(this, other, t, dt);
+    iCollisionAction->execute(this, other, points, t, dt);
 }
 
 /*!

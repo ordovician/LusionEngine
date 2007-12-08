@@ -27,7 +27,7 @@ public:
     Circle(const Point2& center, real radius);
     
     // Accessors
-    Point2 center() const;
+    const Point2& center() const;
     real   radius() const;    
     void   setCenter(const Point2& pos);
     void   setRadius(real radius);
@@ -37,8 +37,10 @@ public:
     bool intersect(const Circle& c) const;
     bool intersect(const Rect2& rect) const;
     bool intersect(const Segment2& seg) const;
+    bool intersection(const Segment2& seg, Points2& points) const;        
     bool intersect(const Ray2& ray) const;
     bool intersect(ConstPointIterator2 begin, ConstPointIterator2 end) const;
+    bool intersection(ConstPointIterator2 begin, ConstPointIterator2 end, Points2& points, bool first = false) const;        
     
     // Calculations
                 

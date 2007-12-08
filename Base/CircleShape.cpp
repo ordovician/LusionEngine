@@ -44,6 +44,16 @@ Rect2 CircleShape::boundingBox() const
   return r;
 }
   
+const Point2& CircleShape::center() const
+{
+  return iCircle.center();
+}
+
+real CircleShape::radius() const 
+{
+  return iCircle.radius();
+} 
+ 
 // Request
 bool CircleShape::collide(Shape* other, real t, real dt, CollisionAction* command)
 {
@@ -52,9 +62,10 @@ bool CircleShape::collide(Shape* other, real t, real dt, CollisionAction* comman
   if (!other->isSimple())
     return other->collide(this, t, dt, command);
 
-  bool is_colliding = other->intersect(iCircle);
+  Points2 points;
+  bool is_colliding = other->intersection(iCircle, points);
   if (is_colliding && command != 0) 
-    command->execute(this, other, t, dt);
+    command->execute(this, other, points, t, dt);
   return is_colliding;  
 }
 
@@ -69,24 +80,24 @@ bool CircleShape::inside(const Point2& p, real t, real dt, Action* command)
 }
 
 // Calculations
-bool CircleShape::intersect(const Circle& c) const
+bool CircleShape::intersection(const Circle& c, Points2& points) const
 {
   return iCircle.intersect(c);
 }
 
-bool CircleShape::intersect(const Rect2& r) const
+bool CircleShape::intersection(const Rect2& r, Points2& points) const
 {
   return iCircle.intersect(r);  
 }
 
-bool CircleShape::intersect(const Segment2& s) const
+bool CircleShape::intersection(const Segment2& s, Points2& points) const
 {
   return iCircle.intersect(s);  
 }
 
-bool CircleShape::intersect(ConstPointIterator2 begin, ConstPointIterator2 end) const
+bool CircleShape::intersection(ConstPointIterator2 begin, ConstPointIterator2 end, Points2& points) const
 {
-  return iCircle.intersect(begin, end);
+  return iCircle.intersection(begin, end, points);
 }
 
 /*!

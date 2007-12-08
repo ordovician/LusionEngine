@@ -21,7 +21,7 @@ Circle::Circle(const Point2& center, real radius) : iCenter(center), iRadius(rad
 }
 
 // Accessors
-Point2 Circle::center() const
+const Point2& Circle::center() const
 {
   return iCenter;
 }
@@ -44,6 +44,7 @@ void Circle::setRadius(real radius)
 // Request
 bool Circle::inside(const Point2& p) const
 {
+  // TODO: Optimize using square distance (after unittesting)  
   return (p-iCenter).length() < iRadius;
 }
 
@@ -100,14 +101,35 @@ bool Circle::intersect(const Rect2& rect) const
 
 bool Circle::intersect(const Segment2& seg) const
 {
+  // TODO: Optimize using square distance (after unittesting)  
   return seg.distance(center()) < radius();
 }
 
-bool Circle::intersect(const Ray2& ray) const
+/*!
+  \param seg segment to test for intersection against
+  \param points collection of points of intersection. size == 0 if no intersection
+  \return true if circle intersects segment \a seg
+*/
+bool Circle::intersection(const Segment2& seg, Points2& points) const
 {
+  // TODO: Optimize using square distance (after unittesting)
+  Point2 p = seg.nearestPoint(center());
+  if ((p - center()).length() >= radius()) return false;
+  
+  points.push_back(p);
+  return true;
+}
+
+bool Circle::intersect(const Ray2& ray) const
+{ 
+  // TODO: Optimize using square distance (after unittesting)
   return ray.distance(center()) < radius();
 }
 
+/*!
+  Returns true if there is an intersection between circle and polygon defined
+  by \a begin and \a end
+*/
 bool Circle::intersect(ConstPointIterator2 begin, ConstPointIterator2 end) const
 {
   ConstPointIterator2 it = begin, prev = begin;
@@ -116,6 +138,32 @@ bool Circle::intersect(ConstPointIterator2 begin, ConstPointIterator2 end) const
       return true;    
   }
   return false;
+}
+
+/*!
+  Returns true if there is an intersection between circle and polygon defined
+  by \a begin and \a end
+  
+  \param begin defines start point for polygon
+  \param end defines end point for polygon
+  \param points that are intersected
+  \param first if true method will return once first intersection is discovered
+  this means that \a points will not contain all intersection points. Only the first
+  discovered intersection point. This can be arbitrary and does not need to be
+  the closest one.
+*/
+bool Circle::intersection(
+  ConstPointIterator2 begin, 
+  ConstPointIterator2 end, 
+  Points2& points, 
+  bool first) const
+{
+  ConstPointIterator2 it = begin, prev = begin;
+  for (++it; it != end; ++it, ++prev) {
+    if (intersection(Segment2(*prev, *it), points) && first)
+      return true;
+  }
+  return points.size() != 0;
 }
     
 // Operators

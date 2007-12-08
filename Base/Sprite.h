@@ -103,10 +103,10 @@ public:
   bool  collide(Shape* other, real t, real dt, CollisionAction* command = 0);
   bool  inside(const Point2& p, real t, real dt, Action* command = 0);
   
-  bool  intersect(const Circle& c) const;
-  bool  intersect(const Rect2& r) const;
-  bool  intersect(const Segment2& s) const;
-  bool  intersect(ConstPointIterator2 begin, ConstPointIterator2 end) const;
+  bool  intersection(const Circle& c, Points2& points) const;
+  bool  intersection(const Rect2& r, Points2& points) const;
+  bool  intersection(const Segment2& s, Points2& points) const;
+  bool  intersection(ConstPointIterator2 begin, ConstPointIterator2 end, Points2& points) const;
 
 	void	draw(const Rect2& r) const;
 
@@ -120,7 +120,7 @@ public:
   void  stop();
   void  kill();
   
-  void  handleCollision(Shape* other, real t, real dt);
+  void  handleCollision(Shape* other, Points2& points, real t, real dt);
   void  doPlanning(real t, real dt); 
   
   // Only for internal use

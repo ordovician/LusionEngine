@@ -50,9 +50,10 @@ bool RectShape2::collide(Shape* other, real t, real dt, CollisionAction* command
   if (!other->isSimple())
     return other->collide(this, t, dt, command);
 
-  bool is_colliding = other->intersect(iRect);
+  Points2 points;
+  bool is_colliding = other->intersection(iRect, points);
   if (is_colliding && command != 0) 
-    command->execute(this, other, t, dt);
+    command->execute(this, other, points, t, dt);
   return is_colliding;  
 }
 
@@ -67,22 +68,22 @@ bool RectShape2::inside(const Point2& p, real t, real dt, Action* command)
 
 
 // Calculations
-bool RectShape2::intersect(const Circle& c) const
+bool RectShape2::intersection(const Circle& c, Points2& points) const
 {
   return c.intersect(iRect);
 }
 
-bool RectShape2::intersect(const Rect2& r) const
+bool RectShape2::intersection(const Rect2& r, Points2& points) const
 {
   return iRect.intersect(r);  
 }
 
-bool RectShape2::intersect(const Segment2& s) const
+bool RectShape2::intersection(const Segment2& s, Points2& points) const
 {
   return s.intersect(iRect);  
 }
 
-bool RectShape2::intersect(ConstPointIterator2 begin, ConstPointIterator2 end) const
+bool RectShape2::intersection(ConstPointIterator2 begin, ConstPointIterator2 end, Points2& points) const
 {
   return ::intersect(iRect, begin, end);
 }

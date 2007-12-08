@@ -39,11 +39,11 @@ public:
   virtual bool inside(const Point2& p, real t, real dt, Action* command = 0) = 0;
     
   // Calculations
-  virtual bool intersect(const Circle& c) const;
-  virtual bool intersect(const Rect2& r) const;
-  virtual bool intersect(const Segment2& s) const;
-  virtual bool intersect(ConstPointIterator2 begin, ConstPointIterator2 end) const;      
-   
+  virtual bool intersection(const Circle& c, Points2& points) const;
+  virtual bool intersection(const Rect2& r, Points2& points) const;
+  virtual bool intersection(const Segment2& s, Points2& points) const;
+  virtual bool intersection(ConstPointIterator2 begin, ConstPointIterator2 end, Points2& points) const;      
+     
   virtual void draw(const Rect2& r) const;
    
   // Operations
@@ -51,6 +51,6 @@ public:
   virtual void removeKid(Shape* shape);
 
   virtual void update(real start_time, real delta_time);  
-  virtual void handleCollision(Shape* other, real start_time, real delta_time);    
+  virtual void handleCollision(Shape* other, Points2& points, real start_time, real delta_time);    
   virtual void doPlanning(real start_time, real delta_time);  
 };
