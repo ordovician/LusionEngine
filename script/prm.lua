@@ -125,7 +125,30 @@ function ProbablisticRoadMap:construct(samples, retract_quotient)
   -- removes unconnected nodes
 	self:cleanUp()
 
+  self:makeNodeSearchStructure()
 	return true;  
+end
+
+--[[
+  When an NPC wants to find its way through the world using a roadmap
+  it will provide us with its current position and from that we should
+  find a path through roadmap. 
+  
+  Since positions don't translate directly to a node and searching every
+  node to see if its disc contains the NPC position is too time consuming
+  (takes O(n) time). We need a search structure to quickly find a node give
+  a query point. This method will create a search structure in self.node_group
+  The structure is a bounding volume hierarchy of the discs surrounding the
+  nodes.
+]]--
+function ProbablisticRoadMap:makeNodeSearchStructure()
+  -- Have to go through a few hoops because ShapeGroup
+  -- can only take Group as input
+  local circles = Group:new()
+  for _, circle in pairs(self.nodes) do
+    circles:add(circle)
+  end
+  self.node_group = ShapeGroup:new(circles)
 end
 
 --[[
@@ -164,7 +187,7 @@ function ProbablisticRoadMap:cleanUp()
 	  
 	  comp = { 
 	    n_start = self.nodes:find(function(n) 
-	      not visited[n] 
+	      return not visited[n] 
 	    end),
 	    size = 0
 	  }	  
@@ -187,82 +210,19 @@ end
   circles which potentially have center closest to point. Because centers which dont have
   their circles containing query point can possibly be reachable from position either.
 ]]--
-function ProbablisticRoadMap:findDisc(pos)
-  local closestShape = nil
-  function locateClosestDisc(shape, other, t, dt)
-    if not closestShape or shape:
-  end
+function ProbablisticRoadMap:findNode(pos)
+  local shortest_dist = math.huge
+  local closest_node  = nil
+  self.node_group:inside(pos, function(shape, t, dt)
+    local dist = (shape:center() - pos):squaredLength()
+    if dist < shortest_dist then
+      shortest_dist = dist
+      closest_node = shape
+    end
+  end)
   
-	self.nodes:inside(pos, locateClosestDisc)
-	
-	int ret = -1;
-	Vector3 v;
-
-  -- find node containing pos
-  local quad_node = self.quadRoot:findNode(pos)
-  if not quad_node then return false;
-  
-	for _,n in pairs(quad_node:spheres()) do
-	  if (n.pos-pos):length() <= n.radius then return n end
-	end
+  return closest_node
 end
-
- -- 
- -- UpdateSphere
- -- 
- -- Uses the previous nearest sphere to find the new nearest
- --
-function ProbablisticRoadMap:updateSphere(pos, ) 
-
-end
-int RoadMap::UpdateSphere(lua_State *VM, const Vector3 *pos, const int prevnearest, const int *path, const int pcount ) const
-{
-	int ret = -1;
-
-	if(prevnearest >= 0)
-	{
-		// check whether the position is inside the previous sphere
-		float len = (float)((Vector3)((Vector3)(*pos) - Nodes[prevnearest].Pos)).GetLengthSquared();
-		if(len <= Nodes[prevnearest].Radius * Nodes[prevnearest].Radius)
-		{
-			ret = prevnearest;
-		}
-		else
-		{
-			// not inside previous sphere, check neighboring spheres:
-			int size = (int)Nodes[prevnearest].Edges.size();
-
-			for( int i=0; i<size; ++i )
-			{
-				len = (float)((Vector3)((Vector3)(*pos) - Nodes[Nodes[prevnearest].Edges[i]].Pos)).GetLengthSquared();
-				if(len <= Nodes[Nodes[prevnearest].Edges[i]].Radius * Nodes[Nodes[prevnearest].Edges[i]].Radius)
-				{
-					// inside this sphere
-					ret = Nodes[prevnearest].Edges[i];
-
-					// if no roadmap path: any sphere will do
-					if( path == NULL )				
-						 break;
-
-					// if inside roadmap path: return this sphere
-  				    if( path )
-					{
-						for( int j=0; j<pcount; ++j )
-							if( path[j] == ret )
-								return ret;
-					}
-				}
-			}
-		}
-	}
-	else
-	{
-		// find whether (and in which sphere) the position is in the roadmap
-		ret = FindSphere(VM, pos);
-	}
-
-	return ret;
-}
 
 --[[
   Picks a random sample. The sample is a point within the boundaries
@@ -294,7 +254,7 @@ end
  the two points with different closest obstacle to find the point right in the middle
  between the two obstacles.
  --]] 
-function ProbablisticRoadMap::retractSample(c)
+function ProbablisticRoadMap:retractSample(c)
 	local c_close = self:nearestObstacle(c)
 
 	-- init Step vector ds (stepsize may not be larget than 0.5f * maxdist)
@@ -310,12 +270,12 @@ function ProbablisticRoadMap::retractSample(c)
 	-- while the nearest obstacle to c' (c_near) is approx. equal to c_close, keep searching
 	local c1_found = true
 	local c_near = self:nearestObstacle(c1)
-	while (c_near-c_close):squareLength() < ACCURACY do
+	while (c_near-c_close):squaredLength() < ACCURACY do
 		c1 = c1 + ds;
 		c_near = self:nearestObstacle(c1)
 
 		-- break when c' has moved too far
-		if (c1 - c_close):squareLength() > MAX_DIST_SQUARED or not self.bbox:inside(c1) then
+		if (c1 - c_close):squaredLength() > MAX_DIST_SQUARED or not self.bbox:inside(c1) then
 		  c1_found = false
 		  break
 		end
@@ -331,7 +291,7 @@ function ProbablisticRoadMap::retractSample(c)
 	return c_v
 end
 
- --[[
+--[[
  Performs a binary search between c1 and c2 to find the point 
  where the two nearest obstacles are equidistant.
  
@@ -351,11 +311,11 @@ function ProbablisticRoadMap:equidistantVertex(c1, c2)
 	local c1_obst = self:nearestObstacle(c1)
 	local c2_obst = self:nearestObstacle(c_v)
 
-	while ds:squareLength() > ACCURACY do
+	while ds:squaredLength() > ACCURACY do
 		ds = ds*0.5
 
 		-- update test position
-		if (c2_obst - c1_obst):squareLength() < ACCURACY )
+		if (c2_obst - c1_obst):squaredLength() < ACCURACY then
 			c_v = c_v + ds  -- c1 and c_v probably had the same obstacle closest
 		else
 			c_v = c_v - ds  -- They had different closest obstacles, so move c_v close to c1
@@ -368,7 +328,7 @@ function ProbablisticRoadMap:equidistantVertex(c1, c2)
 	return c_v
 end
 
- --[[
+--[[
  returns the point (on an obstacle) that is nearest to pos
  if none is found nil is returned.
 ]]--
@@ -388,7 +348,11 @@ function ProbablisticRoadMap:nearestObstacle(c)
       stepsize = stepsize*0.5
       radius = radius-stepsize      
     else
-      if is_collision then stepsize = stepsize*0.5 else stepsize = stepsize*2
+      if is_collision then 
+        stepsize = stepsize*0.5 
+      else 
+        stepsize = stepsize*2
+      end
       radius = radius+stepsize
     end
   end
@@ -412,7 +376,11 @@ function ProbablisticRoadMap:largestFreeDisc(c)
   local is_collision = false
   local radius
   local view = Engine.view()
-  if view:width() < view:heigth() then radius = view:width() else radius = view:height() end
+  if view:width() < view:heigth() then 
+    radius = view:width() 
+  else 
+    radius = view:height() 
+  end
   local stepsize = radius
 
 	while stepsize > ACCURACY and radius > ACCURACY do
@@ -421,7 +389,11 @@ function ProbablisticRoadMap:largestFreeDisc(c)
 			stepsize = stepsize*0.5
 			radius = radius - stepsize
 		else
-		  if is_collision then stepsize = stepsize*0.5 else stepsize = stepsize*2
+		  if is_collision then 
+		    stepsize = stepsize*0.5 
+		  else 
+		    stepsize = stepsize*2 
+		  end
 			radius = radius + stepsize
     end
 	end
@@ -437,7 +409,7 @@ end
 function ProbablisticRoadMap:insideRoadMap(c)
   local is_inside = false
   for _,n in pairs(self.nodes) do
-    if (n.pos - c):squareLength() <= n.radius*n.radius
+    if (n.pos - c):squaredLength() <= n.radius*n.radius then
       is_inside = true
       break
     end
@@ -451,7 +423,7 @@ end
  -- 
  -- Resizes the edge (recursively) if it is larger than the maximum edge size
  -- 
-function RoadMap:resizeEdge(n1, n2)
+function ProbablisticRoadMap:resizeEdge(n1, n2)
 	local e = n2.pos - n1.pos
 
 	if e:length() > MAX_EDGE_SIZE then
@@ -494,11 +466,9 @@ function ProbablisticRoadMap:checkNodesForEdge(n1, n2)
   return n1.edges[n2] == n2
 end
 
- -- 
- -- lineCollision(p1, p2 )
- -- 
- -- Checks whether a line from p1 to p2 (cylinder with a small radius) has collision. 
- -- 
+--[[
+ Checks whether a line from p1 to p2 (cylinder with a small radius) has collision.   
+]]-- 
 function ProbablisticRoadMap:lineCollision(p1, p2)
   local seg = Shape:newSegment(p1, p2)
   return self.obstacles:collide(seg)
@@ -512,7 +482,7 @@ function ProbablisticRoadMap:discCollision(c, radius)
   local circle = Shape:newCircle(c, radius)
   local intersection_point = nil
   self.obstacles:collide(circle, Engine.seconds(), 1, function(me, other, points, t, dt)
-      if points then intersection_point = points[1]
+      if points then intersection_point = points[1] end
       return true
     end
   )

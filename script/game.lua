@@ -8,6 +8,7 @@
 require("script/rrt")
 require("script/queue")
 require("script/stack")
+require("script/prm")
 
 function Engine.setPlayer(player)
   Engine._player = player
@@ -386,7 +387,12 @@ function setupCollisionHandling()
   end)
 end
 
+function setupRoadMap()
+
+end
+
 setupWorld()
 setupCollisionHandling()
-setupSeek()
+setupRoadMap()
+-- setupSeek()
 -- setupRRTSearch()
