@@ -13,6 +13,9 @@
 #include "LuaEngine.h"
 #include "Base/ImageView.h"
 #include "Base/Group.h"
+#include "Base/CircleShape.h"
+#include "Base/RectShape2.h"
+#include "Base/SegmentShape2.h"
 #include "Base/PolygonView.h"
 #include "Utils/PolygonUtils.h"
 #include "Utils/GLUtils.h"
@@ -266,6 +269,58 @@ void engineCleanup()
     
     SDL_Quit();
 }
+
+// Constructors
+Sprite* createSprite() 
+{
+  Sprite* sprite = new Sprite;
+  
+  // all sprites should be in this since they need to be rendered      
+  renderGroup()->addKid(sprite); 
+  return sprite;  
+}
+
+Sprite* createSprite(View* view)
+{
+  Sprite* sprite = new Sprite(view);
+  
+  // all sprites should be in this since they need to be rendered      
+  renderGroup()->addKid(sprite); 
+  return sprite;
+}
+
+
+Sprite* createSprite(const Point2& aPos, real aDir, real aSpeed)
+{
+  Sprite* sprite = new Sprite(aPos, aDir, aSpeed);
+  
+  // all sprites should be in this since they need to be rendered      
+  renderGroup()->addKid(sprite); 
+  return sprite;
+}
+
+CircleShape* createCircle(const Circle& circle)
+{
+  CircleShape* shape = new CircleShape(circle);
+  renderGroup()->addKid(shape);     
+  return shape;
+}
+
+RectShape2* createRect2(const Rect2& rect)
+{
+  RectShape2* shape = new RectShape2(rect);
+  renderGroup()->addKid(shape);   
+  return shape;
+}
+
+SegmentShape2* createSegment2(const Segment2& seg)
+{
+  SegmentShape2* shape = new SegmentShape2(seg);
+  renderGroup()->addKid(shape);     
+  return shape;
+}
+
+
 
 // Accessors
 void setViewportHeight(int height)
