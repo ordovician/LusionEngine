@@ -29,31 +29,6 @@
 #include <iostream>
 
 // Helper functions
-/*!
- Create a table to hold mapping between lua tables and pointers. The table has weak
- references so that lua tables are garbage collected even if there is one reference
- left to table in the this mapping table.
-*/
-void initSpriteBookkeeping(lua_State* L)
-{
-  luaL_newmetatable(L, "Lusion.Sprites"); // Make new table in registry to hold mapping between sprite pointers and tables
-  
-  lua_pushstring(L, "v");                 // Make table weak so that sprites can be garbage collected
-  lua_setfield(L, -2, "__mode");
-  
-  lua_pushvalue(L,-1);                    // Let the table be its own metatable
-  lua_setmetatable(L, -2);    
-}
-
-void registerSpriteTable(lua_State* L, Sprite* sprite)
-{
-  registerPointer(L, sprite, "Lusion.Sprites");
-}
-
-void retrieveSpriteTable(lua_State* L, Sprite* sprite)
-{
-  retrievePointer(L, sprite, "Lusion.Sprites");  
-}
  
 /*! 
  Sets the sprite to point to the same view as the parent class, if parents has any view
@@ -94,22 +69,22 @@ static int newSprite(lua_State *L)
     real y = luaL_checknumber (L, 3); 
     real dir = luaL_checknumber (L, 4);      
     real speed = luaL_checknumber (L, 5); 
-    *s = new Sprite(Point2(x, y), dir, speed);        
+    *s = createSprite(Point2(x, y), dir, speed);        
   }
   else if (n == 4) {
     real dir = luaL_checknumber (L, 3);      
     real speed = luaL_checknumber (L, 4); 
-    *s = new Sprite(Vector2_pull(L,2), dir, speed);    
+    *s = createSprite(Vector2_pull(L,2), dir, speed);    
   }
   else if (n == 2) {
     View* view = checkView(L,2);
-    *s = new Sprite(view);  
+    *s = createSprite(view);  
     lua_pushvalue(L, 2);
     lua_setfield(L, -3, "__view");    
     
   }
   else
-    *s = new Sprite; 
+    *s = createSprite(); 
 
   setUserDataMetatable(L, "Lusion.Shape");
 
@@ -118,7 +93,7 @@ static int newSprite(lua_State *L)
     cloneView(L, *s);
 
   // Register sprite in a weak table in registry so lua values can easily be retrieved in future using address as key
-  registerSpriteTable(L, *s);
+  registerShapeTable(L, *s);
   
   // Handle user initialization
   lua_getfield(L, 1, "init"); 
@@ -441,22 +416,6 @@ static int motionState(lua_State *L)
   return 1;
 }
 
-// sprite:prevDirection()
-// static int prevDirection(lua_State *L) 
-// {
-//   int n = lua_gettop(L);  // Number of arguments
-//   if (n == 1) {
-//     Sprite* sprite = checkSprite(L);
-//     assert(sprite != 0);
-//     real dir = sprite->prevDirection();
-//     lua_pushnumber(L, dir);
-//   }
-//   else
-//     luaL_error(L, "Got %d arguments expected 1", n); 
-//   
-//   return 1;
-// }
-
 static int depth(lua_State *L) 
 {
   int n = lua_gettop(L);  // Number of arguments
@@ -558,20 +517,6 @@ static int id(lua_State* L)
   return 1;
 }
 
-static int groups(lua_State* L)
-{
-  int n = lua_gettop(L);
-  if (n != 1)
-    return luaL_error(L, "Got %d arguments expected 1", n); 
-  Sprite* sprite = checkSprite(L);
-  assert(sprite != 0);  
-  GroupSet groups = sprite->groups();
-  groups.erase(renderGroup());  // We don't have a corresponding Lua object for this one
-  for_each(groups.begin(), groups.end(), PushUserData<Group*>(L,1));
-
-  return 1;
-}
-
 static int boundingBox(lua_State *L) 
 {
   int n = lua_gettop(L);  // Number of arguments
@@ -646,8 +591,6 @@ static int setUpdateHandler(lua_State* L)
 
   return 0;
 }
-
-
 
 static int setPlanningHandler(lua_State* L)
 {
@@ -950,7 +893,6 @@ static const luaL_Reg gSpriteFuncs[] = {
   {"motionState", motionState},
   {"setMotionState", setMotionState},  
   
-  // {"prevDirection", prevDirection},  
   {"depth", depth},
   {"setDepth", setDepth},    
   {"polygon", polygon},    
@@ -961,7 +903,6 @@ static const luaL_Reg gSpriteFuncs[] = {
   {"setSubViewIndex", setSubViewIndex},      
     
   {"id", id},        
-  {"groups", groups},        
 
   {"boundingBox", boundingBox},
   {"setCollisionHandler", setCollisionHandler},
@@ -987,7 +928,7 @@ static const luaL_Reg gSpriteFuncs[] = {
   {"reverse", reverse},    
   {"stop", stop},  
   
-  {"private_kill", kill},  
+  {"kill", kill},  
     
   // For all sprites
   {"showCollision", showCollision},  
@@ -1007,7 +948,5 @@ void initLuaSprite(lua_State *L)
   // lua_pushvalue(L,-1);
   // lua_setfield(L,-2, "__index");  
   
-  luaL_register(L, "Sprite", gSpriteFuncs);  
-  
-  initSpriteBookkeeping(L);
+  luaL_register(L, "Sprite", gSpriteFuncs);    
 }

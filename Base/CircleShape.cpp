@@ -14,6 +14,12 @@
 
 #include <iostream>
 
+#ifndef UNIT_TEST
+#include "Utils/GLUtils.h"
+
+#include <OpenGL/gl.h>
+#endif
+
 using namespace std;
 
 /*!
@@ -37,6 +43,12 @@ CircleShape::~CircleShape()
 }
 
 // Accessors
+std::string
+CircleShape::typeName() const  
+{ 
+  return "CircleShape"; 
+}
+
 Rect2 CircleShape::boundingBox() const
 {
   Rect2 r(Vector2(0.0f, 0.0f), Vector2(iCircle.radius()*2.0f, iCircle.radius()*2.0f));
@@ -105,8 +117,13 @@ bool CircleShape::intersection(ConstPointIterator2 begin, ConstPointIterator2 en
 */
 void CircleShape::draw(const Rect2& r) const
 {
-  // glPushMatrix();
-  //   gltTranslate(iCircle.center());
-  //   drawCircle(iCircle.radius());
-  // glPopMatrix();  
+#ifndef UNIT_TEST  
+  glPushMatrix();
+    glBegin(GL_POINT);
+      gltVertex(iCircle.center());
+    glEnd();
+    gltTranslate(iCircle.center());
+    drawCircle(iCircle.radius());
+  glPopMatrix(); 
+#endif 
 }

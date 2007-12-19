@@ -21,6 +21,7 @@ public:
 	virtual ~View();
 
 	// Accessors
+  std::string typeName() const;  
 	void setOrigin(const Point2 & aOrigin);
 	Point2 origin() const;
 			

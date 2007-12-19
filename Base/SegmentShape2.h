@@ -25,6 +25,7 @@ public:
   virtual ~SegmentShape2();
 
   // Accessors
+  std::string typeName() const;
   Rect2 boundingBox() const;  
     
   // Request

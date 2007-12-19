@@ -11,7 +11,7 @@
 #include "Base/Sprite.h"
 
 #include "Lua/LuaUtils.h"
-#include "Lua/Base/LuaSprite.h"
+#include "Lua/Base/LuaShape.h"
 
 #include <lua.hpp>
 
@@ -71,13 +71,11 @@ LuaAction::~LuaAction()
 }
 
 // Operations
-bool LuaAction::execute(Shape* me_obj, real t, real dt) 
-{      
-  Sprite* me = dynamic_cast<Sprite*>(me_obj);
-  
+bool LuaAction::execute(Shape* me, real t, real dt) 
+{        
   lua_rawgeti(L, LUA_REGISTRYINDEX, iActionRef);
   if (me)
-    retrieveSpriteTable(L, me);
+    retrieveShapeTable(L, me);
   else
     lua_pushnil(L);
 
@@ -103,7 +101,8 @@ LuaCollisionAction::LuaCollisionAction(lua_State* aL)
   : L(aL)
 {
   if (lua_isfunction(L, -1)) {
-    iActionRef = luaL_ref(L, LUA_REGISTRYINDEX);    
+    iActionRef = luaL_ref(L, LUA_REGISTRYINDEX);
+    assert(iActionRef != LUA_REFNIL);
   }
   else {
     iActionRef = LUA_NOREF;
@@ -113,23 +112,21 @@ LuaCollisionAction::LuaCollisionAction(lua_State* aL)
 
 LuaCollisionAction::~LuaCollisionAction()
 {
+  assert(iActionRef != LUA_REFNIL);
   luaL_unref(L, LUA_REGISTRYINDEX, iActionRef);
-  // cout << hex << "0x" << (int)this << " LuaCollisionAction removed" << endl;  // DEBUG         
+  cout << hex << "0x" << (int)this << " LuaCollisionAction removed" << endl;  // DEBUG         
 }
 
 // Operations
-bool LuaCollisionAction::execute(Shape* me_obj, Shape* other_obj, Points2& points, real t, real dt) 
-{      
-  Sprite* me = dynamic_cast<Sprite*>(me_obj);
-  Sprite* other = dynamic_cast<Sprite*>(other_obj);
-  
+bool LuaCollisionAction::execute(Shape* me, Shape* other, Points2& points, real t, real dt) 
+{        
   lua_rawgeti(L, LUA_REGISTRYINDEX, iActionRef);
   if (me)
-    retrieveSpriteTable(L, me);
+    retrieveShapeTable(L, me);
   else
     lua_pushnil(L);
   if (other)
-    retrieveSpriteTable(L, other);  
+    retrieveShapeTable(L, other);  
   else
     lua_pushnil(L);
   

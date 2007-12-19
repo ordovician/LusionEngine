@@ -5,7 +5,7 @@
 
 using namespace std;
 
-// #define DEBUG_MEMORY
+#define DEBUG_MEMORY
 
 /*!
     \class SharedObject SharedObject.h
@@ -38,7 +38,7 @@ using namespace std;
 SharedObject::SharedObject() : iTag(0) , iRefCount(1) 
 {
   #ifdef DEBUG_MEMORY  
-  // cout << "0x" << hex << (int)this << " SharedObject created" << endl; 
+  cout << "0x" << hex << (int)this << " SharedObject created" << endl; 
   #endif
 }
 
@@ -58,8 +58,14 @@ SharedObject::operator=(const SharedObject&) {
 SharedObject::~SharedObject() 
 {
   #ifdef DEBUG_MEMORY  
-  // cout << "0x" << hex << (int)this << " SharedObject removed" << endl; 
+  cout << "0x" << hex << (int)this << " SharedObject removed" << endl; 
   #endif  
+}
+
+std::string 
+SharedObject::typeName() const  
+{ 
+  return "Undefined type"; 
 }
 
 ////////////////////////////// Access
@@ -99,15 +105,19 @@ SharedObject::retain()
 void 
 SharedObject::release() 
 {
-  if (this != 0 && --iRefCount == 0) 
-    delete this;
   #ifdef DEBUG_MEMORY
   if (this != 0) {
-    cout << "0x" << hex << (int)this << " released, refcount: " << dec << iRefCount << endl; 
-    if (iRefCount < 0)
+    std::string type = typeName();
+    cout << "0x" << hex << (int)this << " released, refcount: " 
+         << dec << iRefCount-1 
+         << " type: " << type << endl; 
+    if (iRefCount <= 0)
       cout << "Refcount mismatch!" << endl;
   }
   #endif  
+
+  if (this != 0 && --iRefCount == 0) 
+    delete this;
 }
 
 void 

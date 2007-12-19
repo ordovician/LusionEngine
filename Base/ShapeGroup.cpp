@@ -63,6 +63,7 @@ ShapeGroup::ShapeGroup()
 
 ShapeGroup::ShapeGroup(ShapeIterator* source)
 {
+  assert(source != 0);
   vector<Shape*> shapes;
   MutableVectorShapeIterator dest(shapes);
   
@@ -93,6 +94,12 @@ ShapeGroup::~ShapeGroup()
 }
 
 // Accessors
+std::string
+ShapeGroup::typeName() const  
+{ 
+  return "ShapeGroup"; 
+}
+
 Rect2 ShapeGroup::boundingBox() const
 {
   return iBox;

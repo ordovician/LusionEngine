@@ -35,7 +35,8 @@ public:
   string name();
   void setName(const char* name);
   
-	// Accessors  	
+	// Accessors
+  std::string typeName() const;	
 	void setPosition(const Point2& aPosition);
 	Point2 position() const;
 
@@ -75,7 +76,6 @@ public:
   void  setSubViewIndex(int index);
   int   subViewIndex() const;
   
-  GroupSet groups() const;
   real  radius() const;
   
   void  touch();
@@ -118,16 +118,10 @@ public:
   void  rotate(real deg);
   void  reverse();
   void  stop();
-  void  kill();
   
   void  handleCollision(Shape* other, Points2& points, real t, real dt);
   void  doPlanning(real t, real dt); 
   
-  // Only for internal use
-  void  add(Group* group);
-  void  remove(Group* group);
-
-  // void moveTowards(Point2 pos, real speed);
 private:
   void  updateCache() const;
   
@@ -137,8 +131,6 @@ private:
 	bool	  iVisible;
 	View*   iView;
   int     iCurSubViewIndex;
-
-  GroupSet iGroups;
 
   // Actions
   Action*  iUpdateAction;

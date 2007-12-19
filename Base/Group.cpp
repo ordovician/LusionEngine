@@ -15,6 +15,9 @@
 #include <iostream>
 #include <assert.h>
 
+#include <functional>
+#include <algorithm>
+
 using namespace std;
 
 /*!
@@ -39,15 +42,22 @@ Group* renderGroup()
 // Constructors
 Group::Group() : iCurShape(0)
 {
-  
+
 }
 
 Group::~Group()
 {
-  cout << hex << "0x" << (int)this << " group removed" << endl;  // DEBUG  
+  clear();
+  // cout << hex << "0x" << (int)this << " group removed" << endl;  // DEBUG  
 }
 
 // Accessors
+std::string
+Group::typeName() const  
+{ 
+  return "Group"; 
+}
+
 int Group::noShapes() const
 {
   return iShapes.size();
@@ -88,6 +98,7 @@ void Group::addKid(Shape* shape)
       iBBox = shape->boundingBox();
     else
       iBBox.surround(shape->boundingBox());
+    shape->addListener(this); // Be notified of deletes
   }
 }
 
@@ -99,6 +110,7 @@ void Group::removeKid(Shape* shape)
     if (*iCurShape == shape) nextShape();
     iShapes.erase(shape);
     shape->release();
+    shape->removeListener(this);    
   }
 }
 
@@ -141,6 +153,12 @@ void Group::draw(const Rect2& r) const
 
 void Group::clear()
 {
+  // Stop listening to shapes
+  for_each(iShapes.begin(), iShapes.end(),
+    bind2nd(mem_fun(&Shape::removeListener),
+            this));
+  for_each(iShapes.begin(), iShapes.end(),
+    mem_fun(&SharedObject::release));  
   iShapes.clear();
 }
 
@@ -192,4 +210,16 @@ bool Group::inside(const Point2& p, real t, real dt, Action* command)
       is_col = true;
   }    
   return is_col;  
+}
+
+// Event handling
+void Group::shapeDestroyed(Shape* shape) 
+{
+  if (*iCurShape == shape) nextShape();  
+  iShapes.erase(shape);
+}
+
+void Group::shapeKilled(Shape* shape) 
+{
+  removeKid(shape);
 }

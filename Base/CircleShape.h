@@ -25,6 +25,7 @@ public:
   virtual ~CircleShape();
 
   // Accessors
+  std::string typeName() const;
   Rect2 boundingBox() const;  
   const Point2& center() const;
   real          radius() const;

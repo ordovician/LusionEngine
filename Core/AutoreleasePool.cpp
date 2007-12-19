@@ -9,40 +9,6 @@
 
 using namespace std;
 
-/***************************************************************************
-  CleanupPool
-***************************************************************************/
-////////////////////////////// Static member variables
-CleanupPool CleanupPool::sDefaultPool;
-  
-////////////////////////////// Constructors
-CleanupPool::CleanupPool() {
-
-}
-
-CleanupPool::~CleanupPool() {
-  releasePool();
-}
-
-////////////////////////////// Access
-void  
-CleanupPool::add(SharedObject *aObj) {
-  iPoolObjects.insert(aObj);
-}
-
-////////////////////////////// Operations
-void 
-CleanupPool::releasePool() {
-  for_each(iPoolObjects.begin(), iPoolObjects.end(), mem_fun(&SharedObject::release));
-  iPoolObjects.clear();
-}
-
-////////////////////////////// Static access
-CleanupPool * 
-CleanupPool::defaultPool() {
-  return &sDefaultPool;
-} 
-
 /*!
     \class AutoreleasePool AutoreleasePool.h
     \brief Keeps track of shared objects that should be released.
@@ -104,20 +70,14 @@ AutoreleasePool::~AutoreleasePool()
 void  
 AutoreleasePool::add(SharedObject *aObj) 
 {
-  #ifdef DEBUG_MEMORY
-    cout << "AutoreleasePool::add:pool:" << hex << (int)this << " obj: " << hex << (int)aObj << endl;
-  #endif
   iPoolObjects.insert(aObj);
 }
 
 ////////////////////////////// Operations
 void 
 AutoreleasePool::releasePool() {
-  #ifdef DEBUG_MEMORY
-      cout << "AutoreleasePool::releasePool:" << hex << (int)this << endl;
-  #endif
-
-  for_each(iPoolObjects.begin(), iPoolObjects.end(), mem_fun(&SharedObject::release));
+  for_each(iPoolObjects.begin(), iPoolObjects.end(), 
+    mem_fun(&SharedObject::release));
   iPoolObjects.clear();
 }
 

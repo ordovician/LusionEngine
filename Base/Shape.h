@@ -17,6 +17,9 @@
 #include <Core/SharedObject.hpp>
 
 #include <Base/ShapeIterator.h>
+#include <Base/ShapeListener.h>
+
+#include <set>
 
 class CollisionAction;
 class Action;
@@ -29,14 +32,15 @@ public:
   virtual ~Shape();
 
   // Accessors
+  std::string typeName() const;
   virtual Rect2 boundingBox() const = 0;  
   virtual int   noShapes() const;  
   virtual ShapeIterator* shapeIterator() const;
     
   // Request
   virtual bool isSimple() const;
-  virtual bool collide(Shape* other, real t, real dt, CollisionAction* command = 0) = 0;  
-  virtual bool inside(const Point2& p, real t, real dt, Action* command = 0) = 0;
+  virtual bool collide(Shape* other, real t, real dt, CollisionAction* action = 0) = 0;  
+  virtual bool inside(const Point2& p, real t, real dt, Action* action = 0) = 0;
     
   // Calculations
   virtual bool intersection(const Circle& c, Points2& points) const;
@@ -53,4 +57,12 @@ public:
   virtual void update(real start_time, real delta_time);  
   virtual void handleCollision(Shape* other, Points2& points, real start_time, real delta_time);    
   virtual void doPlanning(real start_time, real delta_time);  
+  
+  void addListener(ShapeListener* listener);
+  void removeListener(ShapeListener* listener);
+  void removeAllListeners();
+  void kill();
+  
+private:
+  std::set<ShapeListener*> iListeners;   
 };

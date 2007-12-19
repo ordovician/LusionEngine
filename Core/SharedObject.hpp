@@ -9,6 +9,7 @@ Comment	:
 #pragma once
 
 #include <set>
+#include <string>
     
 /**
  * Shared object. One object can be shared among multiple objects. 
@@ -24,6 +25,9 @@ public:
   virtual ~SharedObject();
   
 public:                
+  // New virtual methods
+  virtual std::string typeName() const;
+    
   // Access
   void  setTag(int aTag);
   int   tag() const;

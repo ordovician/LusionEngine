@@ -14,3 +14,6 @@ class Shape;
 
 void initLuaShape(lua_State *L);
 Shape *checkShape(lua_State* L, int index=1);
+
+void registerShapeTable(lua_State* L, Shape* shape);
+void retrieveShapeTable(lua_State* L, Shape* shape);

@@ -14,6 +14,12 @@
 
 #include <iostream>
 
+#ifndef UNIT_TEST
+#include "Utils/GLUtils.h"
+
+#include <OpenGL/gl.h>
+#endif
+
 using namespace std;
 
 /*!
@@ -37,6 +43,12 @@ RectShape2::~RectShape2()
 }
 
 // Accessors
+std::string
+RectShape2::typeName() const  
+{ 
+  return "RectShape2"; 
+}
+
 Rect2 RectShape2::boundingBox() const
 {
   return iRect;
@@ -93,7 +105,9 @@ bool RectShape2::intersection(ConstPointIterator2 begin, ConstPointIterator2 end
 */
 void RectShape2::draw(const Rect2& r) const
 {
-//  glBegin(GL_LINES);    
-//    gltVertex(iRect);
-//  glEnd();
+#ifndef UNIT_TEST
+  glBegin(GL_LINES);    
+    gltVertex(iRect);
+  glEnd();
+#endif
 }

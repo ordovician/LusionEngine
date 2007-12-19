@@ -3,7 +3,7 @@
  *  LusionEngine
  *
  *  Created by Erik Engheim on 19.9.07.
- *  Copyright 2007 __MyCompanyName__. All rights reserved.
+ *  Copyright 2007 Translusion. All rights reserved.
  *
  */
 

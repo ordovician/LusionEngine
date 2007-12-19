@@ -13,6 +13,3 @@ struct lua_State;
 class Sprite;
 
 void initLuaSprite(lua_State *L);
-
-void registerSpriteTable(lua_State* L, Sprite* sprite);
-void retrieveSpriteTable(lua_State* L, Sprite* sprite);

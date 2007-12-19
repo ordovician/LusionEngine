@@ -26,6 +26,7 @@ public:
   virtual ~ShapeGroup();
 
   // Accessors
+  std::string typeName() const;
   Rect2 boundingBox() const;
   int   noShapes() const;  
   ShapeIterator* shapeIterator() const;

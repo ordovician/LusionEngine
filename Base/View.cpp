@@ -61,6 +61,12 @@ View::~View()
 }
 
 // Accessors
+std::string
+View::typeName() const
+{
+  return "View";
+}
+
 void View::setOrigin(const Point2 & aOrigin)
 {
 	iOrigin = aOrigin;

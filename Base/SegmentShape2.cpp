@@ -14,6 +14,12 @@
 
 #include <iostream>
 
+#ifndef UNIT_TEST
+#include "Utils/GLUtils.h"
+
+#include <OpenGL/gl.h>
+#endif
+
 using namespace std;
 
 /*!
@@ -37,6 +43,12 @@ SegmentShape2::~SegmentShape2()
 }
 
 // Accessors
+std::string
+SegmentShape2::typeName() const  
+{ 
+  return "SegmentShape2"; 
+}
+
 Rect2 SegmentShape2::boundingBox() const
 {
   return Rect2(iSeg.left(), iSeg.right());
@@ -93,7 +105,9 @@ bool SegmentShape2::intersection(ConstPointIterator2 begin, ConstPointIterator2 
 */
 void SegmentShape2::draw(const Rect2& r) const
 {
-//  glBegin(GL_LINES);      
-//    gltVertex(iSeg);
-//  glEnd();
+#ifndef UNIT_TEST
+  glBegin(GL_LINES);      
+    gltVertex(iSeg);
+  glEnd();
+#endif
 }

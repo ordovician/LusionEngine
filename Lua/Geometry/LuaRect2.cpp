@@ -271,6 +271,18 @@ static int isValid(lua_State *L)
   return 1; 
 }
 
+static int inside(lua_State *L) 
+{
+  int n = lua_gettop(L);  // Number of arguments
+  if (n != 2)
+    return luaL_error(L, "Got %d arguments expected 2 (self, point)", n);
+
+  Rect2 r = Rect2_pull(L, 1);
+  Vector2 p = Vector2_pull(L, 2);  
+  lua_pushboolean(L, r.inside(p)); 
+  return 1; 
+}
+
 // Calculations
 
 // Operators
@@ -302,6 +314,7 @@ static const luaL_Reg gRectFuncs[] = {
   {"isNull", isNull},                  
   {"isEmpty", isEmpty},                  
   {"isValid", isValid},                  
+  {"inside", inside},                  
   
   // Calculations
   // Operators

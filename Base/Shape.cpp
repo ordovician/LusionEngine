@@ -12,6 +12,9 @@
 
 #include <assert.h>
 
+#include <algorithm>
+#include <functional>
+
 using namespace std;
 
 /*!
@@ -39,10 +42,21 @@ Shape::Shape()
 
 Shape::~Shape()
 {
+  // Notify all listeners that shape will no longer exist
+  for_each(iListeners.begin(), iListeners.end(),
+    bind2nd(
+      mem_fun(&ShapeListener::shapeDestroyed),
+      this));
   // cout << hex << "0x" << (int)this << " Shape removed" << endl;  // DEBUG    
 }
 
 // Accessors
+std::string
+Shape::typeName() const  
+{ 
+  return "Shape"; 
+}
+
 int Shape::noShapes() const
 {
   return 0;
@@ -171,4 +185,40 @@ void Shape::handleCollision(Shape* other, Points2& points, real start_time, real
 void Shape::doPlanning(real start_time, real delta_time)
 {
   // Do nothing
+}
+
+void Shape::addListener(ShapeListener* listener) 
+{
+  iListeners.insert(listener);
+}
+
+void Shape::removeListener(ShapeListener* listener)
+{
+  iListeners.erase(listener);
+}
+
+void Shape::removeAllListeners()
+{
+  iListeners.clear();
+}
+
+/*!
+  Killing a shape should delete a shape from the system
+  Since a shape might be contained in several groups
+  it is not possible to just call release on it an expect
+  it to disappear because it might be retained in many different
+  Groups or Shape groups. 
+  
+  kill will notify all listeners that we wish to delete shape.
+  Listeners will typically be containers which will remove shape
+  from their list and release it.
+*/
+void Shape::kill()
+{
+  // Notify all listeners that shape is killed
+  for_each(iListeners.begin(), iListeners.end(),
+    bind2nd(
+      mem_fun(&ShapeListener::shapeKilled),
+      this));
+  release();
 }

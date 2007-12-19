@@ -11,11 +11,12 @@
 
 #include "Types.h"
 #include <Base/Shape.h>
+#include <Base/ShapeListener.h>
 
 // Group used for rendering
 Group* renderGroup(); 
 
-class Group : public Shape
+class Group : public Shape, public ShapeListener
 {
 public:
   // Constructors
@@ -23,6 +24,7 @@ public:
   virtual ~Group();
 
   // Accessors
+  std::string typeName() const;
   Rect2 boundingBox() const;  
   int   noShapes() const;  
   ShapeIterator* shapeIterator() const;
@@ -44,7 +46,11 @@ public:
   void clear();
 
   Shape* nextShape();
-      
+  
+  // Even handling
+  void shapeDestroyed(Shape* shape);
+  void shapeKilled(Shape* shape);
+        
 private:
   std::set<Shape*> iShapes;
   std::set<Shape*>::iterator iCurShape;

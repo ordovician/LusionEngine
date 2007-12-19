@@ -25,6 +25,8 @@
 #include "Base/RectShape2.h"
 #include "Base/SegmentShape2.h"
 
+#include "Engine.h"
+
 #include <Geometry/Circle.hpp>
 
 #include <iostream>
@@ -34,6 +36,32 @@
 #include <assert.h>
 
 // Helper functions
+/*!
+ Create a table to hold mapping between lua tables and pointers. The table has weak
+ references so that lua tables are garbage collected even if there is one reference
+ left to table in the this mapping table.
+*/
+void initShapeBookkeeping(lua_State* L)
+{
+  luaL_newmetatable(L, "Lusion.Shapes"); // Make new table in registry to hold mapping between sprite pointers and tables
+  
+  lua_pushstring(L, "v");                 // Make table weak so that sprites can be garbage collected
+  lua_setfield(L, -2, "__mode");
+  
+  lua_pushvalue(L,-1);                    // Let the table be its own metatable
+  lua_setmetatable(L, -2);    
+}
+
+void registerShapeTable(lua_State* L, Shape* shape)
+{
+  registerPointer(L, shape, "Lusion.Shapes");
+}
+
+void retrieveShapeTable(lua_State* L, Shape* shape)
+{
+  retrievePointer(L, shape, "Lusion.Shapes");  
+}
+
 Shape *checkShape(lua_State* L, int index)
 {
   Shape* v;
@@ -103,7 +131,7 @@ static int newCircleShape(lua_State *L)
   CircleShape **s = (CircleShape **)lua_newuserdata(L, sizeof(Sprite *));  
   
   real radius = luaL_checknumber (L, 3);      
-  *s = new CircleShape(Circle(Vector2_pull(L,2), radius));    
+  *s = createCircle(Circle(Vector2_pull(L,2), radius));    
 
   setUserDataMetatable(L, "Lusion.Shape");
   
@@ -123,7 +151,7 @@ static int newRectShape2(lua_State *L)
   
   RectShape2 **s = (RectShape2 **)lua_newuserdata(L, sizeof(Sprite *));  
   
-  *s = new RectShape2(Rect2(Vector2_pull(L,2), (Vector2_pull(L,3))));    
+  *s = createRect2(Rect2(Vector2_pull(L,2), (Vector2_pull(L,3))));    
 
   setUserDataMetatable(L, "Lusion.Shape");
   
@@ -143,7 +171,7 @@ static int newSegmentShape2(lua_State *L)
   
   SegmentShape2 **s = (SegmentShape2 **)lua_newuserdata(L, sizeof(Sprite *));  
   
-  *s = new SegmentShape2(Segment2(Vector2_pull(L,2), (Vector2_pull(L,3))));    
+  *s = createSegment2(Segment2(Vector2_pull(L,2), (Vector2_pull(L,3))));    
 
   setUserDataMetatable(L, "Lusion.Shape");
   
@@ -151,11 +179,6 @@ static int newSegmentShape2(lua_State *L)
 }
 static int init(lua_State *L) 
 {
-  // int n = lua_gettop(L);  // Number of arguments
-  // if (n != 1) 
-  //   return luaL_error(L, "Got %d arguments expected 1 (self)", n); 
-  // Shape* g = checkShape(L);
-  // cout << "Initializing group: " << (int)g << endl;
   return 0;
 }
 
@@ -238,6 +261,41 @@ static int collide(lua_State *L)
     lua_pushvalue(L,5);
     LuaCollisionAction cmd(L);
     ret = shape->collide(other, t, dt, &cmd);
+  }
+    
+  lua_pushboolean(L, ret);     
+  
+  return 1;
+}
+
+static int inside(lua_State *L) 
+{
+  int n = lua_gettop(L);  // Number of arguments
+  if (n != 5 && n != 4 && n != 2)
+    return luaL_error(L, "Got %d arguments expected 5, 4 or 2 (self, point [,start_time, delta_time [, function]])", n); 
+    
+  Shape* shape = checkShape(L,1); 
+  Point2 point = Vector2_pull(L, 2);
+       
+  assert(shape != 0);  
+
+  real t, dt;
+  if (n > 2) {
+    t = luaL_checknumber(L, 3);
+    dt = luaL_checknumber(L, 4);    
+  }
+  else {
+    t = secondsPassed();
+    dt = 1.0f;
+  }
+  
+  bool ret = false;
+  if (n <= 4)
+    ret = shape->inside(point, t, dt);
+  else if (n == 5) {
+    lua_pushvalue(L,5);
+    LuaAction cmd(L);
+    ret = shape->inside(point, t, dt, &cmd);
   }
     
   lua_pushboolean(L, ret);     
@@ -404,6 +462,7 @@ static const luaL_Reg gShapeFuncs[] = {
         
   // Request
   {"collide", collide},
+  {"inside", inside},  
   {"circleIntersect", circleIntersect},
   {"rectIntersect", rectIntersect},
   {"segmentIntersect", segmentIntersect},
@@ -414,8 +473,8 @@ static const luaL_Reg gShapeFuncs[] = {
   // Operations  
   {"update", update},
   {"doPlanning", doPlanning},  
-  {"private_add", addKid},
-  {"private_remove", removeKid},    
+  {"add", addKid},
+  {"remove", removeKid},    
   {NULL, NULL}
 };
 
@@ -430,4 +489,6 @@ void initLuaShape(lua_State *L)
   lua_setfield(L,-2, "__index");  
 
   luaL_register(L, "Shape", gShapeFuncs);  
+  
+  initShapeBookkeeping(L);  
 }

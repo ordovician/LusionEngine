@@ -330,7 +330,7 @@ static int testHierarchyIntersect(lua_State* L)
 
   View* view = new PolygonView;
   for (int i=0; i<5; ++i) {
-    Sprite* sp = new Sprite(view);
+    Sprite* sp = createSprite(view);
     sp->setPosition(Vector2(4.0f*i, 4.0f*i));
     sprites.push_back(sp);
   }

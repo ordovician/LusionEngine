@@ -62,11 +62,6 @@ Sprite::~Sprite()
   iCollisionAction->release();
   iInsideAction->release();
   iState->release();
-  
-  GroupSet::iterator group = iGroups.begin();
-  for (;group != iGroups.end(); ++group) {
-    (*group)->removeKid(this);
-  }
 }
 
 #pragma mark Initialization
@@ -86,12 +81,16 @@ void Sprite::init(const Point2& pos, real deg, real speed)
   iState = new MotionState(pos, deg, speed);
 
   updateCache();  
-  renderGroup()->addKid(this); // all sprites should be in this since they need to be rendered    
-
   // cout << hex << "0x" << (int)this << " sprite created" << endl;  // DEBUG
 }
 
 #pragma mark Accessors
+std::string
+Sprite::typeName() const
+{
+  return "Sprite";
+}
+
 string Sprite::name()
 {
   return iName;
@@ -256,11 +255,6 @@ void Sprite::setSubViewIndex(int index)
 int Sprite::subViewIndex() const
 {
   return iCurSubViewIndex;  
-}
-
-GroupSet Sprite::groups() const
-{
-  return iGroups;
 }
 
 real Sprite::radius() const
@@ -500,15 +494,6 @@ void Sprite::stop()
   iState->stop();
 }
 
-void Sprite::kill()
-{
-  GroupSet::iterator group = iGroups.begin();
-  // NOTE: not sure if iterator will be valid through this
-  for (;group != iGroups.end(); ++group) {
-    (*group)->removeKid(this);
-  }
-}
-
 /*!
   Handles collision. Call when one has determined that a collision has happened and
   want to perform the sprites collision command. Only makes sure that collision command
@@ -527,17 +512,4 @@ void Sprite::doPlanning(real t, real dt)
 {
   if (iPlanAction)
     iPlanAction->execute(this, t, dt);
-}
-       
-#pragma mark Only for internal use   
-/*! This should only be called from Group.add(sprite) */
-void Sprite::add(Group* group)
-{
-  iGroups.insert(group);
-}
-
-/*! This should only be called from Group.add(sprite) */
-void Sprite::remove(Group* group)
-{
-  iGroups.erase(group);
 }
