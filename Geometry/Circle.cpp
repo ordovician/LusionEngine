@@ -137,7 +137,7 @@ bool Circle::intersect(ConstPointIterator2 begin, ConstPointIterator2 end) const
     if (intersect(Segment2(*prev, *it)))
       return true;    
   }
-  return false;
+  return intersect(Segment2(*prev, *begin));
 }
 
 /*!
@@ -163,7 +163,7 @@ bool Circle::intersection(
     if (intersection(Segment2(*prev, *it), points) && first)
       return true;
   }
-  return points.size() != 0;
+  return intersection(Segment2(*prev, *begin), points) || points.size() != 0;
 }
     
 // Operators

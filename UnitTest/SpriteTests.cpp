@@ -24,7 +24,7 @@ static real t = 0.0f;
 static real dt = 1.0f;
 
 struct TestCmd : public CollisionAction {
-  bool execute(Shape* me, Shape* other, real start_time, real delta_time) {
+  bool execute(Shape* me, Shape* other, Points2& points, real start_time, real delta_time) {
     CPTAssert(me == expectedMe);
     CPTAssert(other == expectedOther);
     return true;

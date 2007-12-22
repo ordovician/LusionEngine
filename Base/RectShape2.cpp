@@ -11,6 +11,7 @@
 #include <Engine.h>
 #include <Base/Action.h>
 #include <Utils/PolygonUtils.h>
+#include <Core/Core.h>
 
 #include <iostream>
 

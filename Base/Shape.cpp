@@ -220,5 +220,4 @@ void Shape::kill()
     bind2nd(
       mem_fun(&ShapeListener::shapeKilled),
       this));
-  release();
 }

@@ -73,11 +73,13 @@ void CircleTests::testSegmentIntersect()
   Segment2 s2(Vector2(1.0f, 1.0f), Vector2(1.0f, 5.0f)); // Tagents  
   Segment2 s3(Vector2(1.0f, 1.0f), Vector2(1.0f, 6.0f)); // Clearly intersect    
   Segment2 s4(Vector2(1.0f, 1.0f), Vector2(6.0f, 6.0f)); // Clearly intersect      
+  Segment2 s5(Vector2(5.0f, 1.0f), Vector2(8.0f, 1.0f)); // Tagents outside   
   
   CPTAssert(circle.intersect(s1));  // TODO: This is inconsistent with how rect intersect works       
   CPTAssert(circle.intersect(s2));  // since rect requires the two to be strictly intersecting, 
   CPTAssert(circle.intersect(s3));  //  while segment also considers contained as intersecting        
   CPTAssert(circle.intersect(s4));
+  CPTAssert(!circle.intersect(s5));  
 }
 
 void CircleTests::testPolygonIntersect()

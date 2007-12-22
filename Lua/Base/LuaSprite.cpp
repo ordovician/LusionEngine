@@ -104,15 +104,7 @@ static int newSprite(lua_State *L)
 }
 
 static int init(lua_State *L) 
-{
-  // int n = lua_gettop(L);  // Number of arguments
-  // if (n != 1)
-  //   return luaL_error(L, "Got %d arguments expected 1 (self)", n); 
-  //   
-  // Sprite* sprite = checkSprite(L);
-  // 
-  // cout << "initializing sprite: 0x" << hex << (int)sprite << endl;
-  
+{  
   return 0;
 }
 

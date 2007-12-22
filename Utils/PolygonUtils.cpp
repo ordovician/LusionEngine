@@ -71,20 +71,17 @@ bool intersect(const Polygon2& p1, const Polygon2& p2)
 
 bool intersect(const Circle& circle, ConstPointIterator2 begin, ConstPointIterator2 end)
 {
-  ConstPointIterator2 it;
-  for (it = begin+1; it != end; ++it) {
-    if (circle.intersect(Segment2(*it, *(it-1)))) return true;
-  }
-  return false;
+  return circle.intersect(begin, end);
 }
 
 bool intersect(const Segment2& s, ConstPointIterator2 begin, ConstPointIterator2 end)
 {
-  ConstPointIterator2 it;
-  for (it = begin+1; it != end; ++it) {
-    if (s.intersect(Segment2(*it, *(it-1)))) return true;
+  ConstPointIterator2 it = begin, prev = begin;
+  for (++it; it != end; ++it, ++prev) {
+    if (s.intersect(Segment2(*prev, *it)))
+      return true;    
   }
-  return false;  
+  return s.intersect(Segment2(*prev, *begin));    
 }
 
 bool intersect(const Rect2& rect, ConstPointIterator2 begin, ConstPointIterator2 end)

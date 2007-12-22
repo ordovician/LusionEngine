@@ -6,3 +6,5 @@
 #define REAL_MIN DBL_MIN
 
 typedef double real;
+
+//#define UNIT_TEST 1

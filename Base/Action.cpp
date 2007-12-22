@@ -114,7 +114,7 @@ LuaCollisionAction::~LuaCollisionAction()
 {
   assert(iActionRef != LUA_REFNIL);
   luaL_unref(L, LUA_REGISTRYINDEX, iActionRef);
-  cout << hex << "0x" << (int)this << " LuaCollisionAction removed" << endl;  // DEBUG         
+  // cout << hex << "0x" << (int)this << " LuaCollisionAction removed" << endl;  // DEBUG         
 }
 
 // Operations

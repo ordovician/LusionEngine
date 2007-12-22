@@ -5,7 +5,7 @@
 
 using namespace std;
 
-#define DEBUG_MEMORY
+// #define DEBUG_MEMORY
 
 /*!
     \class SharedObject SharedObject.h

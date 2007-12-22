@@ -432,6 +432,19 @@ static int removeKid(lua_State *L)
   return 0;
 }
 
+static int kill(lua_State *L) 
+{
+  int n = lua_gettop(L);  // Number of arguments
+  if (n != 1) 
+    luaL_error(L, "Got %d arguments expected 1", n);   
+    
+  Shape* shape = checkShape(L);    
+  assert(shape != 0);
+  shape->kill();
+  
+  return 0;
+}
+
 // __gc
 static int destroyShape(lua_State* L)
 {
@@ -474,7 +487,8 @@ static const luaL_Reg gShapeFuncs[] = {
   {"update", update},
   {"doPlanning", doPlanning},  
   {"add", addKid},
-  {"remove", removeKid},    
+  {"remove", removeKid},  
+  {"kill", kill},      
   {NULL, NULL}
 };
 
