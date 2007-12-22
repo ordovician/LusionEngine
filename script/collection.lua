@@ -147,7 +147,7 @@ function Collection:minIndex(comp)
 end
 
 function Collection:find(fn)
-  return self[self:find(fn)]
+  return self[self:findIndex(fn)]
 end
 
 --[[

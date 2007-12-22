@@ -1,4 +1,4 @@
--- dofile("script/unittester.lua")
+--dofile("script/unittester.lua")
 -- dofile("script/gametest.lua")
 -- Sprite.setShowCollision(true)
 
@@ -383,12 +383,28 @@ function setupCollisionHandling()
   npc:setCollisionHandler(function(self, other, points, t, dt)
     npc:setPosition(npc:prevPosition())
     npc:stop()
-
-  end)
+  end)  
 end
 
 function setupRoadMap()
+  roadmap = ProbablisticRoadMap:new(obstacles, obstacles:boundingBox())
+  roadmap:construct(100, 1)
+end
 
+function testCircleIntersect()  
+  local w = 10
+  local h = 10
+  local obstacleView = PolygonView:new(Polygon:rect(w, h))      
+  obstacleView:setColor(1,1,0.3)
+
+  obstacle = Sprite:new(obstacleView)    
+  obstacle:setName("Obstacle"..1)  
+  
+  circle = Shape:newCircle(vec(-8, 0), 5)
+  
+  obstacle:collide(circle, Engine.seconds(), 1, function(shape, other, points, t, dt)
+    print("We got collision!")
+  end)
 end
 
 setupWorld()

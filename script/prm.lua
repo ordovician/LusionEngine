@@ -24,14 +24,27 @@ function PrmNode:new(pos, radius)
 end
 
 function PrmNode:init(pos, radius)
-  -- self.pos = pos
-  -- self.radius = radius
   self.circle = Shape:newCircle(pos, radius)
   self.edges = {}
 end
 
 function PrmNode:toString()
-  return "pos "..self.circle:center().." radius "..self.circle:radius()
+  return "pos "..self.circle:center():toString().." radius "..self.circle:radius()
+end
+
+--[[
+  Function which creates a stateless iterator for iterating
+  over edges in a PrmNode. Passed to Graph.depthFirstSearch
+  and Graph.breathFirstSearch algorithms.
+  
+  Usage:
+    Graph.depthFirstSearch(start_node, action_function, PrmNode.edges)
+--]]
+function PrmNode.edges(n)
+  function nextKey(_, k)
+    return next(n.edges, k)
+  end
+  return nextKey, n.edges, nil  
 end
 
 --[[
@@ -46,13 +59,13 @@ end
 --]]
 
  -- defines
-MAX_PATHDIST	= 1000000000.0		-- maximum path distance 
-MAX_DIST			=	20000.0			-- maximum distance a sample can move in search for nearest obstacle  
+
+MAX_DIST			=	10.0			-- maximum distance a sample can move in search for nearest obstacle  
 MAX_DIST_SQUARED	=	MAX_DIST * MAX_DIST	-- maximum distance squared
-MAX_EDGE_SIZE	=		100000.0			 -- maximum edge size
-MAX_RADIUS		=	50000.0			-- maximum sphere radius
-MIN_RADIUS		=	500.0			-- minimum sphere radius
-ACCURACY		=	0.1				 -- a measure for the accuracy during roadmap construction
+MAX_EDGE_SIZE	=		10.0			 -- maximum edge size
+MAX_RADIUS		=	100.0			-- maximum sphere radius
+MIN_RADIUS		=	0.01			-- minimum sphere radius
+ACCURACY		=	0.0004				 -- a measure for the accuracy during roadmap construction
 
 ProbablisticRoadMap = {}
 
@@ -92,15 +105,13 @@ function ProbablisticRoadMap:construct(samples, retract_quotient)
 		end
 
 		-- check whether sample is outside all discs in the roadmap
-		if not self:inside(c) and self.bbox:inside(c) then
-
+    if self.bbox:inside(c) and not self:insideRoadMap(c) then      
       --  add node to roadmap
       local radius = self:largestFreeDisc(c)
       if radius > MIN_RADIUS then      
         radius = math.min(radius, MAX_RADIUS)
         local node = PrmNode:new(c, radius)
-        self.nodes[node] = node
-        print("Added node: ", node:toString())
+        self.nodes:append(node)
       end
     end
 		samples = samples-1
@@ -112,21 +123,44 @@ function ProbablisticRoadMap:construct(samples, retract_quotient)
   for _,n in pairs(self.nodes) do
     for _,m in pairs(self.nodes) do
       -- check whether spheres are overlapping and the nodes are not connected by an edge yet
-		  if n.circle:collide(m.circle) and self:checkNodesForEdge(n, m) then
+--		  if n ~= m and self:checkNodesForEdge(n, m) then print("Not connected") end
+		  if n ~= m and n.circle:collide(m.circle) and n.edges[m] ~= m then
 		    -- To prevent edges through obstacles perform an additional collision check
 				if not self:lineCollision(n, m) then
 				  n.edges[m] = m
 				  m.edges[n] = n
 				end
+				
 		  end
     end
   end
   
   -- removes unconnected nodes
 	self:cleanUp()
-
-  self:makeNodeSearchStructure()
+	line_seg = nil
+	for _, n in pairs(self.nodes) do
+    for _, m in pairs(n.edges) do
+      line_seg = Shape:newSegment(n.circle:center(), m.circle:center())	  
+    end
+	end
+  --self:makeNodeSearchStructure()
 	return true;  
+end
+
+--[[
+  Can be removed later. Only used for displaying roadmap. without
+  entering same node twice
+]]--
+function ProbablisticRoadMap:displayRoadPath()
+  local prev = nil
+  line_seg = nil
+  print("size", self.nodes:size())
+  Graph.breathFirstSearch(self.nodes[1], function(n)
+    if prev then
+      line_seg = Shape:newSegment(prev.circle:center(), n.circle:center())
+      end
+      prev = n    
+    end, PrmNode.edges)
 end
 
 --[[
@@ -171,17 +205,19 @@ function ProbablisticRoadMap:cleanUp()
   -- To keep track of largest component found thus far
   -- a component is a group of connected nodes
   local comp         = {n_start = self.nodes:first(), size = 0}
-  local comp_largest = {n_start = n_start, size = 0}
+  local comp_largest = {n_start = self.nodes:first(), size = 0}
   
   function largest(c1, c2)
     if c1.size > c2.size then return c1 else return c2 end
   end
   
 	while comp.n_start do
+    local i = 0
 	  Graph.breathFirstSearch(comp.n_start, function(n)
 	    visited[n] = true
 	    comp.size = comp.size + 1
-	  end)
+	    i = i+1
+	  end, PrmNode.edges)
 	  
 	  comp_largest = largest(comp, comp_largest)
 	  
@@ -198,7 +234,7 @@ function ProbablisticRoadMap:cleanUp()
 	self.nodes = Collection:new()
   Graph.breathFirstSearch(comp_largest.n_start, function(n)
     self.nodes:append(n)
-  end)
+  end, PrmNode.edges)
 end
 
 
@@ -234,8 +270,7 @@ end
 function ProbablisticRoadMap:pickSample()
   local pos = vec(0,0)
   pos.x = math.random(self.bbox.min.x, self.bbox.max.x)
-  pox.y = math.random(self.bbox.min.y, self.bbox.max.y)
-  
+  pos.y = math.random(self.bbox.min.y, self.bbox.max.y)  
   return pos
 end
 
@@ -337,13 +372,19 @@ function ProbablisticRoadMap:nearestObstacle(c)
 	local radius
 	
 	local view = Engine.view()
-  if view:width() < view:height() then radius = view:width() else radius = view:height() end
+  if view:width() < view:height() then 
+    radius = view:width() 
+  else 
+    radius = view:height() 
+  end
 	local stepsize = radius
-
+    
+  local point_result = nil
   
 	while stepsize > ACCURACY and radius > ACCURACY do
     local point = self:discCollision(c, radius)
     if point then
+      point_result = point
       is_collision = true
       stepsize = stepsize*0.5
       radius = radius-stepsize      
@@ -357,7 +398,7 @@ function ProbablisticRoadMap:nearestObstacle(c)
     end
   end
   
-  return point
+  return point_result
 end
 
 
@@ -376,13 +417,12 @@ function ProbablisticRoadMap:largestFreeDisc(c)
   local is_collision = false
   local radius
   local view = Engine.view()
-  if view:width() < view:heigth() then 
+  if view:width() < view:height() then 
     radius = view:width() 
   else 
     radius = view:height() 
   end
   local stepsize = radius
-
 	while stepsize > ACCURACY and radius > ACCURACY do
 		if self:discCollision(c, radius) then
       is_collision = true
@@ -397,24 +437,18 @@ function ProbablisticRoadMap:largestFreeDisc(c)
 			radius = radius + stepsize
     end
 	end
-
 	return radius
 end
 
- -- 
- -- InsideRoadMap
- -- 
- -- Checks whether the node with position C is inside any of the spheres in the roadmap
- -- 
+--[[
+ Checks whether the node with position c is inside any of the discs in the roadmap
+]]--
 function ProbablisticRoadMap:insideRoadMap(c)
   local is_inside = false
   for _,n in pairs(self.nodes) do
-    if (n.pos - c):squaredLength() <= n.radius*n.radius then
-      is_inside = true
-      break
-    end
+    if n.circle:inside(c) then return true end
   end
-  return is_inside
+  return false
 end
 
 
@@ -457,21 +491,14 @@ function ProbablisticRoadMap:resizeEdge(n1, n2)
 	end
 end
 
-
-
 --[[
-  Checks whether two nodes are connected by an edge
-]]--
-function ProbablisticRoadMap:checkNodesForEdge(n1, n2)
-  return n1.edges[n2] == n2
-end
-
---[[
- Checks whether a line from p1 to p2 (cylinder with a small radius) has collision.   
+ Checks whether a line from node p1 to p2 (cylinder with a small radius) has collision.   
 ]]-- 
-function ProbablisticRoadMap:lineCollision(p1, p2)
-  local seg = Shape:newSegment(p1, p2)
-  return self.obstacles:collide(seg)
+function ProbablisticRoadMap:lineCollision(n1, n2)
+  local seg = Shape:newSegment(n1.circle:center(), n2.circle:center())
+  local is_col = self.obstacles:collide(seg)
+  seg:kill()
+  return is_col
 end
 
 --[[
@@ -486,5 +513,6 @@ function ProbablisticRoadMap:discCollision(c, radius)
       return true
     end
   )
+  circle:kill()
   return intersection_point
 end
