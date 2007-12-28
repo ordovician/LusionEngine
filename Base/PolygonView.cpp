@@ -11,8 +11,6 @@
 #include "Utils/PolygonUtils.h"
 #include "Utils/GLUtils.h"
 
-#include <CGAL/Polygon_2_algorithms.h> 
-
 static Point2 gPoints[] = {Point2(-1.0, -1.0), Point2(1.0, 0.0), Point2(-1.0, 1.0)};
 
 PolygonView::PolygonView(ConstPointIterator2 begin, ConstPointIterator2 end, GLenum style)

@@ -9,6 +9,7 @@ require("script/rrt")
 require("script/queue")
 require("script/stack")
 require("script/prm")
+require("script/algorithm")
 
 function Engine.setPlayer(player)
   Engine._player = player
@@ -408,6 +409,9 @@ function testCircleIntersect()
 end
 
 setupWorld()
+-- Graph.testDijkstra()
+-- Graph.testAStar()
+
 setupCollisionHandling()
 setupRoadMap()
 -- setupSeek()

@@ -23,12 +23,12 @@
 #include "Lua/Geometry/LuaRect2.h"
 #include "Lua/Geometry/LuaCircle.h"
 #include "Lua/Geometry/LuaTrapezoidalMap.h"
-#include "Lua/Geometry/LuaGeometry.h"
+// #include "Lua/Geometry/LuaGeometry.h" // NOTE: Depends on CGAL
 #include "Lua/Geometry/LuaTrapezoid2.h"
 #include "Lua/Geometry/LuaTrapezoidNode2.h"
 #include "Lua/Geometry/LuaEdgeData.h"
 #include "Lua/Geometry/LuaPaths2.h"
-#include "Lua/Geometry/LuaGraph2.h"
+// #include "Lua/Geometry/LuaGraph2.h"  // NOTE: Depends on CGAL
 #include "Lua/Geometry/LuaMotionState.h"
 #include "Lua/Geometry/LuaMatrix2.h"
 
@@ -428,11 +428,11 @@ void initLua()
   initLuaRect2(gLuaState);  
   initLuaCircle(gLuaState);    
   initLuaTrapezoidalMap(gLuaState);
-  initLuaGeometry(gLuaState);  
+  // initLuaGeometry(gLuaState);  // NOTE: Depends on CGAL
   initLuaTrapezoid2(gLuaState);
-  initLuaEdgeData(gLuaState);  
+  // initLuaEdgeData(gLuaState);  // NOTE: Depends on CGAL
   initLuaPaths2(gLuaState);  
-  initLuaGraph2(gLuaState);  
+  // initLuaGraph2(gLuaState);    // NOTE: Depends on CGAL
   initLuaMotionState(gLuaState);  
   initLuaKeyStates(gLuaState);    
   initLuaMatrix2(gLuaState);    

@@ -10,41 +10,22 @@ require("script/algorithm")
   Implements a node in a probablistic roadmap
 	
 --]]
-PrmNode = {}
+PrmNode = GraphNode:new()
 
 -- Creation
-function PrmNode:new(pos, radius)
+function PrmNode:newNode(pos, radius)
   -- Create instance
-  local instance = {}
-  setmetatable(instance, self)
-  self.__index = self
-  
-  instance:init(pos, radius)
-  return instance
+  local node = PrmNode:new()
+  node:init(pos, radius)
+  return node
 end
 
 function PrmNode:init(pos, radius)
   self.circle = Shape:newCircle(pos, radius)
-  self.edges = {}
 end
 
 function PrmNode:toString()
   return "pos "..self.circle:center():toString().." radius "..self.circle:radius()
-end
-
---[[
-  Function which creates a stateless iterator for iterating
-  over edges in a PrmNode. Passed to Graph.depthFirstSearch
-  and Graph.breathFirstSearch algorithms.
-  
-  Usage:
-    Graph.depthFirstSearch(start_node, action_function, PrmNode.edges)
---]]
-function PrmNode.edges(n)
-  function nextKey(_, k)
-    return next(n.edges, k)
-  end
-  return nextKey, n.edges, nil  
 end
 
 --[[
@@ -110,7 +91,7 @@ function ProbablisticRoadMap:construct(samples, retract_quotient)
       local radius = self:largestFreeDisc(c)
       if radius > MIN_RADIUS then      
         radius = math.min(radius, MAX_RADIUS)
-        local node = PrmNode:new(c, radius)
+        local node = PrmNode:newNode(c, radius)
         self.nodes:append(node)
       end
     end
@@ -124,11 +105,11 @@ function ProbablisticRoadMap:construct(samples, retract_quotient)
     for _,m in pairs(self.nodes) do
       -- check whether spheres are overlapping and the nodes are not connected by an edge yet
 --		  if n ~= m and self:checkNodesForEdge(n, m) then print("Not connected") end
-		  if n ~= m and n.circle:collide(m.circle) and n.edges[m] ~= m then
+		  if n ~= m and n.circle:collide(m.circle) and not n:hasNeighbor(m) then
 		    -- To prevent edges through obstacles perform an additional collision check
 				if not self:lineCollision(n, m) then
-				  n.edges[m] = m
-				  m.edges[n] = n
+          n:insertNeighbors(m)
+          m:insertNeighbors(n)
 				end
 				
 		  end
@@ -139,7 +120,7 @@ function ProbablisticRoadMap:construct(samples, retract_quotient)
 	self:cleanUp()
 	line_seg = nil
 	for _, n in pairs(self.nodes) do
-    for _, m in pairs(n.edges) do
+    for _, m in pairs(n:neighbors()) do
       line_seg = Shape:newSegment(n.circle:center(), m.circle:center())	  
     end
 	end
@@ -160,7 +141,7 @@ function ProbablisticRoadMap:displayRoadPath()
       line_seg = Shape:newSegment(prev.circle:center(), n.circle:center())
       end
       prev = n    
-    end, PrmNode.edges)
+    end)
 end
 
 --[[
@@ -217,7 +198,7 @@ function ProbablisticRoadMap:cleanUp()
 	    visited[n] = true
 	    comp.size = comp.size + 1
 	    i = i+1
-	  end, PrmNode.edges)
+	  end)
 	  
 	  comp_largest = largest(comp, comp_largest)
 	  
@@ -234,7 +215,7 @@ function ProbablisticRoadMap:cleanUp()
 	self.nodes = Collection:new()
   Graph.breathFirstSearch(comp_largest.n_start, function(n)
     self.nodes:append(n)
-  end, PrmNode.edges)
+  end)
 end
 
 
@@ -462,18 +443,17 @@ function ProbablisticRoadMap:resizeEdge(n1, n2)
 
 	if e:length() > MAX_EDGE_SIZE then
     -- create node in middle of edge
-		local n = PrmNode:new(n1.pos+e*0.5)
+		local n = PrmNode:newNode(n1.pos+e*0.5)
 
 		-- split edge
-		self.nodes[n] = n
-		n.edges[n1] = n1
-		n.edges[n2] = n2
+    self:addNeighbors(n)
+    n:addNeighbors(n1, n2)
 			
     -- update previous edges
-		n1.edges[n2] = nil
-		n1.edges[n] = n
-		n2.edges[n1] = nil
-		n2.edges[n] = n
+		n1:removeNeighbors(n2)
+		n1:addNeighbors(n)
+		n2:removeNeighbors(n1)
+		n2:addNeighbors(n)
 
 		-- retract middle node to voronoi diagram
     -- ??

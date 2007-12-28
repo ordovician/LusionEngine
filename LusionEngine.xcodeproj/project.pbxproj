@@ -23,8 +23,6 @@
 		D542DF550CB41AE000AABC11 /* SharedObject.hpp in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = D542DF500CB41AE000AABC11 /* SharedObject.hpp */; };
 		D542DF700CB41AF500AABC11 /* Circle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D542DF560CB41AF500AABC11 /* Circle.cpp */; };
 		D542DF710CB41AF500AABC11 /* Circle.hpp in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = D542DF570CB41AF500AABC11 /* Circle.hpp */; };
-		D542DF720CB41AF500AABC11 /* Graph2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D542DF580CB41AF500AABC11 /* Graph2.cpp */; };
-		D542DF730CB41AF500AABC11 /* Graph2.hpp in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = D542DF590CB41AF500AABC11 /* Graph2.hpp */; };
 		D542DF740CB41AF500AABC11 /* IO.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D542DF5A0CB41AF500AABC11 /* IO.cpp */; };
 		D542DF750CB41AF500AABC11 /* IO.hpp in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = D542DF5B0CB41AF500AABC11 /* IO.hpp */; };
 		D542DF760CB41AF500AABC11 /* Matrix2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D542DF5C0CB41AF500AABC11 /* Matrix2.cpp */; };
@@ -77,11 +75,6 @@
 		D5BD17A10BBD62D300BA3313 /* LuaSprite.h in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = D5BD179B0BBD62D300BA3313 /* LuaSprite.h */; };
 		D5BD17A20BBD62D300BA3313 /* LuaView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5BD179C0BBD62D300BA3313 /* LuaView.cpp */; };
 		D5BD17A30BBD62D300BA3313 /* LuaView.h in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = D5BD179D0BBD62D300BA3313 /* LuaView.h */; };
-		D5BD17BD0BBD62E500BA3313 /* LuaEdgeData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5BD17A50BBD62E500BA3313 /* LuaEdgeData.cpp */; };
-		D5BD17BE0BBD62E500BA3313 /* LuaEdgeData.h in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = D5BD17A60BBD62E500BA3313 /* LuaEdgeData.h */; };
-		D5BD17BF0BBD62E500BA3313 /* LuaGeometry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5BD17A70BBD62E500BA3313 /* LuaGeometry.cpp */; };
-		D5BD17C00BBD62E500BA3313 /* LuaGeometry.h in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = D5BD17A80BBD62E500BA3313 /* LuaGeometry.h */; };
-		D5BD17C10BBD62E500BA3313 /* LuaGraph2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5BD17A90BBD62E500BA3313 /* LuaGraph2.cpp */; };
 		D5BD17C20BBD62E500BA3313 /* LuaGraph2.h in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = D5BD17AA0BBD62E500BA3313 /* LuaGraph2.h */; };
 		D5BD17C30BBD62E500BA3313 /* LuaMotionState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5BD17AB0BBD62E500BA3313 /* LuaMotionState.cpp */; };
 		D5BD17C40BBD62E500BA3313 /* LuaMotionState.h in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = D5BD17AC0BBD62E500BA3313 /* LuaMotionState.h */; };
@@ -106,7 +99,6 @@
 		D5C18F280B4B611A0079286F /* liblua.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D5C18F270B4B611A0079286F /* liblua.a */; };
 		D5C410240B4DECAB00735BD0 /* libCGAL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D5C410230B4DECAB00735BD0 /* libCGAL.a */; };
 		D5CA4D900CB43125006261D6 /* Circle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D542DF560CB41AF500AABC11 /* Circle.cpp */; };
-		D5CA4D920CB43125006261D6 /* Graph2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D542DF580CB41AF500AABC11 /* Graph2.cpp */; };
 		D5CA4D940CB43125006261D6 /* IO.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D542DF5A0CB41AF500AABC11 /* IO.cpp */; };
 		D5CA4D960CB43125006261D6 /* Matrix2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D542DF5C0CB41AF500AABC11 /* Matrix2.cpp */; };
 		D5CA4D980CB43125006261D6 /* QuadNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D542DF600CB41AF500AABC11 /* QuadNode.cpp */; };
@@ -194,8 +186,6 @@
 				D5BD17960BBD62C700BA3313 /* LuaUtils.h in Copy Frameworks into .app bundle */,
 				D5BD17A10BBD62D300BA3313 /* LuaSprite.h in Copy Frameworks into .app bundle */,
 				D5BD17A30BBD62D300BA3313 /* LuaView.h in Copy Frameworks into .app bundle */,
-				D5BD17BE0BBD62E500BA3313 /* LuaEdgeData.h in Copy Frameworks into .app bundle */,
-				D5BD17C00BBD62E500BA3313 /* LuaGeometry.h in Copy Frameworks into .app bundle */,
 				D5BD17C20BBD62E500BA3313 /* LuaGraph2.h in Copy Frameworks into .app bundle */,
 				D5BD17C40BBD62E500BA3313 /* LuaMotionState.h in Copy Frameworks into .app bundle */,
 				D5BD17C60BBD62E500BA3313 /* LuaPaths2.h in Copy Frameworks into .app bundle */,
@@ -215,7 +205,6 @@
 				D542DF530CB41AE000AABC11 /* Core.h in Copy Frameworks into .app bundle */,
 				D542DF550CB41AE000AABC11 /* SharedObject.hpp in Copy Frameworks into .app bundle */,
 				D542DF710CB41AF500AABC11 /* Circle.hpp in Copy Frameworks into .app bundle */,
-				D542DF730CB41AF500AABC11 /* Graph2.hpp in Copy Frameworks into .app bundle */,
 				D542DF750CB41AF500AABC11 /* IO.hpp in Copy Frameworks into .app bundle */,
 				D542DF770CB41AF500AABC11 /* Matrix2.hpp in Copy Frameworks into .app bundle */,
 				D542DF7B0CB41AF500AABC11 /* QuadNode.h in Copy Frameworks into .app bundle */,
@@ -261,8 +250,6 @@
 		D542DF500CB41AE000AABC11 /* SharedObject.hpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.h; name = SharedObject.hpp; path = Core/SharedObject.hpp; sourceTree = "<group>"; };
 		D542DF560CB41AF500AABC11 /* Circle.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = Circle.cpp; path = Geometry/Circle.cpp; sourceTree = "<group>"; };
 		D542DF570CB41AF500AABC11 /* Circle.hpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.h; name = Circle.hpp; path = Geometry/Circle.hpp; sourceTree = "<group>"; };
-		D542DF580CB41AF500AABC11 /* Graph2.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = Graph2.cpp; path = Geometry/Graph2.cpp; sourceTree = "<group>"; };
-		D542DF590CB41AF500AABC11 /* Graph2.hpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.h; name = Graph2.hpp; path = Geometry/Graph2.hpp; sourceTree = "<group>"; };
 		D542DF5A0CB41AF500AABC11 /* IO.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = IO.cpp; path = Geometry/IO.cpp; sourceTree = "<group>"; };
 		D542DF5B0CB41AF500AABC11 /* IO.hpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.h; name = IO.hpp; path = Geometry/IO.hpp; sourceTree = "<group>"; };
 		D542DF5C0CB41AF500AABC11 /* Matrix2.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = Matrix2.cpp; path = Geometry/Matrix2.cpp; sourceTree = "<group>"; };
@@ -312,11 +299,6 @@
 		D5BD179B0BBD62D300BA3313 /* LuaSprite.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = LuaSprite.h; sourceTree = "<group>"; };
 		D5BD179C0BBD62D300BA3313 /* LuaView.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = LuaView.cpp; sourceTree = "<group>"; };
 		D5BD179D0BBD62D300BA3313 /* LuaView.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = LuaView.h; sourceTree = "<group>"; };
-		D5BD17A50BBD62E500BA3313 /* LuaEdgeData.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = LuaEdgeData.cpp; sourceTree = "<group>"; };
-		D5BD17A60BBD62E500BA3313 /* LuaEdgeData.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = LuaEdgeData.h; sourceTree = "<group>"; };
-		D5BD17A70BBD62E500BA3313 /* LuaGeometry.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = LuaGeometry.cpp; sourceTree = "<group>"; };
-		D5BD17A80BBD62E500BA3313 /* LuaGeometry.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = LuaGeometry.h; sourceTree = "<group>"; };
-		D5BD17A90BBD62E500BA3313 /* LuaGraph2.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = LuaGraph2.cpp; sourceTree = "<group>"; };
 		D5BD17AA0BBD62E500BA3313 /* LuaGraph2.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = LuaGraph2.h; sourceTree = "<group>"; };
 		D5BD17AB0BBD62E500BA3313 /* LuaMotionState.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = LuaMotionState.cpp; sourceTree = "<group>"; };
 		D5BD17AC0BBD62E500BA3313 /* LuaMotionState.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = LuaMotionState.h; sourceTree = "<group>"; };
@@ -541,11 +523,6 @@
 				D593A2790CA8546D00432061 /* LuaCircle.h */,
 				D5BD17E00BBD64F500BA3313 /* LuaMatrix2.cpp */,
 				D5BD17E10BBD64F500BA3313 /* LuaMatrix2.h */,
-				D5BD17A50BBD62E500BA3313 /* LuaEdgeData.cpp */,
-				D5BD17A60BBD62E500BA3313 /* LuaEdgeData.h */,
-				D5BD17A70BBD62E500BA3313 /* LuaGeometry.cpp */,
-				D5BD17A80BBD62E500BA3313 /* LuaGeometry.h */,
-				D5BD17A90BBD62E500BA3313 /* LuaGraph2.cpp */,
 				D5BD17AA0BBD62E500BA3313 /* LuaGraph2.h */,
 				D5BD17AB0BBD62E500BA3313 /* LuaMotionState.cpp */,
 				D5BD17AC0BBD62E500BA3313 /* LuaMotionState.h */,
@@ -669,8 +646,6 @@
 			children = (
 				D542DF560CB41AF500AABC11 /* Circle.cpp */,
 				D542DF570CB41AF500AABC11 /* Circle.hpp */,
-				D542DF580CB41AF500AABC11 /* Graph2.cpp */,
-				D542DF590CB41AF500AABC11 /* Graph2.hpp */,
 				D542DF5A0CB41AF500AABC11 /* IO.cpp */,
 				D542DF5B0CB41AF500AABC11 /* IO.hpp */,
 				D542DF5C0CB41AF500AABC11 /* Matrix2.cpp */,
@@ -810,9 +785,6 @@
 				D5BD17950BBD62C700BA3313 /* LuaUtils.cpp in Sources */,
 				D5BD17A00BBD62D300BA3313 /* LuaSprite.cpp in Sources */,
 				D5BD17A20BBD62D300BA3313 /* LuaView.cpp in Sources */,
-				D5BD17BD0BBD62E500BA3313 /* LuaEdgeData.cpp in Sources */,
-				D5BD17BF0BBD62E500BA3313 /* LuaGeometry.cpp in Sources */,
-				D5BD17C10BBD62E500BA3313 /* LuaGraph2.cpp in Sources */,
 				D5BD17C30BBD62E500BA3313 /* LuaMotionState.cpp in Sources */,
 				D5BD17C50BBD62E500BA3313 /* LuaPaths2.cpp in Sources */,
 				D5BD17C70BBD62E500BA3313 /* LuaRay2.cpp in Sources */,
@@ -830,7 +802,6 @@
 				D542DF510CB41AE000AABC11 /* AutoreleasePool.cpp in Sources */,
 				D542DF540CB41AE000AABC11 /* SharedObject.cpp in Sources */,
 				D542DF700CB41AF500AABC11 /* Circle.cpp in Sources */,
-				D542DF720CB41AF500AABC11 /* Graph2.cpp in Sources */,
 				D542DF740CB41AF500AABC11 /* IO.cpp in Sources */,
 				D542DF760CB41AF500AABC11 /* Matrix2.cpp in Sources */,
 				D542DF7A0CB41AF500AABC11 /* QuadNode.cpp in Sources */,
@@ -875,7 +846,6 @@
 				D5D7F4210CE3A1B000A149A3 /* SharedObject.cpp in Sources */,
 				D5D7F4200CE3A1AB00A149A3 /* AutoreleasePool.cpp in Sources */,
 				D5CA4D900CB43125006261D6 /* Circle.cpp in Sources */,
-				D5CA4D920CB43125006261D6 /* Graph2.cpp in Sources */,
 				D5CA4D940CB43125006261D6 /* IO.cpp in Sources */,
 				D5CA4D960CB43125006261D6 /* Matrix2.cpp in Sources */,
 				D5CA4D980CB43125006261D6 /* QuadNode.cpp in Sources */,
