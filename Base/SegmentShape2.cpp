@@ -107,6 +107,7 @@ bool SegmentShape2::intersection(ConstPointIterator2 begin, ConstPointIterator2 
 void SegmentShape2::draw(const Rect2& r) const
 {
 #ifndef UNIT_TEST
+  glColor3f(1.0f, 0.0f, 0.0f);	
   glBegin(GL_LINES);      
     gltVertex(iSeg);
   glEnd();

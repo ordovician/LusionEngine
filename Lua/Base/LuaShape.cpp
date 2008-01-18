@@ -87,6 +87,8 @@ static int newShapeGroup(lua_State *L)
 
   setUserDataMetatable(L, "Lusion.Shape");
 
+  registerShapeTable(L, *g);
+
   // Handle user initialization
   lua_getfield(L, 1, "init"); 
   lua_pushvalue(L, -2);     // Our new instance should be lying on stack right below function 'init'
@@ -108,6 +110,8 @@ static int newGroup(lua_State *L)
   *g = new Group;
 
   setUserDataMetatable(L, "Lusion.Shape");
+
+  registerShapeTable(L, *g);
 
   // Handle user initialization
   lua_getfield(L, 1, "init"); 
@@ -134,6 +138,7 @@ static int newCircleShape(lua_State *L)
   *s = createCircle(Circle(Vector2_pull(L,2), radius));    
 
   setUserDataMetatable(L, "Lusion.Shape");
+  registerShapeTable(L, *s);
   
   return 1; 
 }
@@ -154,6 +159,7 @@ static int newRectShape2(lua_State *L)
   *s = createRect2(Rect2(Vector2_pull(L,2), (Vector2_pull(L,3))));    
 
   setUserDataMetatable(L, "Lusion.Shape");
+  registerShapeTable(L, *s);
   
   return 1; 
 }
@@ -174,6 +180,7 @@ static int newSegmentShape2(lua_State *L)
   *s = createSegment2(Segment2(Vector2_pull(L,2), (Vector2_pull(L,3))));    
 
   setUserDataMetatable(L, "Lusion.Shape");
+  registerShapeTable(L, *s);
   
   return 1; 
 }

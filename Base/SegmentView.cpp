@@ -15,6 +15,8 @@
 
 #include <algorithm>
 
+#include <assert.h>
+
 using namespace std;
 
 SegmentView::SegmentView(Segments2::iterator begin, Segments2::iterator end )
@@ -51,6 +53,7 @@ static void drawSegment(const Segment2& s) {
 
 static void drawArrowHead(const Segment2& s)
 {
+  assert(!s.isDegenerate());    
   Vector2 v  = s.toVector();
   Vector2 u = v.unit()*0.25;
   Point2 p1 = s.target()-u*2.0+Point2(-u.y(), u.x());
