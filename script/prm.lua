@@ -24,8 +24,20 @@ function PrmNode:init(pos, radius)
   self.circle = Shape:newCircle(pos, radius)
 end
 
+function PrmNode:position()
+  return self.circle:center()
+end
+
+function PrmNode:radius()
+  return self.circle:radius()
+end
+
+function PrmNode:distanceTo(n)
+  return (self:position() - n:position()):length()
+end
+
 function PrmNode:toString()
-  return "pos "..self.circle:center():toString().." radius "..self.circle:radius()
+  return "pos "..self:position():toString().." radius "..self:radius()
 end
 
 --[[
@@ -73,15 +85,16 @@ end
 	samples which should not be retracted. E.g. a quotient of 0.1 means that
 	the 10% last samples are not retracted.
 --]]
-function ProbablisticRoadMap:construct(samples, retract_quotient)
-	local halftime = samples * (1 - retract_quotient)
+function ProbablisticRoadMap:construct(no_samples, retract_quotient)
+	local halftime = no_samples * (1 - retract_quotient)
+	local samples = Geometry.stratifiedSamples(no_samples, self.bbox)
 	
-	while  samples > 0 do
+	while  no_samples > 0 do
 
 		-- get sample C and retract to voronoi plane
-		local c = self:pickSample()
+		local c = samples[no_samples]
 
-		if samples > halftime then
+		if no_samples > halftime then
 			c = self:retractSample(c)
 		end
 
@@ -95,7 +108,7 @@ function ProbablisticRoadMap:construct(samples, retract_quotient)
         self.nodes:append(node)
       end
     end
-		samples = samples-1
+		no_samples = no_samples-1
 	end
 
   print("Number of nodes after sampling:", self.nodes:size())
@@ -118,14 +131,21 @@ function ProbablisticRoadMap:construct(samples, retract_quotient)
   
   -- removes unconnected nodes
 	self:cleanUp()
-	line_seg = nil
-	for _, n in pairs(self.nodes) do
-    for _, m in pairs(n:neighbors()) do
-      line_seg = Shape:newSegment(n.circle:center(), m.circle:center())	  
-    end
-	end
-  --self:makeNodeSearchStructure()
+  self:displayRoadMap()
+  self:makeNodeSearchStructure()
 	return true;  
+end
+
+--[[
+  Can be removed later. Only used for displaying roadmap.
+]]--
+function ProbablisticRoadMap:displayRoadMap()
+  line_seg = nil
+  for _, n in pairs(self.nodes) do
+    for _, m in pairs(n:neighbors()) do
+      line_seg = Shape:newSegment(n:position(), m:position())	  
+    end
+  end
 end
 
 --[[
@@ -138,7 +158,7 @@ function ProbablisticRoadMap:displayRoadPath()
   print("size", self.nodes:size())
   Graph.breathFirstSearch(self.nodes[1], function(n)
     if prev then
-      line_seg = Shape:newSegment(prev.circle:center(), n.circle:center())
+      line_seg = Shape:newSegment(prev:position(), n:position())
       end
       prev = n    
     end)
@@ -152,18 +172,24 @@ end
   Since positions don't translate directly to a node and searching every
   node to see if its disc contains the NPC position is too time consuming
   (takes O(n) time). We need a search structure to quickly find a node give
-  a query point. This method will create a search structure in self.node_group
+  a query point. This method will create a search structure in self.circleGroup
   The structure is a bounding volume hierarchy of the discs surrounding the
   nodes.
 ]]--
 function ProbablisticRoadMap:makeNodeSearchStructure()
+  -- Mapping from circle object to PrmNode, so that given
+  -- a circle contained within a PrmNode we can find the corresponding
+  -- node
+  self.circleNodeMap = {}
+
   -- Have to go through a few hoops because ShapeGroup
-  -- can only take Group as input
+  -- can only take Group as input  
   local circles = Group:new()
-  for _, circle in pairs(self.nodes) do
-    circles:add(circle)
+  for _, node in pairs(self.nodes) do
+    circles:add(node.circle)
+    self.circleNodeMap[node.circle] = node
   end
-  self.node_group = ShapeGroup:new(circles)
+  self.circleGroup = ShapeGroup:new(circles)
 end
 
 --[[
@@ -212,8 +238,11 @@ function ProbablisticRoadMap:cleanUp()
 	
 	-- Remove all nodes and only add nodes for
 	-- largest component
+	local tagnum = 1 -- NOTE: Remove later, just for debug
 	self.nodes = Collection:new()
   Graph.breathFirstSearch(comp_largest.n_start, function(n)
+    n.tag = tagnum -- NOTE: Debug to name nodes. remove later
+    tagnum = tagnum+1
     self.nodes:append(n)
   end)
 end
@@ -229,16 +258,16 @@ end
 ]]--
 function ProbablisticRoadMap:findNode(pos)
   local shortest_dist = math.huge
-  local closest_node  = nil
-  self.node_group:inside(pos, function(shape, t, dt)
+  local shape_closest  = nil
+  self.circleGroup:inside(pos, Engine.seconds(), 1, function(shape, t, dt)
     local dist = (shape:center() - pos):squaredLength()
     if dist < shortest_dist then
       shortest_dist = dist
-      closest_node = shape
+      shape_closest = shape
     end
   end)
   
-  return closest_node
+  return self.circleNodeMap[shape_closest]
 end
 
 --[[
@@ -475,7 +504,7 @@ end
  Checks whether a line from node p1 to p2 (cylinder with a small radius) has collision.   
 ]]-- 
 function ProbablisticRoadMap:lineCollision(n1, n2)
-  local seg = Shape:newSegment(n1.circle:center(), n2.circle:center())
+  local seg = Shape:newSegment(n1:position(), n2:position())
   local is_col = self.obstacles:collide(seg)
   seg:kill()
   return is_col
@@ -495,4 +524,64 @@ function ProbablisticRoadMap:discCollision(c, radius)
   )
   circle:kill()
   return intersection_point
+end
+
+--[[
+  Creates a GroupShape out of the corridor defined by the path, and returns it
+
+  
+  \param path is a list were first element is start node and last is target node
+  Each node is a PrmNode which a circle member.
+  \return shapegroup, mapping from circle to node giving previous and next circle
+]]--
+function Graph.createCorridorShape(path)
+  local circle_path = Map:new()
+  local circle_prev = nil
+  
+  -- Have to go through a few hoops because ShapeGroup
+  -- can only take Group as input  
+  local circles = Group:new()
+  for i,node in ipairs(path) do
+    circles:add(node.circle)
+    circle_path[node.circle] = {prev = path[i-1], next = path[i+1]}
+  end
+  return ShapeGroup:new(circles), circle_path
+end
+
+--[[
+  Search a roadmap for choke points on the way from e.g. an NPC
+  or player, to key locations on the map. Key locations would be 
+  places the NPC needs to reach for different objectives. E.g.
+  get powerups, exit points etc.
+  
+  \param n_start node to start search from
+  \param key_nodes collection of important nodes in roadmap
+]]--
+function Graph.findChokePoints(n_start, key_nodes)
+  local _, path = Graph.dijkstra(n_start)
+  local chokepoints = Collection:new()
+  local r_max  = 1 -- nodes with radius below this is considered part of narrow passage
+  
+  -- Checks if n is a valid choke node and adds it if it is
+  function addChokePoint(n)
+    if (n:radius() < r_max) ~= (path[n]:radius() < r_max) then
+      local n_choke, n_tube -- node containing chokepoint, and node inside narrow passage
+      if n:radius() < r_max then 
+        n_choke, n_tube = path[n], n
+      else
+        n_choke, n_tube = n, path[n]
+      end      
+      -- Adds a pair describing location of chokepoint and direction of
+      -- path into chokepoint from narrow passage
+      chokepoints:append( {n_choke, (n_choke - n_tube):unit()} )
+    end
+  end
+  
+  for _, n in pairs(key_nodes) do
+    while path[n] ~= n do
+      addChokePoint(n)
+    end
+    addChokePoint(n)
+  end
+  return chokepoints
 end

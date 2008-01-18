@@ -240,6 +240,52 @@ function Geometry.minkowskiSum(v, w)
 end
 
 --[[
+  Sample n random numbers stratified. This means that
+  we imagine a grid with sqrt(n) number of rows and 
+  columns. Within each cell we sample a point, until we have
+  n random samples. This gives more even distribution
+  
+  \param n number of samples should be able to sqare it
+  \param box bounding box or rectangle describing area to sample points in
+]]--
+function Geometry.stratifiedSamples(n, box)
+  local rows = math.floor(math.sqrt(n))
+  local cell_width  = (box.max.x - box.min.x)/rows
+  local cell_height = (box.max.y - box.min.y)/rows
+  local samples = Collection:new()
+  local y1 = box.min.y 
+  local y2 = y1 + cell_height 
+  for row = 1,rows do    
+    local x1 = box.min.x
+    local x2 = x1 + cell_width
+    
+    for col = 1,rows do
+      samples:append(vec(math.random(x1, x2), math.random(y1, y2)))
+      x1 = x2
+      x2 = x2 + cell_width
+    end
+    
+    y1 = y2    
+    y2 = y2 + cell_height    
+  end
+  return samples
+end
+
+--[[
+  Picks n random point within box
+]]--
+function Geometry.randomSamples(n, box)
+  local points = Collection:new()
+  for i=1,n do
+    local pos = vec(0,0)
+    pos.x = math.random(box.min.x, box.max.x)
+    pos.y = math.random(box.min.y, box.max.y)  
+    points:append(pos)
+  end
+  return points
+end
+
+--[[
 	Polygon class
 --]]
 Polygon = Collection:new()

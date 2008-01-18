@@ -37,6 +37,11 @@ function GraphNode:neighbors()
   return self.mNeighbors
 end
 
+function GraphNode:neighborSet()
+  return self.mNeighbors
+end
+
+
 function GraphNode:insertNeighbors(...)
   self.mNeighbors:insert(unpack(arg))
 end
@@ -144,7 +149,7 @@ function Graph.dijkstra(n_start)
     local v = candidates:removeMin(function(v, w) 
       return distance[v] < distance[w] 
     end)
-    print("remove", v.tag)
+    --print("remove", v.tag)
     for _,w in pairs(v:neighbors()) do
       if not visited[w] then 
         candidates:append(w) 
@@ -158,7 +163,7 @@ function Graph.dijkstra(n_start)
     for _,w in pairs(candidates) do
       if v:hasNeighbor(w) then
         local d = distance[v] + v:distanceTo(w)
-        print("edge", v.tag, w.tag, distance[w], d)        
+        --print("edge", v.tag, w.tag, distance[w], d)        
         if  d < distance[w] then
           distance[w] = d
           path[w] = v
@@ -225,80 +230,81 @@ function Graph.astar(n_start, n_goal)
   return distance, path
 end
 
-function Graph.testDijkstra()
-  print("Testing Dijkstra:")
-  local a, b, c, d, e, f, g, h, i, j = Graph.defaults()
-  local n = g
-  local distance, path = Graph.dijkstra(a, n)
-  print("distance", distance[n])
-  print("node ", n.tag)
-  while n ~= nil and path[n] ~= n do
-    n = path[n]
-    print("node ", n.tag)
+--[[ 
+  A factory method that creates and returns a seek steering behavior
+  function that seeks towards the node at the end of \a path.
+  
+  Differs from regular seek in that it tries to seek within corridormap
+  defined by path. Path nodes must be of type PrmNode, since a circle member
+  is expected. 
+]]--
+function Geometry.makePathSeek(n_start, n_target)
+  local distance, paths = Graph.astar(n_start, n_target)
+  local path = Graph.createPath(n_start, n_target, paths)
+  local corridor, circle_path = Graph.createCorridorShape(path)
+  
+  -- Goodness of trajectory from state 's0' to 's1'
+  function seek(s0, s1)
+    local p0 = s0:position()
+    local p1 = s1:position()
+    local d1 = s1:direction()
+    local c_1 = corridor[p1]
+    local target = circle_path[c_1].next:position()
+    
+    local dir_target = (target-p1):unit()  -- direction to target
+    local dir_path = (p1-p0):unit()   -- direction of from current point to next on path
+    return 0.25*(1 + d1*dir_target)*(1 + dir_path * dir_target)
   end
-end
-
-function Graph.testAStar()
-  print("Testing A*:")
-  local a, b, c, d, e, f, g, h, i, j = Graph.defaults()
-  local n = g
-  local distance, path = Graph.astar(a, n)
-  print("distance", distance[n])
-  print("node ", n.tag)
-  while n ~= nil and path[n] ~= n do
-    n = path[n]
-    print("node ", n.tag)
-  end
-end
-
-TagNode = GraphNode:new()
-
-function TagNode:newNode(tag, pos)
-  local obj = TagNode:new()
-  obj.tag = tag
-  obj.pos = pos
-  return obj 
-end
-
-function TagNode:distanceTo(v)
-  return (self.pos-v.pos):length()
+  return seek
 end
 
 --[[
-  Returns a graph to use for testing.
+  A* and Dijkstra algorithms will return paths as a hashtable were
+  each node is a key into the table to the node that precedes it on the path
+  to target. So the graph is actually directed from target to multiple sources.
   
-  This collection is made so that a->c->g should be the shortest
-  path to g. c is a the center, a and b at the bottom ang g and f at
-  the top.
+  This function translates this structure into an array of all the nodes along on
+  path going from node \a n_beggin to node \a n_end.
 ]]--
-function Graph.defaults()
-  function node(tag, pos)
-    return TagNode:newNode(tag, pos)
+function Graph.createPath(n_begin, n_end, paths)
+  local path = Collection:new()
+  local n = n_end
+  while n ~= nil and paths[n] ~= n_begin do
+    path:prepend(n)
+    n = paths[n]
   end
-
-  local a = node("a", vec(4,2))
-  local b = node("b", vec(2,4))
-  local c = node("c", vec(5,5))
-  local d = node("d", vec(7,4))
-  local e = node("e", vec(2,9))
-  local f = node("f", vec(7,8))
-  local g = node("g", vec(6,10))  
-  local h = node("h", vec(2,-20))
-  local i = node("i", vec(5,3))
-  local j = node("j", vec(5,4))  
-
-  a:insertNeighbors(b,c,h)
-  c:insertNeighbors(e,d,g,f,j)
-  d:insertNeighbors(f)
-  e:insertNeighbors(g)
-  f:insertNeighbors(g)
-  h:insertNeighbors(i)
-  j:insertNeighbors(i)
-  
-  return a, b, c, d, e, f, g, h, i, j
+  path:prepend(n_begin)
+  return path
 end
 
-function Graph.default()
-  local a, b, c, d, e, f, g, h, i, j = Graph.defaults()
-  return a
+--[[
+  Attemps to find a path from node \a n_start to \a node n_target in a graph
+  which is as long as possible but shorter than \a distance.
+  
+  This is used to time it so that an NPC reaches its enemy around the
+  time when the enemy passes a choke point. If it can't reach right on time
+  then it should reach before that time. As reaching later would no enable
+  NPC to make any flank attacks whatsoever.
+]]--
+function Graph.findPathWithDistance(d_desired, n_start, n_target)
+  assert(n_start)
+  assert(n_target)
+  
+  local path_result = Polygon:new(n_start)  
+  local distance, path = Graph.dijkstra(n_target)
+  local d_accum = 0 -- Distance of path up to node n
+  local n = n_start -- Node current visited
+  function validDistance(d) return d <= d_desired end  
+  
+  -- NOTE: Check if actual distance and desired is almost equal
+  while n ~= n_target do
+    function distanceThrough(m) 
+      return d_accum + n:distanceTo(m) + distance[m]
+    end
+    -- Finds node with edge which gives max distance lower than d_desired
+    n = n:neighborSet():map(distanceThrough):filter(validDistance):maxKey()    
+    path_result:append(n)    
+  end
+  
+  return path_result
 end

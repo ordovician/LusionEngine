@@ -1,3 +1,5 @@
+require("script/map")
+
 --[[
 	Set class
 	-------------------------
@@ -24,14 +26,6 @@ function Set:new(...)
 end
 
 -- Request
-function Set:size()
-  return #self
-end
-
-function Set:empty()
-  return #self == 0
-end
-
 function Set:contains(element)
   return self[element] == element
 end
@@ -43,9 +37,9 @@ function Set:foreach(fn)
   end  
 end
 
--- Return a set which is the result of applying fn(e) to each element 'e' of set
+-- Returns a table which is the result of applying fn(e) to each element 'e' of set
 function Set:map(fn)
-  local result = Set:new()
+  local result = Map:new()
   for k,v in pairs(self) do
     result[k] = fn(v)
   end

@@ -388,31 +388,46 @@ function setupCollisionHandling()
 end
 
 function setupRoadMap()
-  roadmap = ProbablisticRoadMap:new(obstacles, obstacles:boundingBox())
-  roadmap:construct(100, 1)
-end
+  roadmap = ProbablisticRoadMap:new(obstacles, Engine.view())
+  roadmap:construct(8*8, 1)
 
-function testCircleIntersect()  
-  local w = 10
-  local h = 10
-  local obstacleView = PolygonView:new(Polygon:rect(w, h))      
-  obstacleView:setColor(1,1,0.3)
+  -- Visualize contained circle somehow when c is hit
+  Engine.registerKeyClickEvent(Key.c, function()
+    local me = currentNPC()
+    local other = otherNPC()    
+    local n_src = roadmap:findNode(me:position())
+    local n_dst = roadmap:findNode(other:position())    
+    if n_src and n_dst then 
+      print("Going from", n_src.tag, "to", n_dst.tag)
 
-  obstacle = Sprite:new(obstacleView)    
-  obstacle:setName("Obstacle"..1)  
-  
-  circle = Shape:newCircle(vec(-8, 0), 5)
-  
-  obstacle:collide(circle, Engine.seconds(), 1, function(shape, other, points, t, dt)
-    print("We got collision!")
+      local distance, path = Graph.astar(n_src, n_dst)
+
+      local n = n_dst
+      local poly = Polygon:new(other:position(), n.circle:center())
+      local i = 0 -- NOTE: to break when too far
+      print("node", n.tag)
+      while n ~= nil and path[n] ~= n do
+        n = path[n]
+        print("node", n.tag)
+        poly:append(n.circle:center())
+        i = i+1
+        if i > 20 then break end
+      end
+      poly:append(me:position())
+      Geometry.viewPath(poly)
+    end
   end)
 end
 
-setupWorld()
--- Graph.testDijkstra()
--- Graph.testAStar()
+function testStratifiedSampling()  
+  local samples = Geometry.stratifiedSamples(100, obstacles:boundingBox())
+  --local samples = Geometry.randomSamples(100, obstacles:boundingBox())  
+  Geometry.viewPoints(samples)
+end
 
+setupWorld()
 setupCollisionHandling()
+--testStratifiedSampling()
 setupRoadMap()
 -- setupSeek()
 -- setupRRTSearch()

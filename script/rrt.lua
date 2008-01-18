@@ -170,6 +170,7 @@ function Geometry.rrtSearch(s_0, trajectories, eval, max_depth, start_time, delt
   s_0.depth = 0
   s_0.value = 0
 
+  -- Actual algorithm, a sort of A* search
   while Engine.seconds() < start_time+delta_time and not candidates:empty() do
     local s_m = candidates:removeMax(eval)
     local succ = nil
