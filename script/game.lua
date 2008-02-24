@@ -30,6 +30,15 @@ function Engine.updatePlayer()
   
 end
 
+function addObstacle(poly)
+  local obstacle = Sprite:new()
+  local view = PolygonView:new(poly)
+  view:setColor(1, 1 , 0.3)
+  obstacle:setView(view)  
+  obstacle:setPosition(0, 0) 
+  obstacles:add(obstacle)
+end
+
 -- Creates a random number of obstacles and return the sprite group containing them
 function createRandomObstacles(noObstacles)  
   local obstacles = Group:new()
@@ -125,7 +134,7 @@ function update(start_time)
   Engine.handleEvents()
   Engine.updatePlayer()
   actors:update(start_time, delta_time)
-  -- Engine.lookAt(currentNPC():position())
+  Engine.lookAt(currentNPC():position())
   -- drawTrailingLine()
   actors:doPlanning(start_time, delta_time)
   -- actors:collide(obstacles, start_time, delta_time, function(self, other, t, dt) print("collision!") end)
@@ -352,7 +361,9 @@ function displayTrajectories(angvel_min, angvel_max, angvel_steps, dt, steps)
 end
 
 function setupWorld()
-  obstacles = createRandomObstacles(10)
+  --obstacles = createRandomObstacles(10)
+  obstacles = dofile("script/levels/level1.lua") -- loads sprites from level file
+
   obstacles = ShapeGroup:new(obstacles)
   -- boxes = Collection:new(unpack(col_objs:boundingBoxes()))
   -- boxes = boxes:map(function(x) return Sprite:new(OutlineView:new(x:toPolygon())) end)
@@ -428,6 +439,6 @@ end
 setupWorld()
 setupCollisionHandling()
 --testStratifiedSampling()
-setupRoadMap()
--- setupSeek()
--- setupRRTSearch()
+-- setupRoadMap()
+--setupSeek()
+--setupRRTSearch()
