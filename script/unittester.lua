@@ -34,9 +34,9 @@
 --]]
 
 local testfiles = {
-  "script/UnitTest/algorithmtest.lua"
+--"script/UnitTest/algorithmtest.lua"
 --  "script/UnitTest/circletest.lua",
---  "script/UnitTest/spritetest.lua"
+  "script/UnitTest/spritetest.lua"
 }
 
 UnitTester = {}

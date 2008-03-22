@@ -110,4 +110,33 @@ function SpriteTest.testMovement()
   end
 end
 
+function SpriteTest.testTrickyCollision()
+  local obstacles = dofile("script/levels/level1.lua") -- loads sprites from level file
+  
+  local view = PolygonView:new()    
+  local npc1 = Sprite:new(view)
+  local npc2 = Sprite:new(view)  
+  npc1:setPosition(9.59, -2.69)
+  npc2:setPosition(11.9, 7.89)      
+    
+  local t  = Engine.seconds()
+  local dt = 5
+  
+  assert(not npc1:collide(obstacles, t, dt), "tricky collisiontest 1 failed")
+  assert(not npc2:collide(obstacles, t, dt), "tricky collisiontest 2 failed")  
+  
+  obstacles = ShapeGroup:new(obstacles)
+
+  assert(not npc1:collide(obstacles, t, dt, function(me, other, points, t, dt)
+      if points then 
+        Geometry.viewPoints(points)
+        print("Point values: ", #points)
+        for k,v in pairs(points) do print(k, v) end       
+      end
+      return true
+    end), "tricky collisiontest 3 failed")
+  assert(not npc2:collide(obstacles, t, dt), "tricky collisiontest 4 failed")  
+  
+end
+
 return SpriteTest

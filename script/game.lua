@@ -77,23 +77,24 @@ function createRandomObstacles(noObstacles)
   return obstacles
 end
 
-function Shape:addNPC(planeView)
+function Shape:addNPC(planeView, x, y)
   local npc = Sprite:new(planeView)
-
-  function place()
-    local x = math.random(xmin+5, xmax-5)
-    local y = math.random(ymin+5, ymax-5)    
-    npc:setPosition(x,y) 
-    return true
-  end
+  npc:setPosition(x,y) 
   
-  place()
-  npc:setCollisionHandler(place)
-  for i=1,15 do
-    if not npc:collide(obstacles, Engine.seconds(), 1) then
-      break
-    end
-  end
+  -- function place()
+  --   local x = math.random(xmin+5, xmax-5)
+  --   local y = math.random(ymin+5, ymax-5)    
+  --   npc:setPosition(x,y) 
+  --   return true
+  -- end
+  -- 
+  -- place()
+  -- npc:setCollisionHandler(place)
+  -- for i=1,15 do
+  --   if not npc:collide(obstacles, Engine.seconds(), 1) then
+  --     break
+  --   end
+  -- end
   
   npc:setCollisionHandler(nil)
   
@@ -372,8 +373,8 @@ function setupWorld()
 
   local view = PolygonView:new()
   npcs = {}
-  npcs[1] = actors:addNPC(view)
-  npcs[2] = actors:addNPC(view)  
+  npcs[1] = actors:addNPC(view, 9.59, -2.69)
+  npcs[2] = actors:addNPC(view, 11.9, 7.89)  
 
   selectedNPC = 2
   -- trailingLine = Sprite:new()
@@ -439,6 +440,6 @@ end
 setupWorld()
 setupCollisionHandling()
 --testStratifiedSampling()
--- setupRoadMap()
+--setupRoadMap()
 --setupSeek()
---setupRRTSearch()
+setupRRTSearch()
