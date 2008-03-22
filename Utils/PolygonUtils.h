@@ -83,3 +83,6 @@ bool intersect(const Rect2& rect, ConstPointIterator2 begin, ConstPointIterator2
 
 bool inside(ConstPointIterator2 pb, ConstPointIterator2 pe, const Point2& point);
 Rect2 boundingBox(ConstPointIterator2 pb, ConstPointIterator2 pe);
+
+// Debug
+void dumpPoints(ConstPointIterator2 begin, ConstPointIterator2 end);
