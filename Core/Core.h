@@ -7,4 +7,4 @@
 
 typedef double real;
 
-//#define UNIT_TEST 1
+//#define UNIT_TEST

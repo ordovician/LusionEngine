@@ -8,9 +8,12 @@
  */
 
 #include "Utils/PolygonUtils.h"
+#include <Geometry/IO.hpp>
 
 #include <numeric>
 #include <iostream>
+
+static bool gShowResult = false;
 
 ProjectPoint::ProjectPoint(const Vector2& v1) : v(v1) {
 }
@@ -34,6 +37,9 @@ bool ProjectPolygon::operator()(const Vector2& v)
  real min2 = *min_element(proj2.begin(), proj2.end());
  real max2 = *max_element(proj2.begin(), proj2.end());  
   
+ if (gShowResult) {
+   cout << "min1 " << min1 << "min2 " << min2 << "max1 " << max1 << "max2 " << max2 << endl;
+ }
  return min1 > max2 || max1 < min2;
 }
 
@@ -55,7 +61,16 @@ bool intersect(
   adjacent_difference(qb, qe, d2.begin(), calcDir);
   d1[0] = calcDir(d1[0], *(pe-1));
   d2[0] = calcDir(d2[0], *(qe-1));
-       
+      
+  if (gShowResult) {
+    cout << "polys" << endl;
+    dumpPoints(pb, pe);
+    dumpPoints(qb, qe);        
+    cout << "d1 and d2:" << endl;
+    dumpPoints(d1.begin(), d1.end());
+    dumpPoints(d2.begin(), d2.end());    
+  }
+   
   // We have collision if it was not possible to find any separating axis
   // if ProjectPolygon is true for any of the directions then that direction
   // will be returned. This will make the equation false and signal no collision.
@@ -129,4 +144,11 @@ Rect2 boundingBox(ConstPointIterator2 pb, ConstPointIterator2 pe)
     r = r.surround(*p);
   }
   return r;
+}
+
+// Debug
+void dumpPoints(ConstPointIterator2 begin, ConstPointIterator2 end) {
+  cout << "( ";
+  copy(begin, end, ostream_iterator<Vector2>(cout, ", "));  
+  cout << " )" << endl;  
 }

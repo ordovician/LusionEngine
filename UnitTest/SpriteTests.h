@@ -16,6 +16,7 @@ public:
     virtual ~SpriteTests();
     
     void testIntersections();
+    void testTrickyIntersections();
     void testMoving();
     void testHierarchyIntersect();
 };

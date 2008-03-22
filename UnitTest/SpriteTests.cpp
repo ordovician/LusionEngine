@@ -15,6 +15,7 @@
 #include "Base/SegmentShape2.h"
 #include "Base/ShapeGroup.h"
 #include "Base/Action.h"
+#include "Base/Group.h"
 
 #include "Core/AutoreleasePool.hpp"
 
@@ -86,6 +87,67 @@ void SpriteTests::testIntersections()
   
 }
 
+void SpriteTests::testTrickyIntersections()
+{
+  AutoreleasePool::begin();
+  Sprite* space_ship = new Sprite(new MockView);
+  space_ship->setPosition(Vector2(0.0f, 0.0f));
+  // Obstacle
+  vector<Vector2> points;
+  points.push_back(Vector2(36.714285714286f, 29.857142857143f));
+  points.push_back(Vector2(40.285714285714f,	29.714285714286f));
+  points.push_back(Vector2(40.142857142857f,	1.0f));
+  points.push_back(Vector2(30.0f, 0.85714285714286f));
+  points.push_back(Vector2(30.428571428571f, 13.285714285714f));
+  
+  Sprite* obstacle = new Sprite(new MockView(points.begin(), points.end()));
+        
+  CPTAssert(!space_ship->collide(obstacle, t, dt));    
+  CPTAssert(!obstacle->collide(space_ship, t, dt));    
+    
+  space_ship->setPosition(Vector2(9.7f, -2.7f));  
+
+  CPTAssert(!space_ship->collide(obstacle, t, dt));    
+  CPTAssert(!obstacle->collide(space_ship, t, dt));    
+
+
+  space_ship->setPosition(Vector2(11.9f, 7.71f));  
+
+  CPTAssert(!space_ship->collide(obstacle, t, dt));    
+  CPTAssert(!obstacle->collide(space_ship, t, dt));    
+
+
+  space_ship->setPosition(Vector2(11.99f, 7.89f));  
+
+  CPTAssert(!space_ship->collide(obstacle, t, dt));    
+  CPTAssert(!obstacle->collide(space_ship, t, dt));    
+
+  Group* g = new Group;
+  g->addKid(obstacle);
+  ShapeGroup* group = new ShapeGroup(g->shapeIterator());
+  
+  CPTAssert(!space_ship->collide(group, t, dt));      
+  CPTAssert(!group->collide(space_ship, t, dt));      
+
+
+  space_ship->setPosition(Vector2(9.7f, -2.7f));  
+
+  CPTAssert(!space_ship->collide(group, t, dt));    
+  CPTAssert(!group->collide(space_ship, t, dt));    
+      
+      
+  space_ship->setPosition(Vector2(11.9f, 7.71f));  
+
+  CPTAssert(!space_ship->collide(group, t, dt));    
+  CPTAssert(!group->collide(space_ship, t, dt)); 
+        
+  g->release();
+  group->release();
+  space_ship->release();  
+  obstacle->release();    
+  AutoreleasePool::end();  
+}
+
 void SpriteTests::testMoving()
 {
   Sprite* sprite = new Sprite(new MockView);
@@ -142,5 +204,6 @@ void SpriteTests::testHierarchyIntersect()
 }
 
 static SpriteTests test1(TEST_INVOCATION(SpriteTests, testIntersections));
+static SpriteTests test2(TEST_INVOCATION(SpriteTests, testTrickyIntersections));
 static SpriteTests test3(TEST_INVOCATION(SpriteTests, testMoving));
 static SpriteTests test4(TEST_INVOCATION(SpriteTests, testHierarchyIntersect));
