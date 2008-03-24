@@ -77,24 +77,24 @@ function createRandomObstacles(noObstacles)
   return obstacles
 end
 
-function Shape:addNPC(planeView, x, y)
+function Shape:addNPC(planeView)
+-- function Shape:addNPC(planeView, x, y)
   local npc = Sprite:new(planeView)
-  npc:setPosition(x,y) 
   
-  -- function place()
-  --   local x = math.random(xmin+5, xmax-5)
-  --   local y = math.random(ymin+5, ymax-5)    
-  --   npc:setPosition(x,y) 
-  --   return true
-  -- end
-  -- 
-  -- place()
-  -- npc:setCollisionHandler(place)
-  -- for i=1,15 do
-  --   if not npc:collide(obstacles, Engine.seconds(), 1) then
-  --     break
-  --   end
-  -- end
+  function place()
+    local x = math.random(xmin+5, xmax-5)
+    local y = math.random(ymin+5, ymax-5)    
+    npc:setPosition(x,y) 
+    return true
+  end
+  
+  place()
+  npc:setCollisionHandler(place)
+  for i=1,15 do
+    if not npc:collide(obstacles, Engine.seconds(), 1) then
+      break
+    end
+  end
   
   npc:setCollisionHandler(nil)
   
@@ -363,7 +363,7 @@ end
 
 function setupWorld()
   --obstacles = createRandomObstacles(10)
-  obstacles = dofile("script/levels/level1.lua") -- loads sprites from level file
+  obstacles = dofile("script/levels/level2.lua") -- loads sprites from level file
 
   obstacles = ShapeGroup:new(obstacles)
   -- boxes = Collection:new(unpack(col_objs:boundingBoxes()))
@@ -373,8 +373,12 @@ function setupWorld()
 
   local view = PolygonView:new()
   npcs = {}
-  npcs[1] = actors:addNPC(view, 9.59, -2.69)
-  npcs[2] = actors:addNPC(view, 11.9, 7.89)  
+  -- npcs[1] = actors:addNPC(view, 9.59, -2.69)
+  -- npcs[2] = actors:addNPC(view, 11.9, 7.89)  
+
+  npcs[1] = actors:addNPC(view)
+  npcs[2] = actors:addNPC(view)  
+
 
   selectedNPC = 2
   -- trailingLine = Sprite:new()
@@ -400,8 +404,8 @@ function setupCollisionHandling()
 end
 
 function setupRoadMap()
-  roadmap = ProbablisticRoadMap:new(obstacles, Engine.view())
-  roadmap:construct(8*8, 1)
+  roadmap = ProbablisticRoadMap:new(obstacles, obstacles:boundingBox())
+  roadmap:construct(10*10, 1)
 
   -- Visualize contained circle somehow when c is hit
   Engine.registerKeyClickEvent(Key.c, function()
@@ -440,6 +444,6 @@ end
 setupWorld()
 setupCollisionHandling()
 --testStratifiedSampling()
---setupRoadMap()
---setupSeek()
-setupRRTSearch()
+setupRoadMap()
+-- setupSeek()
+-- setupRRTSearch()

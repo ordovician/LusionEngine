@@ -137,6 +137,27 @@ function ProbablisticRoadMap:construct(no_samples, retract_quotient)
 end
 
 --[[
+  Creates a string representation of roadmap
+  which describes how to construct roadmap as a lua program
+]]--
+function ProbablisticRoadMap:toString()
+  local header = [[require("script/collection")
+  require("script/geometry")
+  local nodes = Collection:new()]]
+  local node_strings = Collection:new()
+  for _, n in pairs(self.nodes) do
+    local s = string.format('{%s, %f}', n:position():toString(), n:radius())
+    node_strings:append(s)
+  end
+  local node_data = 'local node_data = {'..table.concat(node_strings, ',\n')..'}'
+  local fillup = [[
+  for _, n in pairs(node_data) do
+    nodes:append(PrmNode:newNode(n[1], n[2]))
+  end
+  ]]
+end
+
+--[[
   Can be removed later. Only used for displaying roadmap.
 ]]--
 function ProbablisticRoadMap:displayRoadMap()
