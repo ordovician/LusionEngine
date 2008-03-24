@@ -364,8 +364,8 @@ end
 function setupWorld()
   --obstacles = createRandomObstacles(10)
   obstacles = dofile("script/levels/level2.lua") -- loads sprites from level file
-
   obstacles = ShapeGroup:new(obstacles)
+  
   -- boxes = Collection:new(unpack(col_objs:boundingBoxes()))
   -- boxes = boxes:map(function(x) return Sprite:new(OutlineView:new(x:toPolygon())) end)
 
@@ -404,8 +404,14 @@ function setupCollisionHandling()
 end
 
 function setupRoadMap()
-  roadmap = ProbablisticRoadMap:new(obstacles, obstacles:boundingBox())
-  roadmap:construct(10*10, 1)
+  -- roadmap = ProbablisticRoadMap:new(obstacles, obstacles:boundingBox())
+  roadmap = ProbablisticRoadMap:new(obstacles, Engine.view())
+
+  Engine.registerKeyClickEvent(Key.k, function()
+    roadmap:construct(6*6, 1)
+    roadmap:displayRoadMap()    
+    print("roadmap constructed")    
+  end)
 
   -- Visualize contained circle somehow when c is hit
   Engine.registerKeyClickEvent(Key.c, function()
@@ -432,6 +438,19 @@ function setupRoadMap()
       poly:append(me:position())
       Geometry.viewPath(poly)
     end
+  end)
+  
+  -- Load roadmap
+  Engine.registerKeyClickEvent(Key.l, function()
+    roadmap = ProbablisticRoadMap:new(obstacles, Engine.view())
+    roadmap:load('script/RoadMaps/roadmap1.lua')
+    print("roadmap loaded")    
+  end)
+  
+  -- Store current roadmap to file 
+  Engine.registerKeyClickEvent(Key.s, function()    
+    roadmap:save('script/RoadMaps/roadmap1.lua')
+    print("roadmap saved")
   end)
 end
 

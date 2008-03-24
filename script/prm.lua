@@ -131,9 +131,15 @@ function ProbablisticRoadMap:construct(no_samples, retract_quotient)
   
   -- removes unconnected nodes
 	self:cleanUp()
-  self:displayRoadMap()
   self:makeNodeSearchStructure()
 	return true;  
+end
+
+--[[
+  Converts table 't' to a unique number
+]]--
+function tableToNumber(t)
+  return tonumber(string.match(tostring(t), '0x[0-9a-f]+'))
 end
 
 --[[
@@ -141,20 +147,52 @@ end
   which describes how to construct roadmap as a lua program
 ]]--
 function ProbablisticRoadMap:toString()
-  local header = [[require("script/collection")
-  require("script/geometry")
-  local nodes = Collection:new()]]
+  local header = [[
+local nodes = Collection:new()
+  
+]]
   local node_strings = Collection:new()
-  for _, n in pairs(self.nodes) do
+  local node_mapping = {}
+  for i, n in ipairs(self.nodes) do
     local s = string.format('{%s, %f}', n:position():toString(), n:radius())
     node_strings:append(s)
+    node_mapping[tableToNumber(n)] = i
   end
-  local node_data = 'local node_data = {'..table.concat(node_strings, ',\n')..'}'
+  local node_data = 'local node_data = {'..table.concat(node_strings, ',\n')..'}\n\n'
   local fillup = [[
-  for _, n in pairs(node_data) do
-    nodes:append(PrmNode:newNode(n[1], n[2]))
+for _, n in pairs(node_data) do
+  nodes:append(PrmNode:newNode(n[1], n[2]))
+end]]
+  local neighbor_lines = '\n\n'
+  for i, n in pairs(self.nodes) do
+    local node_neighbors = Collection:new()
+    for _, m in pairs(n:neighbors()) do
+      node_neighbors:append('node['..node_mapping[tableToNumber(m)]..']')
+    end    
+    neighbor_lines = neighbor_lines..'node['..i..']:insertNeighbors('..table.concat(node_neighbors, ', ')..')\n'
   end
-  ]]
+  
+  return header..node_data..fillup..neighbor_lines..'\nreturn nodes'
+end
+
+--[[
+  Save present roadmap to file as a lua script which when executed will
+  reconstruct this roadmap
+]]--
+function ProbablisticRoadMap:save(filename)
+  local file = io.open(filename, 'w')
+  file:write(self:toString())
+  file:close()
+end
+
+--[[
+  'filename' is assumed to be a lua file which when executed
+  constructs a roadmap and returns it as a collection of PrmNodes
+  with edges.
+]]--
+function ProbablisticRoadMap:load(filename)
+  self.nodes = dofile(filename)
+  self:makeNodeSearchStructure()  
 end
 
 --[[

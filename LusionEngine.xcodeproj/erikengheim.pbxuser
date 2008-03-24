@@ -53,7 +53,7 @@
 				PBXFileTableDataSourceColumnWidthsKey = (
 					20,
 					20,
-					10,
+					709,
 					20,
 					48,
 					43,
@@ -145,11 +145,13 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 220404471;
-			PBXWorkspaceStateSaveDate = 220404471;
+			PBXPerProjectTemplateStateSaveDate = 228059530;
+			PBXWorkspaceStateSaveDate = 228059530;
 		};
 		perUserProjectItems = {
-			D538D3400D231B050035FF23 /* PBXTextBookmark */ = D538D3400D231B050035FF23 /* PBXTextBookmark */;
+			D51680000D97EB32007EDCE0 /* PBXTextBookmark */ = D51680000D97EB32007EDCE0 /* PBXTextBookmark */;
+			D51680010D97EB32007EDCE0 /* PBXTextBookmark */ = D51680010D97EB32007EDCE0 /* PBXTextBookmark */;
+			D538D3400D231B050035FF23 = D538D3400D231B050035FF23 /* PBXTextBookmark */;
 			D58CBD650D22E55D006C1E6A = D58CBD650D22E55D006C1E6A /* PBXTextBookmark */;
 			D5D3D8ED0D1E6988008F9E0A = D5D3D8ED0D1E6988008F9E0A /* PBXTextBookmark */;
 		};
@@ -162,6 +164,26 @@
 		executables = (
 			D58EDB460B37F83F0032B9B5 /* LusionEngine */,
 		);
+	};
+	D51680000D97EB32007EDCE0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = D5BD17B70BBD62E500BA3313 /* LuaTrapezoidalMap.cpp */;
+		name = "LuaTrapezoidalMap.cpp: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 0;
+		vrLoc = 0;
+	};
+	D51680010D97EB32007EDCE0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = D5BD17B70BBD62E500BA3313 /* LuaTrapezoidalMap.cpp */;
+		name = "LuaTrapezoidalMap.cpp: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 0;
+		vrLoc = 0;
 	};
 	D52D9FDB0B86697E0011E248 /* PointsView.cpp */ = {
 		uiCtxt = {
@@ -656,6 +678,13 @@
 			sepNavIntBoundsRect = "{{0, 0}, {625, 7125}}";
 			sepNavSelRange = "{809, 4}";
 			sepNavVisRange = "{564, 527}";
+		};
+	};
+	D5BD17B70BBD62E500BA3313 /* LuaTrapezoidalMap.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {911, 2535}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 0}";
 		};
 	};
 	D5BD17BB0BBD62E500BA3313 /* LuaVector2.cpp */ = {
