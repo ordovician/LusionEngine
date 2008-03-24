@@ -49,6 +49,7 @@ public:
     real   squaredLength() const;
     
     Vector2 unit() const;
+    Vector2 normal() const;
     Vector2 minComponents( const Vector2& aV ) const;    
     Vector2 maxComponents( const Vector2& aV ) const;        
     Vector2 min( const Vector2& aV ) const;    
@@ -188,6 +189,12 @@ Vector2 Vector2::unit()  const
 {
     real length = this->length();
     return (*this)/length;
+}
+
+inline 
+Vector2 Vector2::normal()  const
+{
+    return Vector2(-iE[1], iE[0]);
 }
 
 inline 
