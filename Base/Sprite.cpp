@@ -12,7 +12,7 @@
 #include "Base/Action.h"
 #include "Base/Group.h"
 
-#include "Algorithms.h"
+#include "Utils/Algorithms.h"
 #include "Types.h"
 #include "Utils/PolygonUtils.h"
 #include "Timing.h"
@@ -426,12 +426,16 @@ bool Sprite::intersection(const Segment2& s, Points2& points) const
 bool Sprite::intersection(ConstPointIterator2 begin, ConstPointIterator2 end, Points2& points) const
 {
   ShallowPoints2 poly = collisionPolygon();
-//  return ::intersect(poly.first, poly.second, begin, end);  
-  bool is_col = ::intersect(poly.first, poly.second, begin, end);  
-  if (is_col) {
-    is_col = ::intersect(poly.first, poly.second, begin, end);  
-  }
-  return is_col;
+//  bool is_col = ::intersect(poly, make_pair(begin, end));
+//  if (is_col) {
+//    is_col = ::intersect(poly, make_pair(begin, end));
+//  }
+  return ::intersect(poly.first, poly.second, begin, end);  
+//  bool is_col = ::intersect(poly.first, poly.second, begin, end);  
+//  if (is_col) {
+//    is_col = ::intersect(poly.first, poly.second, begin, end);  
+//  }
+//  return is_col;
 }
 
 /*!
