@@ -21,6 +21,10 @@
 
 #include "MockView.h"
 
+#include <algorithm>
+
+using namespace std;
+
 static real t = 0.0f;
 static real dt = 1.0f;
 
@@ -203,7 +207,48 @@ void SpriteTests::testHierarchyIntersect()
   AutoreleasePool::end();  
 }
 
+/**
+ * This was indentified as a trouble area. Numbers were produced from
+ * recording points which caused trouble in simulator.
+ */
+void SpriteTests::testSpecialIntersect()
+{
+  AutoreleasePool::begin();
+  vector<Vector2> ship_points;
+  ship_points.push_back(Vector2(8.59, -3.69));
+  ship_points.push_back(Vector2(10.59, -2.69));
+  ship_points.push_back(Vector2(8.59, -1.69));
+      
+  Sprite* space_ship = new Sprite(new MockView(ship_points.begin(), ship_points.end()));
+  space_ship->setPosition(Vector2(0.0f, 0.0f));
+  
+  // Obstacle
+  vector<Vector2> points;
+//  points.push_back(Vector2(16.7143, 9.85714));
+//  points.push_back(Vector2(20.2857, 9.71429));
+//  points.push_back(Vector2(20.1429, -19));
+//  points.push_back(Vector2(10, -19.1429));
+//  points.push_back(Vector2(10.4286, -6.71429));
+
+  points.push_back(Vector2(10.4286, -6.71429));
+  points.push_back(Vector2(10, -19.1429));
+  points.push_back(Vector2(20.1429, -19));
+  points.push_back(Vector2(20.2857, 9.71429));        
+  points.push_back(Vector2(16.7143, 9.85714));
+
+  Sprite* obstacle = new Sprite(new MockView(points.begin(), points.end()));
+  obstacle->setPosition(Vector2(0.0f, 0.0f));
+        
+  CPTAssert(!space_ship->collide(obstacle, t, dt));    
+  CPTAssert(!obstacle->collide(space_ship, t, dt));    
+    
+  space_ship->release();  
+  obstacle->release();    
+  AutoreleasePool::end();  
+}
+
 static SpriteTests test1(TEST_INVOCATION(SpriteTests, testIntersections));
 static SpriteTests test2(TEST_INVOCATION(SpriteTests, testTrickyIntersections));
 static SpriteTests test3(TEST_INVOCATION(SpriteTests, testMoving));
 static SpriteTests test4(TEST_INVOCATION(SpriteTests, testHierarchyIntersect));
+static SpriteTests test5(TEST_INVOCATION(SpriteTests, testSpecialIntersect));

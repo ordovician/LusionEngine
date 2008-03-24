@@ -19,4 +19,5 @@ public:
     void testTrickyIntersections();
     void testMoving();
     void testHierarchyIntersect();
+    void testSpecialIntersect();
 };
