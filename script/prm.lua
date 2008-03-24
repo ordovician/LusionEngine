@@ -111,13 +111,10 @@ function ProbablisticRoadMap:construct(no_samples, retract_quotient)
 		no_samples = no_samples-1
 	end
 
-  print("Number of nodes after sampling:", self.nodes:size())
-
   -- add edges between nodes with overlapping spheres
   for _,n in pairs(self.nodes) do
     for _,m in pairs(self.nodes) do
       -- check whether spheres are overlapping and the nodes are not connected by an edge yet
---		  if n ~= m and self:checkNodesForEdge(n, m) then print("Not connected") end
 		  if n ~= m and n.circle:collide(m.circle) and not n:hasNeighbor(m) then
 		    -- To prevent edges through obstacles perform an additional collision check
 				if not self:lineCollision(n, m) then
@@ -167,9 +164,9 @@ end]]
   for i, n in pairs(self.nodes) do
     local node_neighbors = Collection:new()
     for _, m in pairs(n:neighbors()) do
-      node_neighbors:append('node['..node_mapping[tableToNumber(m)]..']')
+      node_neighbors:append('nodes['..node_mapping[tableToNumber(m)]..']')
     end    
-    neighbor_lines = neighbor_lines..'node['..i..']:insertNeighbors('..table.concat(node_neighbors, ', ')..')\n'
+    neighbor_lines = neighbor_lines..'nodes['..i..']:insertNeighbors('..table.concat(node_neighbors, ', ')..')\n'
   end
   
   return header..node_data..fillup..neighbor_lines..'\nreturn nodes'
@@ -214,7 +211,6 @@ end
 function ProbablisticRoadMap:displayRoadPath()
   local prev = nil
   line_seg = nil
-  print("size", self.nodes:size())
   Graph.breathFirstSearch(self.nodes[1], function(n)
     if prev then
       line_seg = Shape:newSegment(prev:position(), n:position())

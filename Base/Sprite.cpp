@@ -426,16 +426,7 @@ bool Sprite::intersection(const Segment2& s, Points2& points) const
 bool Sprite::intersection(ConstPointIterator2 begin, ConstPointIterator2 end, Points2& points) const
 {
   ShallowPoints2 poly = collisionPolygon();
-//  bool is_col = ::intersect(poly, make_pair(begin, end));
-//  if (is_col) {
-//    is_col = ::intersect(poly, make_pair(begin, end));
-//  }
   return ::intersect(poly.first, poly.second, begin, end);  
-//  bool is_col = ::intersect(poly.first, poly.second, begin, end);  
-//  if (is_col) {
-//    is_col = ::intersect(poly.first, poly.second, begin, end);  
-//  }
-//  return is_col;
 }
 
 /*!
@@ -443,11 +434,6 @@ bool Sprite::intersection(ConstPointIterator2 begin, ConstPointIterator2 end, Po
 */
 void Sprite::draw(const Rect2& r) const
 {
-#ifndef UNIT_TEST
-//  if (iView != 0)
-    ::draw(iBBox);
-//  ::draw(iPolygon);  
-#endif  
 	if (iVisible && iView != 0 && r.intersect(boundingBox()))
     iView->draw(position(), rotation(), iCurSubViewIndex);
 }

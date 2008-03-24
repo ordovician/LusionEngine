@@ -13,8 +13,6 @@
 #include <numeric>
 #include <iostream>
 
-static bool gShowResult = false;
-
 ProjectPoint::ProjectPoint(const Vector2& v1) : v(v1) {
 }
 
@@ -37,9 +35,6 @@ bool ProjectPolygon::operator()(const Vector2& v)
  real min2 = *min_element(proj2.begin(), proj2.end());
  real max2 = *max_element(proj2.begin(), proj2.end());  
   
- if (gShowResult) {
-   cout << "min1 " << min1 << "min2 " << min2 << "max1 " << max1 << "max2 " << max2 << endl;
- }
  return min1 > max2 || max1 < min2;
 }
 
@@ -60,16 +55,7 @@ bool intersect(
   adjacent_difference(pb, pe, d1.begin(), calcDir);
   adjacent_difference(qb, qe, d2.begin(), calcDir);
   d1[0] = calcDir(d1[0], *(pe-1));
-  d2[0] = calcDir(d2[0], *(qe-1));
-      
-  if (gShowResult) {
-    cout << "polys" << endl;
-    dumpPoints(pb, pe);
-    dumpPoints(qb, qe);        
-    cout << "d1 and d2:" << endl;
-    dumpPoints(d1.begin(), d1.end());
-    dumpPoints(d2.begin(), d2.end());    
-  }
+  d2[0] = calcDir(d2[0], *(qe-1));      
    
   // We have collision if it was not possible to find any separating axis
   // if ProjectPolygon is true for any of the directions then that direction
@@ -77,33 +63,6 @@ bool intersect(
   return 
     find_if(d1.begin(), d1.end(), ProjectPolygon(pb, pe, qb, qe)) == d1.end() &&
     find_if(d2.begin(), d2.end(), ProjectPolygon(pb, pe, qb, qe)) == d2.end();   
-}
-
-/**
- * Returns TRUE if axis formed by line through \a p and \a q forms
- * a separating axis for polygon \a poly1 and \a poly2
- */
-static bool isSeparating(
-  const Vector2& p, 
-  const Vector2& q, 
-  const Polygon2& poly1,
-  const Polygon2& poly2
-) 
-{
-  Vector2 d = (q-p).unit();
-  //project
-  return true;
-}
-
-bool intersect(ShallowPoints2 shallow_poly1, ShallowPoints2 shallow_poly2) {
-  Polygon2 poly1(shallow_poly1.first, shallow_poly1.second);
-  Polygon2 poly2(shallow_poly2.first, shallow_poly2.second);  
-  
-  ConstPointIterator2 ip, iq;
-  for (ip = poly1.begin(), iq = ++ip; iq != poly1.end(); ++ip, ++iq) {
-    if (isSeparating(*ip, *iq, poly1, poly2)) return false;    
-  }
-  return true;
 }
 
 bool intersect(const Polygon2& p1, const Polygon2& p2)

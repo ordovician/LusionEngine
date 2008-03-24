@@ -366,15 +366,10 @@ function setupWorld()
   obstacles = dofile("script/levels/level2.lua") -- loads sprites from level file
   obstacles = ShapeGroup:new(obstacles)
   
-  -- boxes = Collection:new(unpack(col_objs:boundingBoxes()))
-  -- boxes = boxes:map(function(x) return Sprite:new(OutlineView:new(x:toPolygon())) end)
-
   actors = Group:new()
 
   local view = PolygonView:new()
   npcs = {}
-  -- npcs[1] = actors:addNPC(view, 9.59, -2.69)
-  -- npcs[2] = actors:addNPC(view, 11.9, 7.89)  
 
   npcs[1] = actors:addNPC(view)
   npcs[2] = actors:addNPC(view)  
@@ -385,7 +380,6 @@ function setupWorld()
   -- trailingLine:setView(SegmentView:new())
   
   local npc = currentNPC()
-  -- npc:setPosition(vec(0, 0))
   Engine.registerKeyClickEvent(Key.z, makePlayerSwitch)  
   Engine.update = update  
 
@@ -408,13 +402,13 @@ function setupRoadMap()
   roadmap = ProbablisticRoadMap:new(obstacles, Engine.view())
 
   Engine.registerKeyClickEvent(Key.k, function()
-    roadmap:construct(6*6, 1)
+    roadmap:construct(8*8, 1)
     roadmap:displayRoadMap()    
     print("roadmap constructed")    
   end)
 
   -- Visualize contained circle somehow when c is hit
-  Engine.registerKeyClickEvent(Key.c, function()
+  Engine.registerKeyClickEvent(Key.c, function()    
     local me = currentNPC()
     local other = otherNPC()    
     local n_src = roadmap:findNode(me:position())
