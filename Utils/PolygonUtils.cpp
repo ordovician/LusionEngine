@@ -79,6 +79,33 @@ bool intersect(
     find_if(d2.begin(), d2.end(), ProjectPolygon(pb, pe, qb, qe)) == d2.end();   
 }
 
+/**
+ * Returns TRUE if axis formed by line through \a p and \a q forms
+ * a separating axis for polygon \a poly1 and \a poly2
+ */
+static bool isSeparating(
+  const Vector2& p, 
+  const Vector2& q, 
+  const Polygon2& poly1,
+  const Polygon2& poly2
+) 
+{
+  Vector2 d = (q-p).unit();
+  //project
+  return true;
+}
+
+bool intersect(ShallowPoints2 shallow_poly1, ShallowPoints2 shallow_poly2) {
+  Polygon2 poly1(shallow_poly1.first, shallow_poly1.second);
+  Polygon2 poly2(shallow_poly2.first, shallow_poly2.second);  
+  
+  ConstPointIterator2 ip, iq;
+  for (ip = poly1.begin(), iq = ++ip; iq != poly1.end(); ++ip, ++iq) {
+    if (isSeparating(*ip, *iq, poly1, poly2)) return false;    
+  }
+  return true;
+}
+
 bool intersect(const Polygon2& p1, const Polygon2& p2)
 {
   return intersect(p1.begin(), p1.end(), p2.begin(), p2.end());

@@ -16,12 +16,16 @@
 
 using namespace std;
 
-/*! Finds the normalized direction between two points dst and src*/
+/*! 
+  Finds the normalized direction between two points dst and src, and
+  then finds the vector perpendicular to this. This is a potential candiate
+  for separating axis in the case \a dst and \a src are points on a polygon
+*/
 struct CalcDirection : public binary_function<Point2, Point2, Vector2>
 {
   Vector2 operator()(const Point2& dst, const Point2 src)
   {
-    return (dst-src).unit();
+    return (dst-src).unit().normal();
   }
 };
 
