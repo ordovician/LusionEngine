@@ -39,6 +39,8 @@
 #include "Base/Sprite.h"
 #include "Base/ShapeGroup.h"
 
+#include "Utils/RoadMap.h"
+
 #include <lua.hpp>
 #include <iostream>
 #include <iterator>
@@ -206,6 +208,27 @@ static int isKeyDown(lua_State* L)
   checkUserData(L, "Lusion.KeyStates", keystate);
   
   lua_pushboolean(L, keystate[luaL_checkinteger(L,2)]);
+  return 1;
+}
+
+/*!
+  Optimized version of ProbablisticRoadMaps nearest obstacle
+  It was taking up a lot of time when computing roadmap
+*/
+static int nearestObstacle(lua_State* L)
+{
+  int n = lua_gettop(L);
+  if (n != 2)
+    return luaL_error(L, "Got %d arguments expected 2 (obstacles, sample_point)", n);    
+
+  Shape* shape = checkShape(L, 1);    
+  Point2 p = Vector2_pull(L, 2);
+  Point2 result;
+  ClosestPointFinder finder(shape);
+  if (finder.nearestObstacle(p, result))
+    Vector2_push(L, result);
+  else
+    lua_pushnil(L);
   return 1;
 }
 
@@ -381,7 +404,8 @@ static const luaL_Reg gEngineFuncs[] = {
   {"secondsPerFrame", secondsPerFrame},                    
   {"ticksLeft", ticksLeft},          
   {"keyState", keyState},            
-  {"keyStates", keyStates},                
+  {"keyStates", keyStates},  
+  {"nearestObstacle", nearestObstacle},                
   {NULL, NULL}
 };
 

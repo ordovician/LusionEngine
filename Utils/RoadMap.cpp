@@ -1,5 +1,4 @@
 /*
- *  RoadMap.cpp
  *  LusionEngine
  *
  *  Created by Erik Engheim on 6.1.07.
@@ -7,36 +6,65 @@
  *
  */
 
-#include "RoadMap.h"
+#include <Utils/RoadMap.h>
+#include <Base/CircleShape.h>
+#include <Engine.h>
 
-/*! Constructs a roadmap using sequence 'begin' to 'end' as a list of obstacles in space */
-RoadMap::RoadMap( SpriteList::const_iterator begin, SpriteList::const_iterator end )
-{
-  SpriteList::const_iterator i;
-  Segments2 segments;
-  for (i= begin; i != end; ++i) {
-    Sprite* sprite = *i;
-    Polygon2 poly = s->polygon();
-    for (int j = 1; j < poly.size(); ++j) {
-      segments.push_back(SpriteSegment(poly[j-1], poly[j]));     
-      // segments.push_back(new SpriteSegment(poly[j-1], poly[j], sprite));     
-    }
-  }
-  iMap = TrapezoidalMap2(segments.begin(), segments.end());
+#include <assert.h>
+
+#include "Timing.h"
+
+const real ACCURACY		=	0.5; // a measure for the accuracy during roadmap construction
+
+// Constructors
+ClosestPointFinder::ClosestPointFinder(Shape* obstacles) : iObstacles(obstacles) {
+  assert(iObstacles != 0);
+  iT = secondsPassed();
+  iDt = 1.0;
 }
 
-/*! 
- Find a path from start to target point through roadmap within time defined
- by start time. If path is not found within that time, a temporary path is returned.
- The resulting path is a sequence of Point2 stored from 'output' to returned iterator
-*/
-Polygon2::iterator 
-RoadMap::findPath(
-  const Point2& start, 
-  const Point2& target, 
-  int start_ticks
-  Polygon2::iterator output) const
+// Operations
+void ClosestPointFinder::discCollision(const Circle& circle, Shape* shape, Points2& points) 
 {
+  CircleShape c(circle);
+  shape->collide(&c, iT, iDt, this);
+  points = iPoints;
+}
+
+bool ClosestPointFinder::execute(Shape* me, Shape* other, Points2& points, real t, real dt) 
+{
+  iPoints = points;
+  return true;
+}
+
+bool ClosestPointFinder::nearestObstacle(const Point2& c, Point2& point_result)
+{
+  bool is_collision = false;
+  real radius = 0.0;
+	
+	Rect2 view = worldView();
+  if (view.width() < view.height())
+    radius = view.width();
+  else 
+    radius = view.height();
   
+  real stepsize = radius;
+  Points2 points;    
+	while (stepsize > ACCURACY && radius > ACCURACY) {
+    discCollision(Circle(c, radius), iObstacles, points);
+    if (!points.empty()) {
+      point_result = points[0];
+      is_collision = true;
+      stepsize = stepsize*0.5;
+      radius = radius-stepsize;            
+    }
+    else {
+      if (is_collision)
+        stepsize = stepsize*0.5;
+      else 
+        stepsize = stepsize*2;
+      radius = radius+stepsize;      
+    }
+	}
+  return is_collision;
 }
-

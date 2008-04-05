@@ -1,4 +1,5 @@
 require("script/algorithm")
+require("script/timer")
 
 --[[
 	PrmNode class
@@ -57,8 +58,8 @@ MAX_DIST			=	10.0			-- maximum distance a sample can move in search for nearest 
 MAX_DIST_SQUARED	=	MAX_DIST * MAX_DIST	-- maximum distance squared
 MAX_EDGE_SIZE	=		10.0			 -- maximum edge size
 MAX_RADIUS		=	100.0			-- maximum sphere radius
-MIN_RADIUS		=	0.01			-- minimum sphere radius
-ACCURACY		=	0.0004				 -- a measure for the accuracy during roadmap construction
+MIN_RADIUS		=	1.0			-- minimum sphere radius
+ACCURACY		=	0.5				 -- a measure for the accuracy during roadmap construction
 
 ProbablisticRoadMap = {}
 
@@ -87,17 +88,28 @@ end
 --]]
 function ProbablisticRoadMap:construct(no_samples, retract_quotient)
 	local halftime = no_samples * (1 - retract_quotient)
-	local samples = Geometry.stratifiedSamples(no_samples, self.bbox)
+  local samples = Geometry.stratifiedSamples(no_samples, self.bbox)
+  -- local samples = Geometry.randomSamples(no_samples, self.bbox)
+  
+	local sampling_time = 0
+	local free_disc_time = 0
 	
 	while  no_samples > 0 do
 
+    local t = Timer:start()
 		-- get sample C and retract to voronoi plane
 		local c = samples[no_samples]
 
 		if no_samples > halftime then
 			c = self:retractSample(c)
 		end
-
+    sampling_time = sampling_time + t:stop()
+    if sampling_time > 1000 then
+      print("Sampling takes too long time, sampling terminated...")
+      break
+    end
+    
+    t = Timer:start()
 		-- check whether sample is outside all discs in the roadmap
     if self.bbox:inside(c) and not self:insideRoadMap(c) then      
       --  add node to roadmap
@@ -108,28 +120,52 @@ function ProbablisticRoadMap:construct(no_samples, retract_quotient)
         self.nodes:append(node)
       end
     end
+    free_disc_time = free_disc_time + t:stop()
+    sampling_time = sampling_time + t:stop()
+    if free_disc_time > 1000 then
+      print("Find free space takes too long time, sampling terminated...")
+      break
+    end
+    
+    
 		no_samples = no_samples-1
 	end
 
-  -- add edges between nodes with overlapping spheres
+  print("Total sampling time:", sampling_time)
+  print("Total time spend finding collision free disc:", free_disc_time)
+
+  local t = Timer:start()
+  self:connectOverlappingCircles()
+  print("Time spent connecting nodes:", t:stop())
+  
+  -- removes unconnected nodes
+  print("cleaning up...")  
+	self:cleanUp()
+	
+  print("Making node search structure...")  	
+  self:makeNodeSearchStructure()
+	return true;  
+end
+
+--[[
+ Brute force algorithm to compare every circle surrounding node with each other and
+ find the ones overlapping. Creates edges between the ones that overlap.
+]]--
+function ProbablisticRoadMap:connectOverlappingCircles()
+  -- add edges between nodes with overlapping discs
   for _,n in pairs(self.nodes) do
     for _,m in pairs(self.nodes) do
       -- check whether spheres are overlapping and the nodes are not connected by an edge yet
-		  if n ~= m and n.circle:collide(m.circle) and not n:hasNeighbor(m) then
-		    -- To prevent edges through obstacles perform an additional collision check
-				if not self:lineCollision(n, m) then
+  	  if n ~= m and n.circle:collide(m.circle) and not n:hasNeighbor(m) then
+  	    -- To prevent edges through obstacles perform an additional collision check
+  			if not self:lineCollision(n, m) then
           n:insertNeighbors(m)
           m:insertNeighbors(n)
-				end
-				
-		  end
+  			end
+			
+  	  end
     end
   end
-  
-  -- removes unconnected nodes
-	self:cleanUp()
-  self:makeNodeSearchStructure()
-	return true;  
 end
 
 --[[
@@ -325,21 +361,6 @@ function ProbablisticRoadMap:findNode(pos)
   return self.circleNodeMap[shape_closest]
 end
 
---[[
-  Picks a random sample. The sample is a point within the boundaries
-  of the world. 
-  
-  Sampling is done with random function. This can be changed
-  to use regular grid for sampling, jitter etc instead.
-]]--
-function ProbablisticRoadMap:pickSample()
-  local pos = vec(0,0)
-  pos.x = math.random(self.bbox.min.x, self.bbox.max.x)
-  pos.y = math.random(self.bbox.min.y, self.bbox.max.y)  
-  return pos
-end
-
-
  --[[
  Returns a new point, which is on the voronoi lines/edges between the obstacles.
  It is gotten by moving our sample point c, until we hit the voronoi line running
@@ -429,10 +450,19 @@ function ProbablisticRoadMap:equidistantVertex(c1, c2)
 end
 
 --[[
+  Use C++ code directly to do finding of nearest obstacle as opposed
+  to using Lua. as in slow implementation. This is about 7 times faster
+]]--
+function ProbablisticRoadMap:nearestObstacle(c)
+  return Engine.nearestObstacle(obstacles, c)
+end
+
+--[[
  returns the point (on an obstacle) that is nearest to pos
  if none is found nil is returned.
 ]]--
-function ProbablisticRoadMap:nearestObstacle(c)
+function ProbablisticRoadMap:slowNearestObstacle(c)
+-- function ProbablisticRoadMap:nearestObstacle(c)
 	local is_collision = false
 	local radius
 	

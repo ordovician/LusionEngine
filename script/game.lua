@@ -402,7 +402,7 @@ function setupRoadMap()
   roadmap = ProbablisticRoadMap:new(obstacles, Engine.view())
 
   Engine.registerKeyClickEvent(Key.k, function()
-    roadmap:construct(8*8, 1)
+    roadmap:construct(20*20, 0.9)
     roadmap:displayRoadMap()    
     print("roadmap constructed")    
   end)

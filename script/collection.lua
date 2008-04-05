@@ -19,7 +19,7 @@ function Collection:new(...)
   local instance = {}
   setmetatable(instance, self)
   self.__index = self
-  
+
   instance:append(unpack(arg))
   return instance
 end

@@ -1,5 +1,4 @@
 /*
- *  RoadMap.h
  *  LusionEngine
  *
  *  Created by Erik Engheim on 6.1.07.
@@ -11,29 +10,26 @@
 
 #include "Types.h"
 
-#include <Geometry/TrapezoidalMap2.hpp>
-#include <Base/Sprite.hpp>
+#include <Base/Action.h>
+#include <Geometry/Vector2.hpp>
+#include <Geometry/Circle.hpp>
 
-class RoadMap
+// Forward references
+class Shape;
+ 
+class ClosestPointFinder : public CollisionAction
 {
 public:
   // Constructors
-  RoadMap( SpriteList::const_iterator begin, SpriteList::const_iterator end );
-  virtual ~RoadMap();
-
-  // Accessors
-
-  // Request
-
+  ClosestPointFinder(Shape* obstacles);
+  
   // Operations
-
-  // Calculations
-  Polygon2::iterator findPath(
-    const Point2& start, 
-    const Point2& target, 
-    int start_ticks
-    Polygon2::iterator output) const;
+  void discCollision(const Circle& circle, Shape* shape, Points2& points);
+  bool execute(Shape* me, Shape* other, Points2& points, real start_time, real delta_time);
+  bool nearestObstacle(const Point2& c, Point2& point_result);
   
 private:
-  TrapezoidalMap2 iMap;
+  real iT, iDt;
+  Points2 iPoints;
+  Shape* iObstacles;
 };
