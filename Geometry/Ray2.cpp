@@ -11,6 +11,7 @@
 */
 
 #include <cmath>
+#include <assert.h>
 
 using namespace std;
 
@@ -97,6 +98,7 @@ bool Ray2::intersection(const Segment2& seg, Vector2& result) const
 */
 bool Ray2::intersection(ConstPointIterator2 begin, ConstPointIterator2 end, Vector2& result) const
 {
+  assert(false); // TODO: Think this is buggy. Why substact origin() from v and why no test on end to begin part
   bool found_point = false;
   Vector2 v, v_prev;
   Point2  p, p_prev;
@@ -111,6 +113,24 @@ bool Ray2::intersection(ConstPointIterator2 begin, ConstPointIterator2 end, Vect
   }
   result = p_prev;
   return found_point;
+}
+ 
+/*!
+  Find number of times ray intersects polygon defined by iterators
+*/
+int Ray2::noIntersections(ConstPointIterator2 begin, ConstPointIterator2 end) const
+{
+  int n = 0;
+  Vector2 v, v_prev;
+  Point2  p, p_prev;
+  ConstPointIterator2 it;
+  for (it = begin+1; it != end; ++it) {
+    if (intersect(Segment2(*(it-1), *it)))
+      ++n;
+  }
+  if (intersect(Segment2(*(end-1), *begin)))
+    ++n;
+  return n;
 }
  
 real Ray2::squaredDistance(const Point2& p) const

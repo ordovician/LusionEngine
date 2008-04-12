@@ -9,6 +9,7 @@
 
 #include "Utils/PolygonUtils.h"
 #include <Geometry/IO.hpp>
+#include <Geometry/Ray2.hpp>
 
 #include <numeric>
 #include <iostream>
@@ -103,17 +104,29 @@ bool intersect(const Rect2& rect, ConstPointIterator2 begin, ConstPointIterator2
   return false;  
 }
 
-// NOTE: Only works for convex shapes
-bool inside(ConstPointIterator2 pb, ConstPointIterator2 pe, const Point2& q)
+/**
+ * Only works for convex shapes which are counter clockwise
+ */
+static bool fastInside(ConstPointIterator2 pb, ConstPointIterator2 pe, const Point2& q)
 {
-  bool is_inside = true;
   Polygon2::const_iterator p;
   for (p = pb+1; p != pe; ++p) {
-    if ((*p - *(p-1)).cross(q - *(p-1)) > 0.0) continue;
-    is_inside = false;
-    break;
+    if ((*p - *(p-1)).cross(q - *(p-1)) <= 0.0)
+      return false;
   }
-  return is_inside;
+  if ((*pb - *(p-1)).cross(q - *(p-1)) <= 0.0)
+    return false;
+
+  return true;
+}
+
+/**
+ * Only works for convex shapes but we can easily improve it to work for others
+ */
+bool inside(ConstPointIterator2 pb, ConstPointIterator2 pe, const Point2& q)
+{
+  Ray2 r(q, Vector2(-1.0, 0));
+  return r.noIntersections(pb, pe) == 1;  
 }
 
 /*!

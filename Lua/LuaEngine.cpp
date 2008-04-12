@@ -218,15 +218,57 @@ static int isKeyDown(lua_State* L)
 static int nearestObstacle(lua_State* L)
 {
   int n = lua_gettop(L);
-  if (n != 2)
-    return luaL_error(L, "Got %d arguments expected 2 (obstacles, sample_point)", n);    
+  if (n != 3)
+    return luaL_error(L, "Got %d arguments expected 2 (obstacles, rect, sample_point)", n);    
 
   Shape* shape = checkShape(L, 1);    
-  Point2 p = Vector2_pull(L, 2);
+  Rect2  r = Rect2_pull(L, 2);
+  Point2 p = Vector2_pull(L, 3);
   Point2 result;
-  ClosestPointFinder finder(shape);
+  ClosestPointFinder finder(shape, r);
   if (finder.nearestObstacle(p, result))
     Vector2_push(L, result);
+  else
+    lua_pushnil(L);
+  return 1;
+}
+
+/*!
+  Optimized version of ProbablisticRoadMaps equidistanceVertex
+  method
+*/
+static int equidistantVertex(lua_State* L)
+{
+  int n = lua_gettop(L);
+  if (n != 4)
+    return luaL_error(L, "Got %d arguments expected 2 (obstacles, rect, sample1, sample2)", n);    
+
+  Shape* shape = checkShape(L, 1);
+  Rect2  r  = Rect2_pull(L, 2);
+  Point2 c1 = Vector2_pull(L, 3);
+  Point2 c2 = Vector2_pull(L, 4);  
+  Point2 c_v;
+  ClosestPointFinder finder(shape, r);
+  if (finder.equidistantVertex(c1, c2, c_v))
+    Vector2_push(L, c_v);
+  else
+    lua_pushnil(L);
+  return 1;
+}
+
+static int retractSample(lua_State* L)
+{
+  int n = lua_gettop(L);
+  if (n != 3)
+    return luaL_error(L, "Got %d arguments expected 2 (obstacles, rect, sample)", n);    
+
+  Shape* shape = checkShape(L, 1);    
+  Rect2  r = Rect2_pull(L, 2);
+  Point2 c = Vector2_pull(L, 3);
+  Point2 c_v;
+  ClosestPointFinder finder(shape, r);
+  if (finder.retractSample(c, c_v))
+    Vector2_push(L, c_v);
   else
     lua_pushnil(L);
   return 1;
@@ -405,7 +447,9 @@ static const luaL_Reg gEngineFuncs[] = {
   {"ticksLeft", ticksLeft},          
   {"keyState", keyState},            
   {"keyStates", keyStates},  
-  {"nearestObstacle", nearestObstacle},                
+  {"nearestObstacle", nearestObstacle},
+  {"equidistantVertex", equidistantVertex},
+  {"retractSample", retractSample},          
   {NULL, NULL}
 };
 
