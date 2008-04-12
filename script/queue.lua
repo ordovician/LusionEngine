@@ -15,7 +15,7 @@ Queue = Collection:new()
 
 -- Enqueue element
 function Queue:push(...)
-  self:append(unpack(arg))
+  self:append(...)
 end
 
 -- Remove element first in queue

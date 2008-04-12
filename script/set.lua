@@ -19,7 +19,7 @@ function Set:new(...)
   setmetatable(instance, self)
   self.__index = self
   
-  for _,v in ipairs(arg) do
+  for _,v in ipairs({...}) do
     instance[v] = v
   end
   return instance
@@ -57,13 +57,13 @@ end
 
 -- Operations
 function Set:insert(...)
-  for _,v in ipairs(arg) do
+  for _,v in ipairs({...}) do
     self[v] = v
   end
 end
 
 function Set:join(...)
-  for _,t in ipairs(arg) do
+  for _,t in ipairs({...}) do
     for k,v in pairs(t) do
       self[k] = v
     end

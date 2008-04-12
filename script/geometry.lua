@@ -71,7 +71,7 @@ function Rect:toString()
 end
 
 function rec(...)
-  return Rect:new(unpack(arg))
+  return Rect:new(...)
 end
 
 
@@ -131,6 +131,8 @@ end
 
 function Geometry.viewSegments(segments)
   local view = SegmentView:new(segments)
+  view:setArrowVisible(false)
+  view:setColor(0,0,1)  
   local sprite = Sprite:new()
   sprite:setView(view)
   return sprite

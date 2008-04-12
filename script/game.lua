@@ -398,8 +398,8 @@ function setupCollisionHandling()
 end
 
 function setupRoadMap()
-  -- roadmap = ProbablisticRoadMap:new(obstacles, obstacles:boundingBox())
-  roadmap = ProbablisticRoadMap:new(obstacles, Engine.view())
+  roadmap = ProbablisticRoadMap:new(obstacles, obstacles:boundingBox())
+  -- roadmap = ProbablisticRoadMap:new(obstacles, Engine.view())
 
   Engine.registerKeyClickEvent(Key.k, function()
     roadmap:construct(20*20, 0.9)
@@ -445,6 +445,26 @@ function setupRoadMap()
   Engine.registerKeyClickEvent(Key.s, function()    
     roadmap:save('script/RoadMaps/roadmap1.lua')
     print("roadmap saved")
+  end)
+  
+  -- For debugging bad point
+  Engine.registerKeyClickEvent(Key.g, function()    
+    print("Segment to badpoint")
+    local me = currentNPC()
+    local other = otherNPC()
+    
+    other:setPosition(vec(-18, 44))
+    -- bad_points = {seg(me:position(), vec(-18, 44))}
+    -- bad_points = Geometry.viewSegments(bad_points)
+  end)
+  
+  -- Color obstacle clicked
+  Engine.registerMouseClickEvent(function()
+    local pos = Engine.mousePosition
+    obstacles:inside(pos, Engine.seconds(), 1, function(shape, t, dt)
+      shape:view():setColor(math.random(), math.random(), math.random())
+      pos:print()      
+    end)
   end)
 end
 

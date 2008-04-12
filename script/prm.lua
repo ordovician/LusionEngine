@@ -87,10 +87,22 @@ end
 	the 10% last samples are not retracted.
 --]]
 function ProbablisticRoadMap:construct(no_samples, retract_quotient)
-	local halftime = no_samples * (1 - retract_quotient)
-  local samples = Geometry.stratifiedSamples(no_samples, self.bbox)
+  local temp_samples = Geometry.stratifiedSamples(no_samples, self.bbox)
   -- local samples = Geometry.randomSamples(no_samples, self.bbox)
   
+  local samples = Collection:new()
+  
+  -- Remove samples inside obstacles
+  for _,c in pairs(temp_samples) do
+    if not self.obstacles:inside(c) then
+      samples:append(c)
+    else
+      print("Throwing out sample ", c:toString())
+    end
+  end
+  no_samples = #samples
+	local halftime = no_samples * (1 - retract_quotient)
+	  
 	local sampling_time = 0
 	local free_disc_time = 0
 	
@@ -375,7 +387,7 @@ end
  the two points with different closest obstacle to find the point right in the middle
  between the two obstacles.
  --]] 
-function ProbablisticRoadMap:retractSample(c)
+function ProbablisticRoadMap:slowRetractSample(c)
 	local c_close = self:nearestObstacle(c)
 
 	-- init Step vector ds (stepsize may not be larget than 0.5f * maxdist)
@@ -412,6 +424,10 @@ function ProbablisticRoadMap:retractSample(c)
 	return c_v
 end
 
+function ProbablisticRoadMap:retractSample(c)
+  return Engine.retractSample(self.obstacles, self.bbox, c)
+end
+
 --[[
  Performs a binary search between c1 and c2 to find the point 
  where the two nearest obstacles are equidistant.
@@ -423,7 +439,7 @@ end
  to it is approximated by saying we reached it when the steps
  taken are below a certain minimum length.
 ]]--
-function ProbablisticRoadMap:equidistantVertex(c1, c2)
+function ProbablisticRoadMap:slowEquidistantVertex(c1, c2)
   -- init step vector
   local ds = (c2-c1)*0.5
   
@@ -449,12 +465,16 @@ function ProbablisticRoadMap:equidistantVertex(c1, c2)
 	return c_v
 end
 
+function ProbablisticRoadMap:equidistantVertex(c1, c2)
+  return Engine.equidistantVertex(self.obstacles, self.bbox, c1, c2)
+end
+
 --[[
   Use C++ code directly to do finding of nearest obstacle as opposed
   to using Lua. as in slow implementation. This is about 7 times faster
 ]]--
 function ProbablisticRoadMap:nearestObstacle(c)
-  return Engine.nearestObstacle(obstacles, c)
+  return Engine.nearestObstacle(self.obstacles, self.bbox, c)
 end
 
 --[[

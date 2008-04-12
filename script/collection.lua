@@ -20,7 +20,7 @@ function Collection:new(...)
   setmetatable(instance, self)
   self.__index = self
 
-  instance:append(unpack(arg))
+  instance:append(...)
   return instance
 end
 
@@ -170,7 +170,7 @@ end
 
 -- Operations
 function Collection:append(...)
-  for _,v in ipairs(arg) do
+  for _,v in ipairs({...}) do
     table.insert(self, v)
   end
 end
@@ -190,7 +190,7 @@ function Collection:popBack()
 end
 
 function Collection:join(...)
-  for _,t in ipairs(arg) do
+  for _,t in ipairs({...}) do
     for _,v in pairs(t) do
       table.insert(self, v)
     end

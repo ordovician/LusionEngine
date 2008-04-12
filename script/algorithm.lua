@@ -43,7 +43,7 @@ end
 
 
 function GraphNode:insertNeighbors(...)
-  self.mNeighbors:insert(unpack(arg))
+  self.mNeighbors:insert(...)
 end
 
 --[[

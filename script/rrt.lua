@@ -52,10 +52,11 @@ end
   range [0,1] too.
 ]]--  
 function Geometry.combineBehavior(...)
+  local varg = {...}
   function combined(s0, s1)
     local numerator = 0
     local denominator = 0
-    for _,v in ipairs(arg) do
+    for _,v in ipairs(varg) do
       local w = v[1]
       local f = v[2]
       numerator = numerator+w*f(s0, s1)

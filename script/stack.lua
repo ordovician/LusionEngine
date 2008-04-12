@@ -14,7 +14,7 @@ require("script/collection")
 Stack = Collection:new()
 
 function Stack:push(...)
-  self:append(unpack(arg))
+  self:append(...)
 end
 
 function Stack:pop()

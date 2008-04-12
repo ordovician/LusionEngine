@@ -5,7 +5,7 @@
 -- joins to tables into one table
 function table.union(...)
   local c = {}
-  for _,t in ipairs(arg) do
+  for _,t in ipairs({...}) do
     for _,v in pairs(t) do
       table.insert(c, v)
     end
