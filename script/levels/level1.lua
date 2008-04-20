@@ -2,7 +2,7 @@ local obstacles = Group:new()
 
 function addObstacle(...)
   local poly = Collection:new()
-  for _,v in ipairs(arg) do
+  for _,v in ipairs({...}) do
     local w = v*(1/280)*40
     poly:append(w - vec(20,20))
   end
