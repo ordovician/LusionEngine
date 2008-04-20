@@ -463,7 +463,12 @@ function setupRoadMap()
     local pos = Engine.mousePosition
     obstacles:inside(pos, Engine.seconds(), 1, function(shape, t, dt)
       shape:view():setColor(math.random(), math.random(), math.random())
-      pos:print()      
+      print("Position of hit", pos:toString())
+      local poly = shape:polygon()
+      print("Polygon hit")
+      for _,p in pairs(poly) do
+        p:print()
+      end
     end)
   end)
 end
