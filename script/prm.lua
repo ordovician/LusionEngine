@@ -91,32 +91,45 @@ function ProbablisticRoadMap:construct(no_samples, retract_quotient)
   -- local samples = Geometry.randomSamples(no_samples, self.bbox)
   
   local samples = Collection:new()
-  
+    
+  local t = Timer:start()    
   -- Remove samples inside obstacles
   for _,c in pairs(temp_samples) do
     if not self.obstacles:inside(c) then
       samples:append(c)
-    else
-      print("Throwing out sample ", c:toString())
     end
   end
+  print("Time spent removing inside samples", t:stop())
+  
   no_samples = #samples
 	local halftime = no_samples * (1 - retract_quotient)
 	  
 	local sampling_time = 0
 	local free_disc_time = 0
 	
+	-- Pull next valid sample, and retract if neccessary 
+	function nextSample(sample)
+	  if sample then
+	    return sample
+	  else
+	    local c = samples[no_samples]
+		  no_samples = no_samples - 1
+	    if no_samples + 1 > halftime then
+	      return nextSample(self:retractSample(c))
+	    else
+	      return c
+	    end
+	  end
+	end
+	
 	while  no_samples > 0 do
 
     local t = Timer:start()
-		-- get sample C and retract to voronoi plane
-		local c = samples[no_samples]
 
-		if no_samples > halftime then
-			c = self:retractSample(c)
-		end
+    local c = nextSample(nil)
+    
     sampling_time = sampling_time + t:stop()
-    if sampling_time > 1000 then
+    if sampling_time > 80000 then
       print("Sampling takes too long time, sampling terminated...")
       break
     end
@@ -134,13 +147,10 @@ function ProbablisticRoadMap:construct(no_samples, retract_quotient)
     end
     free_disc_time = free_disc_time + t:stop()
     sampling_time = sampling_time + t:stop()
-    if free_disc_time > 1000 then
+    if free_disc_time > 8000 then
       print("Find free space takes too long time, sampling terminated...")
       break
-    end
-    
-    
-		no_samples = no_samples-1
+    end    
 	end
 
   print("Total sampling time:", sampling_time)
@@ -156,7 +166,7 @@ function ProbablisticRoadMap:construct(no_samples, retract_quotient)
 	
   print("Making node search structure...")  	
   self:makeNodeSearchStructure()
-	return true;  
+	return true  
 end
 
 --[[

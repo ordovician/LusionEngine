@@ -1,7 +1,5 @@
 require("script/collection")
 
-Geometry = {}
-
 --[[
 	Vector class
 --]]

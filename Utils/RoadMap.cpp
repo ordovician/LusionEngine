@@ -60,11 +60,9 @@ bool ClosestPointFinder::nearestObstacle(const Point2& c, Point2& point_result)
     discCollision(Circle(c, radius), iObstacles, points);
     if (!points.empty()) {
       point_result = points[0];
-      if (point_result == c) {
-        cout << "Bad point " << point_result << endl; 
-        return false;
-      }
-      //assert(point_result != c);
+      if (point_result == c)
+        return true;  // Can't find closer point if point is on obstacle border
+      
       is_collision = true;
       stepsize = stepsize*0.5;
       radius = radius-stepsize;            
@@ -117,6 +115,10 @@ ClosestPointFinder::retractSample(const Vector2& c, Vector2& c_v) {
   if (!nearestObstacle(c, c_close))
     false;
 
+  // No point in trying to retract if we are on border already
+  if (c == c_close)
+    return false;
+    
 	 // init Step vector ds (stepsize may not be larget than 0.5f * maxdist)
   Vector2 ds = c - c_close;
   

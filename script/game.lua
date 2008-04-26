@@ -1,4 +1,4 @@
---dofile("script/unittester.lua")
+-- dofile("script/unittester.lua")
 -- dofile("script/gametest.lua")
 -- Sprite.setShowCollision(true)
 
@@ -402,7 +402,7 @@ function setupRoadMap()
   -- roadmap = ProbablisticRoadMap:new(obstacles, Engine.view())
 
   Engine.registerKeyClickEvent(Key.k, function()
-    roadmap:construct(20*20, 0.9)
+    roadmap:construct(140*140, 0.9)
     roadmap:displayRoadMap()    
     print("roadmap constructed")    
   end)

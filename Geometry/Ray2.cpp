@@ -120,10 +120,12 @@ bool Ray2::intersection(ConstPointIterator2 begin, ConstPointIterator2 end, Vect
 */
 int Ray2::noIntersections(ConstPointIterator2 begin, ConstPointIterator2 end) const
 {
+  
   int n = 0;
   Vector2 v, v_prev;
   Point2  p, p_prev;
   ConstPointIterator2 it;
+  
   for (it = begin+1; it != end; ++it) {
     if (intersect(Segment2(*(it-1), *it)))
       ++n;
