@@ -16,10 +16,33 @@
 #include <OpenGL/gl.h>
 #include <algorithm>
 
+#include <iostream>
+
 using namespace std;
 
+/*!
+  The collision polygon calculated isn't optimal. We do it because it is used
+  for drawing. For collision handling it is poor.
+  
+  \todo Refactor so collision and drawing polygon don't need to be the same
+*/
 PointsView::PointsView(Points2::iterator begin, Points2::iterator end) : iPoints(begin, end)
 {
+  // Find rectangular polygon that will enclose all
+  // added points
+  Rect2 r;
+  Points2::iterator it;
+  for (it = begin; it != end; ++it) {
+    r = r.surround(*it);
+  }
+  
+  Polygon2 p;
+  p.push_back(r.bottomLeft());
+  p.push_back(r.bottomRight());
+  p.push_back(r.topRight());
+  p.push_back(r.topLeft());      
+  
+  setCollisionPolygon(p.begin(), p.end());
 }
 
 PointsView::PointsView()
@@ -29,7 +52,7 @@ PointsView::PointsView()
 
 PointsView::~PointsView()
 {
-
+  cout << hex << "0x" << (int)this << " PointsView removed" << endl;  // DEBUG  
 }
 
 static void drawPoint(const Point2& p) {

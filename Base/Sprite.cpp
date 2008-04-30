@@ -433,7 +433,7 @@ bool Sprite::intersection(ConstPointIterator2 begin, ConstPointIterator2 end, Po
   Draws sprite if it is visible and has a view intersecting \a r
 */
 void Sprite::draw(const Rect2& r) const
-{
+{  
 	if (iVisible && iView != 0 && r.intersect(boundingBox()))
     iView->draw(position(), rotation(), iCurSubViewIndex);
 }

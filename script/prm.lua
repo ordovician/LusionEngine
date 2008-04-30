@@ -129,7 +129,7 @@ function ProbablisticRoadMap:construct(no_samples, retract_quotient)
     local c = nextSample(nil)
     
     sampling_time = sampling_time + t:stop()
-    if sampling_time > 80000 then
+    if sampling_time > 500000 then
       print("Sampling takes too long time, sampling terminated...")
       break
     end
@@ -147,7 +147,7 @@ function ProbablisticRoadMap:construct(no_samples, retract_quotient)
     end
     free_disc_time = free_disc_time + t:stop()
     sampling_time = sampling_time + t:stop()
-    if free_disc_time > 8000 then
+    if free_disc_time > 500000 then
       print("Find free space takes too long time, sampling terminated...")
       break
     end    

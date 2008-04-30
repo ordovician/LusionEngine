@@ -12,6 +12,9 @@
 #include "Base/View.h"
 #include "Types.h"
 
+/*!
+ A view for showing multiple points
+*/
 class PointsView : public View
 {
 public:
@@ -20,13 +23,8 @@ public:
   PointsView();
   virtual ~PointsView();
 
-  // Accessors
-  
-  // Request
-
   // Calculations
-	virtual void draw(const Point2& pos, real rot, int image_index = 0) const;
-  
+	virtual void draw(const Point2& pos, real rot, int image_index = 0) const;  
   
 private:
   Points2 iPoints;

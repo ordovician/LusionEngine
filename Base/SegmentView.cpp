@@ -22,6 +22,7 @@ using namespace std;
 SegmentView::SegmentView(Segments2::iterator begin, Segments2::iterator end )
   : iSegments(begin, end),  iShowArrowHead(false)
 {
+  recalculateCollisionPolygon();
 }
 
 SegmentView::SegmentView() : iShowArrowHead(false)
@@ -87,4 +88,33 @@ void SegmentView::draw(const Point2& pos, real rot, int) const
 void SegmentView::addSegment(const Segment2& aSeg)
 {
   iSegments.push_back(aSeg);
+  recalculateCollisionPolygon();
+}
+
+/*!
+  Calculates a rectangle which contains all segments. This is not very optimal.
+  It is also not correct, because we are saying that we get a collision when
+  this rectangle is overlapped. This is not true, but we do it because drawing calculations
+  depend on it. Only what is inside collision polygon is drawn.
+  
+  \todo Refactor so collision and drawing polygon don't need to be the same
+*/
+void SegmentView::recalculateCollisionPolygon() 
+{
+  // Find rectangular polygon that will enclose all
+  // added segments
+  Rect2 r;
+  Segments2::iterator it;
+  for (it = iSegments.begin(); it != iSegments.end(); ++it) {
+    r = r.surround(it->source());
+    r = r.surround(it->target());    
+  }
+  
+  Polygon2 p;
+  p.push_back(r.bottomLeft());
+  p.push_back(r.bottomRight());
+  p.push_back(r.topRight());
+  p.push_back(r.topLeft());      
+  
+  setCollisionPolygon(p.begin(), p.end());   
 }

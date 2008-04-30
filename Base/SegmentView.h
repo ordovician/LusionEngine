@@ -20,8 +20,6 @@ public:
   SegmentView(Segments2::iterator begin, Segments2::iterator end );
   SegmentView();
   virtual ~SegmentView();
-
-  // Accessors
   
   // Request
   void setArrowVisible(bool visible);
@@ -32,6 +30,7 @@ public:
   
   // Operations
   void addSegment(const Segment2& aSeg);
+  void recalculateCollisionPolygon();
   
 private:
   Segments2 iSegments;

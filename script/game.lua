@@ -140,7 +140,6 @@ function update(start_time)
   actors:doPlanning(start_time, delta_time)
   -- actors:collide(obstacles, start_time, delta_time, function(self, other, t, dt) print("collision!") end)
   actors:collide(obstacles, start_time, delta_time)
-  
   -- if obstacles:collide(currentNPC(), start_time, Engine.secondsPerFrame()) then print("collision") end
 end
 
@@ -402,7 +401,7 @@ function setupRoadMap()
   -- roadmap = ProbablisticRoadMap:new(obstacles, Engine.view())
 
   Engine.registerKeyClickEvent(Key.k, function()
-    roadmap:construct(140*140, 0.9)
+    roadmap:construct(80*80, 0.55)
     roadmap:displayRoadMap()    
     print("roadmap constructed")    
   end)
@@ -438,7 +437,9 @@ function setupRoadMap()
   Engine.registerKeyClickEvent(Key.l, function()
     roadmap = ProbablisticRoadMap:new(obstacles, Engine.view())
     roadmap:load('script/RoadMaps/roadmap1.lua')
-    print("roadmap loaded")    
+    print("roadmap loaded")
+    roadmap:displayRoadMap()    
+        
   end)
   
   -- Store current roadmap to file 
@@ -474,7 +475,7 @@ function setupRoadMap()
 end
 
 function testStratifiedSampling()  
-  local samples = Geometry.stratifiedSamples(100, obstacles:boundingBox())
+  local samples = Geometry.stratifiedSamples(120*120, obstacles:boundingBox())
   --local samples = Geometry.randomSamples(100, obstacles:boundingBox())  
   Geometry.viewPoints(samples)
 end
