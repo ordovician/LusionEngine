@@ -46,7 +46,7 @@ static int newGenericPolygonView(lua_State *L, GLenum style)
     *v = new PolygonView(style);
   }
   else {
-    Polygon2 p;
+    Points2 p;
     getPolygon(L, 2, p);
     *v = new PolygonView(p.begin(), p.end(), style);                   
   }
@@ -93,7 +93,7 @@ static int newImageView(lua_State *L)
     return luaL_error(L, "Argument 2 has to be a string or table of strings", n); 
     
   if (n >= 3 && lua_istable(L,3)) {
-    Polygon2 p;
+    Points2 p;
     getPolygon(L, 3, p);
     if (n == 5)
       *v = new ImageView(image_files, p, luaL_checknumber(L,4), luaL_checknumber(L,5));                            
@@ -254,7 +254,7 @@ static int setPolygon(lua_State *L)
   if (n != 2)
     return luaL_error(L, "Got %d arguments expected 2", n);
   View* view = checkView(L);
-  Polygon2 p;
+  Points2 p;
   getPolygon(L, 2, p);
   view->setCollisionPolygon(p.begin(), p.end());
   return 0;

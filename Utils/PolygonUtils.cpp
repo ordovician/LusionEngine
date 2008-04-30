@@ -49,7 +49,7 @@ bool intersect(
   ConstPointIterator2 qb, // Start of second polygon
   ConstPointIterator2 qe)
 {
-  Polygon2 d1(pe-pb), d2(qe-qb);  // holds directions
+  Points2 d1(pe-pb), d2(qe-qb);  // holds directions
   
   // Find direction of each edge in polygons
   CalcDirection calcDir;  
@@ -66,7 +66,7 @@ bool intersect(
     find_if(d2.begin(), d2.end(), ProjectPolygon(pb, pe, qb, qe)) == d2.end();   
 }
 
-bool intersect(const Polygon2& p1, const Polygon2& p2)
+bool intersect(const Points2& p1, const Points2& p2)
 {
   return intersect(p1.begin(), p1.end(), p2.begin(), p2.end());
 }
@@ -109,7 +109,7 @@ bool intersect(const Rect2& rect, ConstPointIterator2 begin, ConstPointIterator2
  */
 static bool fastInside(ConstPointIterator2 pb, ConstPointIterator2 pe, const Point2& q)
 {
-  Polygon2::const_iterator p;
+  Points2::const_iterator p;
   for (p = pb+1; p != pe; ++p) {
     if ((*p - *(p-1)).cross(q - *(p-1)) <= 0.0)
       return false;
@@ -138,7 +138,7 @@ Rect2 boundingBox(ConstPointIterator2 pb, ConstPointIterator2 pe)
   real max = numeric_limits<real>::max();
     
   Rect2 r(Vector2(max, max), Vector2(min, min));
-  Polygon2::const_iterator p;
+  Points2::const_iterator p;
   for (p = pb; p != pe; ++p) {
     r = r.surround(*p);
   }

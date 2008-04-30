@@ -90,7 +90,7 @@ void CircleTests::testPolygonIntersect()
   Circle c3(Vector2(-1.0f, -1.0f), 1.0f);  // Outside
   Circle c4(Vector2(3.0f, 3.0f), 1.0f);    // Inside
   
-  Polygon2 poly;
+  Points2 poly;
   poly.push_back(p1);
   poly.push_back(p2);
   poly.push_back(p3);
@@ -116,7 +116,7 @@ void CircleTests::testPolygonIntersect()
   CPTAssert(!c5.intersect(seg2));
   CPTAssert(!c5.intersect(seg3));
       
-  Polygon2 colPoly(points, points+3);
+  Points2 colPoly(points, points+3);
   
   CPTAssert(!c5.intersect(colPoly.begin(), colPoly.end()));  
 }

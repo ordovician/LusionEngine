@@ -42,7 +42,7 @@ public:
 private:
 	Point2    iOrigin;
   real      iRadius;
-  Polygon2  iPolygon;	
+  Points2  iPolygon;	
   
 protected:
   real      iColor[3];

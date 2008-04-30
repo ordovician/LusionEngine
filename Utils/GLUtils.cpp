@@ -54,7 +54,7 @@ void gltVertex(ConstPointIterator2 begin, ConstPointIterator2 end, const Point2&
 */
 void gltVertex(ConstPointIterator2 begin, ConstPointIterator2 end)
 {
-  Polygon2::const_iterator p = begin;
+  Points2::const_iterator p = begin;
   while (p != end) {
     gltVertex(*p);
     ++p;        
@@ -82,7 +82,7 @@ void draw(const Rect2& box)
   glEnd();
 }
 
-void draw(const Polygon2& poly)
+void draw(const Points2& poly)
 {
   glColor3d(1.0, 0.0, 1.0);
   glBegin(GL_POLYGON);  

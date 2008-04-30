@@ -99,7 +99,7 @@ typedef Vector2 Direction2;
 typedef Vector2 Size2;
 
 typedef vector<Vector2>   Points2;
-typedef vector<Vector2>   Polygon2;
+typedef vector<Vector2>   Points2;
 
 typedef Points2::iterator       PointIterator2;
 typedef Points2::const_iterator ConstPointIterator2;

@@ -81,7 +81,7 @@ void Sprite::init(const Point2& pos, real deg, real speed)
   iDepth = gNextDepth++;
   iVisible = true;
   iName = "noname";
-  iPolygon = Polygon2(gPoints, gPoints+4); 
+  iPolygon = Points2(gPoints, gPoints+4); 
 
   iState = new MotionState(pos, deg, speed);
 

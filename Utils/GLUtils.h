@@ -20,7 +20,7 @@ void gltVertex(ConstPointIterator2 begin, ConstPointIterator2 end);
 
 void drawCircle(double radius);
 void draw(const Rect2& box);
-void draw(const Polygon2& poly);
+void draw(const Points2& poly);
 
 
 // Debug

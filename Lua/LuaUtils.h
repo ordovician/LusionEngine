@@ -109,7 +109,7 @@ struct PushValue : public unary_function<T, void>
   lua_State *L;  
 };
 
-void  getPolygon(lua_State* L, int t, Polygon2& p);
+void  getPolygon(lua_State* L, int t, Points2& p);
 void  getSegments(lua_State* L, int t, Segments2& s);
 void  getStrings(lua_State* L, int t, StringList& s);
 void  pushClassInstance(lua_State* L);

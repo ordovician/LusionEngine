@@ -71,7 +71,7 @@ static int pathFrom(lua_State *L)
   Paths2* paths = checkPaths2(L); assert(paths != 0);      
   Trapezoid2* trap = checkTrapezoid2(L,2); assert(trap != 0);
   
-  Polygon2 poly;
+  Points2 poly;
   paths->pathFrom(trap, poly);
   for_each(poly.begin(), poly.end(), PushValue<Point2>(L));
   

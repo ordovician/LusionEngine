@@ -51,12 +51,12 @@ public:
   
   // Calculations
   void  getTransform(Matrix2& trans) const;
-  void  getCollisionPolygon(const View* view, Polygon2& poly) const;
+  void  getCollisionPolygon(const View* view, Points2& poly) const;
   
 	// Operations
   // void  integrate(real t, int steps, MotionState& s);
   void  integrate(real dt, int steps);  
-  void  integratePath(real dt, int steps, Polygon2& path);
+  void  integratePath(real dt, int steps, Points2& path);
   void  advance(real dt);
   void  move(Vector2 movement);
   void  accelerate(real acceleration);

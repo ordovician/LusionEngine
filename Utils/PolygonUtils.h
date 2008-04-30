@@ -41,16 +41,16 @@ struct ProjectPoint : public unary_function<Point2, real>
 struct ProjectPolygon : public unary_function<Vector2, bool>
 {
   ProjectPolygon(
-    Polygon2::const_iterator apb, 
-    Polygon2::const_iterator ape, 
-    Polygon2::const_iterator aqb, 
-    Polygon2::const_iterator aqe
+    Points2::const_iterator apb, 
+    Points2::const_iterator ape, 
+    Points2::const_iterator aqb, 
+    Points2::const_iterator aqe
   ) 
     : pb(apb), pe(ape), qb(aqb), qe(aqe), proj1(ape-apb), proj2(aqe-aqb)  { }
  
   bool operator()(const Vector2& v);
 
- Polygon2::const_iterator pb, pe, qb, qe;
+ Points2::const_iterator pb, pe, qb, qe;
  vector<real> proj1, proj2;
 };
 
@@ -79,7 +79,7 @@ bool intersect(
   ConstPointIterator2 qb, 
   ConstPointIterator2 qe);
   
-bool intersect(const Polygon2& p1, const Polygon2& p2);
+bool intersect(const Points2& p1, const Points2& p2);
 
 bool intersect(const Circle& circle, ConstPointIterator2 begin, ConstPointIterator2 end);
 bool intersect(const Segment2& seg, ConstPointIterator2 begin, ConstPointIterator2 end);

@@ -20,7 +20,7 @@ PolygonView::PolygonView(ConstPointIterator2 begin, ConstPointIterator2 end, GLe
 
 PolygonView::PolygonView(GLenum style)
 {
-  Polygon2 poly(gPoints, gPoints+3);
+  Points2 poly(gPoints, gPoints+3);
   init(poly.begin(), poly.end(), style);
 }
 

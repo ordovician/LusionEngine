@@ -36,7 +36,7 @@ PointsView::PointsView(Points2::iterator begin, Points2::iterator end) : iPoints
     r = r.surround(*it);
   }
   
-  Polygon2 p;
+  Points2 p;
   p.push_back(r.bottomLeft());
   p.push_back(r.bottomRight());
   p.push_back(r.topRight());

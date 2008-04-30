@@ -141,7 +141,7 @@ private:
   // Cached values
   Point2              iPrevPosition;
   MotionState*        iState;
-  mutable Polygon2    iPolygon;     // Collision polygon
+  mutable Points2    iPolygon;     // Collision polygon
   mutable bool        iNeedUpdate;  // indicate whether collision poly needs update
   mutable Rect2       iBBox;        // Bounding box
 };

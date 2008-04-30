@@ -24,7 +24,7 @@ MockView::MockView(ConstPointIterator2 begin, ConstPointIterator2 end)
 
 MockView::MockView()
 {
-  Polygon2 poly(gPoints, gPoints+3);
+  Points2 poly(gPoints, gPoints+3);
   setCollisionPolygon(poly.begin(), poly.end());
 }
 

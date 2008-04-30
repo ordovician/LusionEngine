@@ -47,7 +47,7 @@ View::View()
   iColor[0] = 0.0;
   iColor[1] = 1.0;  
   iColor[2] = 0.0;    
-  Polygon2 poly(gPoints, gPoints+4);
+  Points2 poly(gPoints, gPoints+4);
   setCollisionPolygon(poly.begin(), poly.end());
  
   // cout << hex << "0x" << (int)this << " view created" << endl;  // DEBUG

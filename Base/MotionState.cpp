@@ -155,7 +155,7 @@ void MotionState::getTransform(Matrix2& transform) const
   transform = trans*rot;  
 }
 
-void MotionState::getCollisionPolygon(const View* view, Polygon2& poly) const
+void MotionState::getCollisionPolygon(const View* view, Points2& poly) const
 {
   if (view != 0) {  
     Matrix2 trans; getTransform(trans);
@@ -181,7 +181,7 @@ void MotionState::integrate(real dt, int steps)
 /*! 
   Integrate like pervious method but also create path from start to finish.
 */
-void MotionState::integratePath(real dt, int steps, Polygon2& path)
+void MotionState::integratePath(real dt, int steps, Points2& path)
 {
   path.push_back(position());  
   for (int i=0; i<steps; ++i) {

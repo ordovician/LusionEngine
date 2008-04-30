@@ -353,7 +353,7 @@ static int integratePath(lua_State *L)
   if (n != 3) 
     return luaL_error(L, "Got %d arguments expected 3", n); 
   MotionState* mstate = checkMotionState(L);
-  Polygon2 path;
+  Points2 path;
   mstate->integratePath(luaL_checknumber(L,2), luaL_checkint(L,3), path);
   
   if (path.empty())

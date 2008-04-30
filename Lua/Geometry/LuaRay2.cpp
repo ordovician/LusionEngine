@@ -97,7 +97,7 @@ static int polygonIntersect(lua_State *L)
     return luaL_error(L, "Got %d arguments expected 2 (self, ray)", n);
   Ray2 r = Ray2_pull(L, 1);
   
-  Polygon2 poly;
+  Points2 poly;
   getPolygon(L, 2, poly);
   
   Vector2 v;

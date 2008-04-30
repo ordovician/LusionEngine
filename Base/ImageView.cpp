@@ -97,7 +97,7 @@ ImageView::ImageView(const StringList& filenames, real w, real h)
   init(filenames, w, h);
 }
 
-ImageView::ImageView(const StringList& filenames, const Polygon2& poly, real w, real h) 
+ImageView::ImageView(const StringList& filenames, const Points2& poly, real w, real h) 
 {
   init(filenames, w, h);
   setCollisionPolygon(poly.begin(), poly.end());  
@@ -119,7 +119,7 @@ void ImageView::init(const StringList& filenames, real width, real height)
   iTopLeft = Point2(-w,  h);  
   
   Point2 points[] = {iBottomLeft, iBottomRight, iTopRight, iTopLeft};    
-  Polygon2 poly(points, points+4);
+  Points2 poly(points, points+4);
   setCollisionPolygon(poly.begin(), poly.end());    
 }
 

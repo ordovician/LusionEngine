@@ -30,7 +30,7 @@ static int inside(lua_State *L)
   if (n != 2)
    return luaL_error(L, "Got %d arguments expected 2 (polygon, query_point)", n); 
 
-  Polygon2 poly;
+  Points2 poly;
   getPolygon(L, 1, poly);
   Vector2 q = Vector2_pull(L, 2);
   lua_pushboolean(L, inside(poly.begin(), poly.end(), q));  
