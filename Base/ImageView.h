@@ -13,7 +13,7 @@
 
 #include <OpenGL/gl.h>
 
-typedef vector<GLuint> UIntVector;
+typedef std::vector<GLuint> UIntVector;
  
 void    initTextures();
 GLuint  loadTexture(const char* filename);

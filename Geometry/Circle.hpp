@@ -17,8 +17,6 @@ Comment	: This class has not been tested yet.
 
 #include <vector>
 
-using namespace std;
-
 class Circle
 {     
 public:

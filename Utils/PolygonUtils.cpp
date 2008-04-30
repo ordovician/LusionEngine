@@ -14,6 +14,8 @@
 #include <numeric>
 #include <iostream>
 
+using namespace std;
+
 ProjectPoint::ProjectPoint(const Vector2& v1) : v(v1) {
 }
 

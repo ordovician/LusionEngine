@@ -56,8 +56,8 @@ View::View()
 
 View::~View()
 {
-  cout << "tag: " << tag() << endl;
-  cout << hex << "0x" << (int)this << " view removed" << endl;  // DEBUG
+  std::cout << "tag: " << tag() << std::endl;
+  std::cout << std::hex << "0x" << (int)this << " view removed" << std::endl;  // DEBUG
 }
 
 // Accessors

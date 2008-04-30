@@ -19,7 +19,7 @@ public:
   // Constructors
   ShapeGroup();
   ShapeGroup(ShapeIterator* iterator);
-  ShapeGroup(vector<Shape*>::iterator begin, vector<Shape*>::iterator end);
+  ShapeGroup(std::vector<Shape*>::iterator begin, std::vector<Shape*>::iterator end);
   ShapeGroup(Shape *left, Shape *right);  
   ShapeGroup(Shape *left, Shape *right, const Rect2& box);
   
@@ -43,10 +43,10 @@ public:
   void update(real start_time, real delta_time);  
   
   void init();
-  void init(vector<Shape*>::iterator begin, vector<Shape*>::iterator end);
+  void init(std::vector<Shape*>::iterator begin, std::vector<Shape*>::iterator end);
   void init(Shape *left, Shape *right);
   void init(Shape *left, Shape *right, const Rect2& box);
-  Shape* buildBranch(vector<Shape*>::iterator begin, vector<Shape*>::iterator end, int axis);
+  Shape* buildBranch(std::vector<Shape*>::iterator begin, std::vector<Shape*>::iterator end, int axis);
   
 private:
   Shape *iLeft, *iRight;

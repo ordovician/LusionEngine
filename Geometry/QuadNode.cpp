@@ -9,6 +9,8 @@
 
 #include <Geometry/QuadNode.h>
 
+using namespace std;
+
 // Constructors
 QuadNode::QuadNode()
 {

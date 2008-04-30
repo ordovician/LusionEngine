@@ -21,11 +21,9 @@
 #include <Geometry/Segment2.hpp>
 #include <Core/Core.h>
 
-using namespace std;
-
 class Group;
 
-typedef set<Group*>       GroupSet;
+typedef std::set<Group*>       GroupSet;
 
-typedef list<string>      StringList;
-typedef list<string>      StringList;
+typedef std::list<std::string>      StringList;
+typedef std::list<std::string>      StringList;

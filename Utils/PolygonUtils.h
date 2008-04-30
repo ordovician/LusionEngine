@@ -14,14 +14,12 @@
 #include <cmath>
 #include <Geometry/Circle.hpp>
 
-using namespace std;
-
 /*! 
   Finds the normalized direction between two points dst and src, and
   then finds the vector perpendicular to this. This is a potential candiate
   for separating axis in the case \a dst and \a src are points on a polygon
 */
-struct CalcDirection : public binary_function<Point2, Point2, Vector2>
+struct CalcDirection : public std::binary_function<Point2, Point2, Vector2>
 {
   Vector2 operator()(const Point2& dst, const Point2 src)
   {
@@ -29,7 +27,7 @@ struct CalcDirection : public binary_function<Point2, Point2, Vector2>
   }
 };
 
-struct ProjectPoint : public unary_function<Point2, real>
+struct ProjectPoint : public std::unary_function<Point2, real>
 {
   ProjectPoint(const Vector2& v1);  
   real operator()(const Point2& v1);
@@ -38,7 +36,7 @@ struct ProjectPoint : public unary_function<Point2, real>
 };
 
 /*! Returns true if v is able to separate p1 and p2 */
-struct ProjectPolygon : public unary_function<Vector2, bool>
+struct ProjectPolygon : public std::unary_function<Vector2, bool>
 {
   ProjectPolygon(
     Points2::const_iterator apb, 
@@ -51,10 +49,10 @@ struct ProjectPolygon : public unary_function<Vector2, bool>
   bool operator()(const Vector2& v);
 
  Points2::const_iterator pb, pe, qb, qe;
- vector<real> proj1, proj2;
+ std::vector<real> proj1, proj2;
 };
 
-struct Longest : public unary_function<Vector2, void>
+struct Longest : public std::unary_function<Vector2, void>
 {
   Longest(const Vector2& v = Vector2()) 
   {

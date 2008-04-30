@@ -13,8 +13,6 @@ Comment	: This class has not been tested yet.
 #include <algorithm>
 #include <vector>
 
-using namespace std;
-
 class Vector2
 {
 public:
@@ -98,13 +96,13 @@ typedef Vector2 Point2;
 typedef Vector2 Direction2;
 typedef Vector2 Size2;
 
-typedef vector<Vector2>   Points2;
-typedef vector<Vector2>   Points2;
+typedef std::vector<Vector2>   Points2;
+typedef std::vector<Vector2>   Points2;
 
 typedef Points2::iterator       PointIterator2;
 typedef Points2::const_iterator ConstPointIterator2;
-typedef pair<PointIterator2, PointIterator2>            PointIteratorPair2;
-typedef pair<ConstPointIterator2, ConstPointIterator2>  ConstPointIteratorPair2;
+typedef std::pair<PointIterator2, PointIterator2>            PointIteratorPair2;
+typedef std::pair<ConstPointIterator2, ConstPointIterator2>  ConstPointIteratorPair2;
 
 typedef ConstPointIteratorPair2 ShallowPoints2;
 typedef PointIteratorPair2      MutableShallowPoints2;

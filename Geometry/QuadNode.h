@@ -17,10 +17,8 @@ Comment	: This class has not been tested yet.
 
 #include <vector>
 
-typedef vector<Circle>::const_iterator ConstCircleIterator;
-typedef pair<ConstCircleIterator, ConstCircleIterator> ShallowCircles;
-
-using namespace std;
+typedef std::vector<Circle>::const_iterator ConstCircleIterator;
+typedef std::pair<ConstCircleIterator, ConstCircleIterator> ShallowCircles;
 
 class QuadNode
 {
@@ -40,6 +38,6 @@ public:
 
 private:
   Rect2             iBBox;
-  vector<QuadNode>  iKids;
-  vector<Circle>    iDiscs;
+  std::vector<QuadNode>  iKids;
+  std::vector<Circle>    iDiscs;
 };

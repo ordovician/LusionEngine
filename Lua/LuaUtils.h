@@ -15,8 +15,6 @@
 
 #include "Types.h"
 
-using namespace std;
-
 class Shape;
 class Sprite;
 class View;
@@ -30,7 +28,7 @@ template<class T>
 void checkUserData(lua_State* L, const char* classname, T*& data)
 {
   void *ud = luaL_checkudata(L, 1, classname);
-  string msg = string("`") + string(classname) + string("' expected");
+  std::string msg = std::string("`") + std::string(classname) + std::string("' expected");
   luaL_argcheck(L, ud != 0, 1, msg.c_str());
   data = *((T**)ud);      
 }
@@ -42,7 +40,7 @@ void pullClassInstance(lua_State* L, int index, const char* classname, T*& data)
   luaL_checktype(L, index, LUA_TTABLE); 
   lua_getfield(L, index, "__self");
   ud = popUserData(L, index, classname);
-  string msg = string("`") + string(classname) + string("' expected");
+  std::string msg = std::string("`") + std::string(classname) + std::string("' expected");
   luaL_argcheck(L, ud != 0, index, msg.c_str());  
   
   data = *((T**)ud);      
@@ -72,7 +70,7 @@ SegmentView *checkSegmentView(lua_State* L, int index = 1);
   for_each(a.begin(), a.end(), PushUserData<T*>(L, i));
 */
 template<class T>
-struct PushUserData : public unary_function<T, void>
+struct PushUserData : public std::unary_function<T, void>
 {
   PushUserData(lua_State *aL, int aIndex) 
     : L(aL), index(aIndex), n(1) 
@@ -92,7 +90,7 @@ struct PushUserData : public unary_function<T, void>
 
 /*! Use this with for_each to push an array of data of type T onto stack. */
 template<class T>
-struct PushValue : public unary_function<T, void>
+struct PushValue : public std::unary_function<T, void>
 {
   PushValue(lua_State *aL) 
     : L(aL), n(1) 

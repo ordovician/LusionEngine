@@ -20,6 +20,8 @@
 
 #include <assert.h>
 
+using namespace std;
+
 void setUserDataMetatable(lua_State *L, const char* tablename)
 {
   luaL_getmetatable(L, tablename);

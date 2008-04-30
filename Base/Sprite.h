@@ -32,7 +32,7 @@ public:
   // Initialization
   void init(const Point2& pos = Point2(0.0, 0.0), real dir = 0.0, real aSpeed = 0.0);
   
-  string name();
+  std::string name();
   void setName(const char* name);
   
 	// Accessors
@@ -126,7 +126,7 @@ private:
   void  updateCache() const;
   
 private:
-  string  iName;
+  std::string  iName;
 	int     iDepth;
 	bool	  iVisible;
 	View*   iView;

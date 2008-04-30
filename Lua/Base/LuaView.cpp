@@ -84,7 +84,7 @@ static int newImageView(lua_State *L)
   *v = 0;  
   StringList image_files;
   if (lua_isstring(L,2)) {
-    image_files.push_back(string(luaL_checkstring(L,2)));
+    image_files.push_back(std::string(luaL_checkstring(L,2)));
   }
   else if (lua_istable(L,2)) {
     getStrings(L, 2, image_files);
