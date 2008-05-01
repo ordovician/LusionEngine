@@ -42,6 +42,7 @@ public:
   
   // Calculations
   Rect2 boundingBox() const;
+  void  minkowskiSum(const Polygon2& other, Polygon2& result) const;  
   
   // Operations
   void push_back(const Vector2& p);
@@ -49,7 +50,9 @@ public:
   // Operators
   bool operator==(const Polygon2& polygon) const;
   bool operator!=(const Polygon2& polygon) const;
-            
+  Point2& operator[](int i); 
+  const Point2& operator[](int i) const; 
+    
 private:
   Points2 iPoints;
 };
