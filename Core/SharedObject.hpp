@@ -31,6 +31,7 @@ public:
   // Access
   void  setTag(int aTag);
   int   tag() const;
+  int   refCount() const;
   
   // Operations
   void  retain();

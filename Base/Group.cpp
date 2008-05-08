@@ -13,7 +13,7 @@
 #include "Base/ShapeIterator.h"
 
 #include <iostream>
-#include <assert.h>
+#include <cassert>
 
 #include <functional>
 #include <algorithm>
@@ -63,7 +63,7 @@ int Group::noShapes() const
   return iShapes.size();
 }
 
-ShapeIterator* Group::shapeIterator() const
+ShapeIterator* Group::iterator() const
 {
   ShapeIterator* itr = new SetShapeIterator(iShapes);
   itr->autorelease();

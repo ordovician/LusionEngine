@@ -35,7 +35,7 @@ public:
   std::string typeName() const;
   virtual Rect2 boundingBox() const = 0;  
   virtual int   noShapes() const;  
-  virtual ShapeIterator* shapeIterator() const;
+  virtual ShapeIterator* iterator() const;
     
   // Request
   virtual bool isSimple() const;

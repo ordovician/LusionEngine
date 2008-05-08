@@ -17,5 +17,5 @@ public:
     
   void testIntersections();
   void testMovement();
-  void testHierarchyIntersections();
+  void testHierarchyIterators();
 };

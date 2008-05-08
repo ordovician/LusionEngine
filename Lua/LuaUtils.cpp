@@ -18,7 +18,7 @@
 #include "Lua/Geometry/LuaSegment2.h"
 #include "Lua/Geometry/LuaRect2.h"
 
-#include <assert.h>
+#include <cassert>
 
 using namespace std;
 

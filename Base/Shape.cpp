@@ -10,7 +10,7 @@
 #include "Base/Shape.h"
 #include <iostream>
 
-#include <assert.h>
+#include <cassert>
 
 #include <algorithm>
 #include <functional>
@@ -62,7 +62,7 @@ int Shape::noShapes() const
   return 0;
 } 
  
-ShapeIterator* Shape::shapeIterator() const
+ShapeIterator* Shape::iterator() const
 {
   static NullIterator<Shape*> nullIterator;
   return &nullIterator;

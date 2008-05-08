@@ -24,7 +24,7 @@
 #include <iterator>
 
 #include <lua.hpp>
-#include <assert.h>
+#include <cassert>
 
 // Helper functions
 ShapeGroup *checkShapeGroup(lua_State* L, int index)

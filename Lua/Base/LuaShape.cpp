@@ -33,7 +33,7 @@
 #include <iterator>
 
 #include <lua.hpp>
-#include <assert.h>
+#include <cassert>
 
 // Helper functions
 /*!
@@ -83,7 +83,7 @@ static int newShapeGroup(lua_State *L)
   
   Group* group = checkGroup(L,2);
   assert(group != 0);
-  *g = new ShapeGroup(group->shapeIterator());
+  *g = new ShapeGroup(group->iterator());
 
   setUserDataMetatable(L, "Lusion.Shape");
 

@@ -81,6 +81,10 @@ SharedObject::tag() const
   return iTag;
 }
 
+int SharedObject::refCount() const {
+  return iRefCount;
+}
+
 ////////////////////////////// Operations
 
 /*!

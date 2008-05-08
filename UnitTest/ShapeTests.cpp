@@ -14,8 +14,11 @@
 #include "Base/CircleShape.h"
 #include "Base/RectShape2.h"
 #include "Base/SegmentShape2.h"
+#include "Base/ShapeGroup.h"
+#include "Core/AutoreleasePool.hpp"
 
 #include <numeric>
+#include <vector>
 
 using namespace std;
 
@@ -83,10 +86,37 @@ void ShapeTests::testMovement()
   CPTAssert(r.max() == Vector2(1.0f, 1.0f));    
 }
 
-void ShapeTests::testHierarchyIntersections()
+void ShapeTests::testHierarchyIterators()
 {
+  AutoreleasePool::begin();
+  CircleShape* c1 = new CircleShape(Circle(Vector2(0.0f, 0.0f), 4.0f));
+  CircleShape* c2 = new CircleShape(Circle(Vector2(2.0f, 2.0f), 4.0f)); // overlap
+  CircleShape* c3 = new CircleShape(Circle(Vector2(10.0f, 0.0f), 2.0f)); // outside
+  
+  vector<Shape*> shapes;
+  shapes.push_back(c1);
+  shapes.push_back(c2);
+  shapes.push_back(c3);
+      
+  ShapeGroup* group = new ShapeGroup(shapes.begin(), shapes.end());
+  ShapeIterator* itr = group->iterator();
+  CPTAssert(itr != 0);
+  CPTAssert(!itr->done());  
+  itr->next();
+  CPTAssert(!itr->done());  
+  itr->next();  
+  CPTAssert(itr->done());    
+  CPTAssert(group->noShapes() == 3);
+  
+  // Cleanup
+  c1->release();
+  c2->release();
+  c3->release();   
+  
+  group->release();
+  AutoreleasePool::end();  
 }
 
 static ShapeTests test1(TEST_INVOCATION(ShapeTests, testIntersections));
 static ShapeTests test2(TEST_INVOCATION(ShapeTests, testMovement));
-static ShapeTests test3(TEST_INVOCATION(ShapeTests, testHierarchyIntersections));
+static ShapeTests test3(TEST_INVOCATION(ShapeTests, testHierarchyIterators));

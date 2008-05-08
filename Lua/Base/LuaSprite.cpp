@@ -24,7 +24,7 @@
 
 
 #include <lua.hpp>
-#include <assert.h>
+#include <cassert>
 
 #include <iostream>
 

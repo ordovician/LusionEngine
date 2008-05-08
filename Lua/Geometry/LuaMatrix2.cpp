@@ -17,7 +17,7 @@
 #include <iostream>
 
 #include <lua.hpp>
-#include <assert.h>
+#include <cassert>
 
 // Helper functions
 Matrix2 *checkMatrix2(lua_State* L, int index)

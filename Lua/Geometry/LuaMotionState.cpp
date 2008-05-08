@@ -15,7 +15,7 @@
 #include "Lua/Geometry/LuaVector2.h"
 
 #include <lua.hpp>
-#include <assert.h>
+#include <cassert>
 
 #include <iostream>
 

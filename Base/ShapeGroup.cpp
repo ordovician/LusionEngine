@@ -16,7 +16,38 @@
 
 #include <iostream>
 
+#include <cassert>
+
 using namespace std;
+
+// Private classes
+class ShapeGroupIterator : public ShapeIterator 
+{
+public:
+  typedef Shape* ShapePtr;
+  
+  ShapeGroupIterator(Shape* left, Shape* right) {
+    assert(left != right);
+    assert(left != 0);
+    
+    iShapes[0] = left;
+    iShapes[1] = right;
+    iIndex = 0;
+  }
+  
+  void first() { iIndex = 0; }
+  void next()  { ++iIndex; assert(iIndex <= 2); }
+  bool done() const { return iIndex == 2; }
+  const ShapePtr& value() const { 
+    if (done())
+      throw IteratorOutOfBoundsException();
+    return iShapes[iIndex];
+  }
+  
+private:
+  int      iIndex;
+  ShapePtr iShapes[2];  
+};
 
 // Helper functions
 
@@ -106,37 +137,37 @@ Rect2 ShapeGroup::boundingBox() const
 }
 
 /*!
-  Returns number of shapes in group, but this is not a supported operation on
-  ShapeGroup so calling method will cause an exception.
-  
-  While group might have more than one shape inside it will always return 0 and
-  throw an exception because it is only possible to discover the number of shapes
-  by traversing the hierarchy, but that requires knowing the types of the 
-  child shapes which is not allowed.
-  
-  \throw UnsuportedMethodException
+  Return number of shapes in hierarchy. This is a O(N) operation
+  as children must be traversed. Only gives the number of primitive
+  or simple shapes. Group shapes are not included.
 */
 int ShapeGroup::noShapes() const
 {
-  throw UnsuportedMethodException();
-  return 0; 
+  PreorderIterator<Shape*> itr((ShapeGroup*)this);
+  int size = 0;
+  for (itr.first(); !itr.done(); itr.next()) {
+    if (itr.value()->isSimple())
+      ++size;
+  }
+
+  return size; 
 }
 
 /*!
-  Returns an iterator for group, but this is not a supported operation on
-  ShapeGroup so calling method will cause an exception.
-
-  While group might have more than one shape inside it will always return 0 and
-  throw an exception because it is only possible to discover the number of shapes
-  by traversing the hierarchy, but that requires knowing the types of the 
-  child shapes which is not allowed.
-  
-  \throw UnsuportedMethodException
+  Returns an iterator which lets you iterate over the immediate
+  kids of ShapeGroup
 */
-ShapeIterator* ShapeGroup::shapeIterator() const
+ShapeIterator* ShapeGroup::iterator() const
 {
-  throw UnsuportedMethodException();  
-  return 0;
+  static NullIterator<Shape*> nullIterator;
+  ShapeIterator* itr = &nullIterator;
+  
+  if (iLeft != 0 && iRight != 0) {
+    itr =  new ShapeGroupIterator(iLeft, iRight);
+    itr->autorelease();    
+  }
+  
+  return itr;
 }
 
 // Request
@@ -207,6 +238,9 @@ void ShapeGroup::init()
   iRight = 0;
 }
 
+/*!
+  Construct node from shape \a left and shape \a right
+*/
 void ShapeGroup::init(Shape *left, Shape *right)
 {
   left->retain();
@@ -214,7 +248,11 @@ void ShapeGroup::init(Shape *left, Shape *right)
   
   iLeft = left; 
   iRight = right;
+
   iBox = left->boundingBox().surround(right->boundingBox());
+  
+  if (iLeft == iRight)
+    iRight = 0;
 }
 
 void ShapeGroup::init(Shape *left, Shape *right, const Rect2& box)
@@ -225,6 +263,9 @@ void ShapeGroup::init(Shape *left, Shape *right, const Rect2& box)
   iLeft = left;
   iRight = right;
   iBox = box;
+  
+  if (iLeft == iRight)
+    iRight = 0;  
 }
 
 void ShapeGroup::init(vector<Shape*>::iterator begin, vector<Shape*>::iterator end)

@@ -23,8 +23,9 @@ namespace Util
   */
   template<class T>
   void insert(Iterator<T>* source, MutableIterator<T>* dest) {
-    while (source->hasNext()) {
-      dest->insert(source->next());
+    while (!source->done()) {
+      dest->insert(source->value());
+      source->next();
     }
   }
 
@@ -36,8 +37,9 @@ namespace Util
   */
   template<class T, class F>
   void insert(Iterator<T>* source, MutableIterator<T>* dest, F f) {
-    while (source->hasNext()) {
-      dest->insert(f(source->next()));
+    while (!source->done()) {
+      dest->insert(f(source->value()));
+      source->next();
     }
   }
 
@@ -48,22 +50,26 @@ namespace Util
   */
   template<class T>
   void replace(Iterator<T>* source, MutableIterator<T>* dest) {
-    while (source->hasNext()) {
-      dest->setNext(source->next());
+    while (!source->done()) {
+      dest->setValue(source->value());
+      dest->next();
+      source->next();      
     }
   }
 
   template<class T, class F>
   void transform(Iterator<T>* source, MutableIterator<T>* dest, F f) {
-    while (source->hasNext()) {
-      dest->setNext(f(source->next()));
-    }
+    while (!source->done()) {
+      dest->insert(f(source->value()));
+      source->next();
+    }  
   }
 
   template<class T, class F>
   void foreach(Iterator<T>* source, F f) {
-    while (source->hasNext()) {
-      f(source->next());
+    while (!source->done()) {
+      f(source->value());
+      source->next();
     }
   }
 }

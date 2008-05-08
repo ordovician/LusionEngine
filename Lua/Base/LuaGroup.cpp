@@ -22,7 +22,7 @@
 #include <iostream>
 
 #include <lua.hpp>
-#include <assert.h>
+#include <cassert>
 
 // Helper functions
 
@@ -105,8 +105,8 @@ static int clear(lua_State *L)
 
   // Remove all sprites from group table by setting them to nil  
   ShapeIterator* it = group->shapeIterator();
-  while (it->hasNext()) {
-    lua_pushlightuserdata(L, it->next());
+  for (it->first(); !it->done(); it->next()) {
+    lua_pushlightuserdata(L, it->value());
     lua_pushnil(L);
     lua_settable(L, 1);  
   }  

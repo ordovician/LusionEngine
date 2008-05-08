@@ -9,7 +9,7 @@
 
 #include "Timing.h"
 
-#include <assert.h>
+#include <cassert>
 #include <time.h>
 
 static int gTicksPerFrame = 30;  // milliseconds per frame

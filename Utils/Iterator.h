@@ -14,7 +14,6 @@
 
 #include <vector>
 #include <set>
-
 /*!
   Thrown when trying to dereference an iterator and it is pointing beyond end
   or before beginning. 
@@ -25,38 +24,26 @@ class IteratorOutOfBoundsException : public Exception
 };
 
 /*!
-  Base class for iterators modeled after Java style iterators as opposed to
-  STL type of iterators. The advantage of this class over STL classes is that
-  one can iterate over collections that are not known at runtime. E.g. when one only
-  knows the interface to a Collection but not its concrete implementation and want
-  to iterate over it.
-  
-  This iterator does not allow you to change the elements of the data you iterate over.
+
 */
 template<class T>
 class Iterator : public SharedObject
 {
 public:
-    virtual void  toFront() = 0; 
-    virtual void  toBack() = 0; 
-    virtual bool  hasNext() const = 0; 
-    virtual const T &next() = 0;
+    virtual void  first() = 0; 
+    virtual void  next() = 0; 
+    virtual bool  done() const = 0;
+    virtual const T& value() const = 0;
 };
 
 /*!
-  Base class for iterators modeled after Java style iterators as opposed to
-  STL type of iterators. The advantage of this class over STL classes is that
-  one can iterate over collections that are not known at runtime. E.g. when one only
-  knows the interface to a Collection but not its concrete implementation and want
-  to iterate over it.
-  
-  This iterator does  allow you to change the elements of the data you iterate over.
+
 */
 template<class T>
 class MutableIterator : public Iterator<T>
 {
 public:
-     virtual void setNext(const T &t)  = 0;
+     virtual void setValue(const T &t)  = 0;
      virtual void insert(const T &t) = 0;
 };
 
@@ -68,12 +55,12 @@ class NullIterator : public Iterator<T>
 {
 public:
     NullIterator() {} 
-    void toFront() {} 
-    void toBack()  {} 
-    bool hasNext() const { return false; } 
-    
+    void first() {} 
+    bool done() const { return true; } 
+    void next() {}
+      
     /*! \throw IteratorOutOfBoundsException */
-    const T &next() { throw IteratorOutOfBoundsException(); }  
+    const T& value() const { throw IteratorOutOfBoundsException(); }  
 };
 
 /*!
@@ -92,11 +79,17 @@ public:
     VectorIterator(const std::vector<T> &container) 
         : c(container), i(c.begin()) {} 
     VectorIterator &operator=(const std::vector<T> &container) 
-    { c = container; i = c.begin(); return *this; } 
-    void toFront() { i = c.begin(); } 
-    void toBack() { i = c.end(); } 
-    bool hasNext() const { return i != c.end(); } 
-    const T &next() { return *i++; } 
+                      { c = container; i = c.begin(); return *this; } 
+    void first()      { i = c.begin(); } 
+    bool done() const { return i == c.end(); } 
+    void next()       { ++i; }
+
+    /*! \throw IteratorOutOfBoundsException */
+    const T& value() const { 
+      if (done())
+        throw IteratorOutOfBoundsException();
+      return *i;
+    }       
 };
 
 
@@ -116,10 +109,16 @@ public:
     : c(container),
       i(container.begin()) {}
   
-  void toFront() { i = c.begin(); } 
-  void toBack() { i = c.end(); } 
-  bool hasNext() const { return i != c.end(); } 
-  const T &next() { return *i++; } 
+  void first()      { i = c.begin(); } 
+  bool done() const { return i == c.end(); } 
+  void next()       { ++i; } 
+
+  /*! \throw IteratorOutOfBoundsException */
+  const T& value() const { 
+    if (done())
+      throw IteratorOutOfBoundsException();
+    return *i;
+  }
 
 private:
   const std::set<T>& c;
@@ -134,21 +133,27 @@ private:
 template <class T>
 class MutableVectorIterator : public MutableIterator<T>
 {
-    typedef typename std::vector<T>::iterator iterator;
-    typedef typename std::vector<T>::const_iterator const_iterator;
-    std::vector<T>& c;
-    iterator i;
+  typedef typename std::vector<T>::iterator iterator;
+  typedef typename std::vector<T>::const_iterator const_iterator;
+  std::vector<T>& c;
+  iterator i;
     
 public:
-     MutableVectorIterator(std::vector<T> &container)
-        : c(container)
-     { i = c.begin(); }   
-     void toFront() { i = c.begin(); }
-     void toBack() { i = c.end(); }
-     bool hasNext() const { return c.end() != i; }
-     const T &next() { return *i++; }
-     void setNext(const T &t)  { *i++ = t; }
-     void insert(const T &t) { i = c.insert(i, t); ++i; }
+  MutableVectorIterator(std::vector<T> &container)
+    : c(container)
+  { i = c.begin(); }   
+  void first()       { i = c.begin(); }
+  bool done() const  { return c.end() == i; }
+  void next()        { ++i; }
+  void setValue(const T &t)  { *i = t; }
+  void insert(const T &t)    { i = c.insert(i, t); ++i; }
+
+  /*! \throw IteratorOutOfBoundsException */
+  const T& value() const { 
+    if (done())
+      throw IteratorOutOfBoundsException();
+    return *i;
+  }     
 };
 
 template<class T>
@@ -164,11 +169,76 @@ public:
     : c(container),
       i(container.begin()) {}
   
-  void toFront() { i = c.begin(); } 
-  void toBack() { i = c.end(); } 
-  bool hasNext() const { return i != c.end(); } 
-  const T &next() { return *i++; } 
-  void setNext(const T &t)  { throw UnsuportedMethodException(); }
+  void first()               { i = c.begin(); } 
+  bool done() const          { return i == c.end(); } 
+  void next()                { ++i; } 
+  void setValue(const T &t)  { throw IteratorOutOfBoundsException(); }
+  void insert(const T& t)    { i = c.insert(t).first;  ++i; }
+  
+  /*! \throw IteratorOutOfBoundsException */
+  const T& value() const { 
+    if (done())
+      throw IteratorOutOfBoundsException();
+    return *i;
+  }  
+};
 
-  void insert(const T& t) { i = c.insert(t).first;  ++i; }
+
+/*!
+  Does preorder iteration. All that is required for this to work 
+  is that we are provided with a pointer to a node in the tree
+  which is a model of Concept NodePtr. An instance 'n' of a NodePtr
+  model must support n->iterator(), which should return an iterator
+  over the nodes immediate children. The children should also be models
+  of NodePtr.
+*/
+template<class NodePtr>
+class PreorderIterator : public Iterator<NodePtr>
+{
+public:
+  PreorderIterator(const NodePtr root) 
+      : iRoot(root) {} 
+
+  void first() { 
+    Iterator<NodePtr>* i = iRoot->iterator();
+    if (i != 0) {
+      i->first();
+      iIterators.clear();
+      iIterators.push_back(i);
+      assert(iIterators.size() == 1);
+    } 
+  } 
+  
+  bool done() const { 
+    return iIterators.empty();
+  } 
+  
+  void next() {
+    assert(!done());
+    Iterator<NodePtr>* i = iIterators.back()->value()->iterator();
+    i->first();
+    i->retain();
+    assert(i->refCount() == 2);
+    iIterators.push_back(i);
+    
+    while (iIterators.back()->done()) {
+      assert(iIterators.back()->refCount() <= 2);
+      iIterators.back()->release();
+      iIterators.pop_back();
+      if (done())
+        break;
+      iIterators.back()->next();
+    }        
+  }
+
+  /*! \throw IteratorOutOfBoundsException */
+  const NodePtr& value() const { 
+    if (iIterators.empty())
+      throw IteratorOutOfBoundsException();
+    return iIterators.back()->value();
+  }
+  
+private:
+  NodePtr iRoot;
+  std::vector<Iterator<NodePtr>* > iIterators;
 };

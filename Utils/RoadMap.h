@@ -16,6 +16,9 @@
 
 // Forward references
 class Shape;
+
+// Functions
+Shape* minkowskiSum(const Shape* group);
  
 class ClosestPointFinder : public CollisionAction
 {

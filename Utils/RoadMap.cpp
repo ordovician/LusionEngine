@@ -12,7 +12,7 @@
 
 #include <Geometry/IO.hpp>
 
-#include <assert.h>
+#include <cassert>
 
 #include "Timing.h"
 
@@ -21,6 +21,24 @@ using namespace std;
 const real ACCURACY		=	0.5;  // a measure for the accuracy during roadmap construction
 const real MAX_DIST	  =	10.0;	// maximum distance a sample can move in search for nearest obstacle  
 const real MAX_DIST_SQUARED	=	MAX_DIST * MAX_DIST;	// maximum distance squared
+
+// Functions
+/*!
+  The shape \a group can be a composite of many shapes. This function
+  will find all the primitive shapes stored in the composite, compute the minkowski sum
+  of them, and return a new composite made up of a bounding volume hierarchy.
+*/
+Shape* minkowskiSum(const Shape* group) {
+  ShapeIterator* i = group->iterator();
+  for (i->first(); !i->done(); i->next()) {
+    Shape* shape = i->value();
+    if (!shape->isSimple())
+      continue;
+    
+  }
+  return 0; // DEBUG Fix this later
+}
+
 
 // Constructors
 ClosestPointFinder::ClosestPointFinder(Shape* obstacles, const Rect2& bbox) : iObstacles(obstacles), iBBox(bbox) {

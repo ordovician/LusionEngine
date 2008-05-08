@@ -7,7 +7,7 @@
 #include <stack>
 #include <map>
 
-#include <assert.h>
+#include <cassert>
 
 using namespace std;
 

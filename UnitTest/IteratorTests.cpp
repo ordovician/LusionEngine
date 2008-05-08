@@ -38,11 +38,13 @@ void IteratorTests::testConstruction()
   VectorIterator<int> src(v);
   MutableVectorIterator<int> dst(u);
   
-  CPTAssert(src.hasNext());
-  CPTAssert(!dst.hasNext());  
-  CPTAssert(src.next() == 2);    
-  CPTAssert(src.next() == 4);      
-  CPTAssert(src.next() == 6);        
+  CPTAssert(!src.done());
+  CPTAssert(dst.done());  
+  CPTAssert(src.value() == 2);    
+  src.next();
+  CPTAssert(src.value() == 4);
+  src.next();
+  CPTAssert(src.value() == 6);        
 }
 
 int square(int n) { return n*n; }
@@ -60,7 +62,7 @@ void IteratorTests::testVectorCopy()
   MutableVectorIterator<int> tdst(w);
 
   Util::insert(&src, &dst);
-  src.toFront();
+  src.first();
   Util::insert(&src, &tdst, square);
     
   CPTAssert(v == u);
@@ -92,9 +94,9 @@ void IteratorTests::testVectorSetCopy()
   MutableSetIterator<int> sdst(s);
 
   Util::insert(&src, &dst);
-  src.toFront();
+  src.first();
   Util::insert(&src, &tdst, square);
-  dst.toFront();
+  dst.first();
   
   Util::insert(&zsrc, &sdst);
   

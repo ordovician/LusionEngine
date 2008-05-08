@@ -20,7 +20,7 @@
 #include <iostream>
 
 #include <lua.hpp>
-#include <assert.h>
+#include <cassert>
 
 // Helper functions
 TrapezoidalMap2 *checkTrapezoidalMap(lua_State* L, int index=1)

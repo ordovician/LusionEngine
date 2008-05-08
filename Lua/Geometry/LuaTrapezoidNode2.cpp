@@ -18,7 +18,7 @@
 #include <iostream>
 
 #include <lua.hpp>
-#include <assert.h>
+#include <cassert>
 
 // Helper functions
 TrapezoidNode2 *checkTrapezoidNode2(lua_State* L, int index)

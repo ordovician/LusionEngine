@@ -18,7 +18,7 @@
 #include <iostream>
 
 #include <lua.hpp>
-#include <assert.h>
+#include <cassert>
 
 // Helper functions
 void Trapezoid2_push(lua_State *L, Trapezoid2* t)

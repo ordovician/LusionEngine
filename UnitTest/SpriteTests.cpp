@@ -128,7 +128,7 @@ void SpriteTests::testTrickyIntersections()
 
   Group* g = new Group;
   g->addKid(obstacle);
-  ShapeGroup* group = new ShapeGroup(g->shapeIterator());
+  ShapeGroup* group = new ShapeGroup(g->iterator());
   
   CPTAssert(!space_ship->collide(group, t, dt));      
   CPTAssert(!group->collide(space_ship, t, dt));      
