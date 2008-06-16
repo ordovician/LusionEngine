@@ -6,6 +6,10 @@
 
     
 */
+#include <Geometry/Rect2.hpp>
+#include <Geometry/Segment2.hpp>
+#include <Geometry/Ray2.hpp>
+#include <Geometry/Polygon2.hpp>
 
 #include <cmath>
 
@@ -130,22 +134,19 @@ bool Circle::intersect(const Ray2& ray) const
   Returns true if there is an intersection between circle and polygon defined
   by \a begin and \a end
 */
-bool Circle::intersect(ConstPointIterator2 begin, ConstPointIterator2 end) const
+bool Circle::intersect(const Polygon2& poly) const
 {
-  ConstPointIterator2 it = begin, prev = begin;
-  for (++it; it != end; ++it, ++prev) {
+  ConstPointIterator2 it = poly.begin(), prev = poly.begin();
+  for (++it; it != poly.end(); ++it, ++prev) {
     if (intersect(Segment2(*prev, *it)))
       return true;    
   }
-  return intersect(Segment2(*prev, *begin));
+  return intersect(Segment2(*prev, poly.front()));
 }
 
 /*!
-  Returns true if there is an intersection between circle and polygon defined
-  by \a begin and \a end
-  
-  \param begin defines start point for polygon
-  \param end defines end point for polygon
+  Returns true if there is an intersection between circle and polygon \a poly  
+  \param poly polygon to calculate intersection points for
   \param points that are intersected
   \param first if true method will return once first intersection is discovered
   this means that \a points will not contain all intersection points. Only the first
@@ -153,17 +154,16 @@ bool Circle::intersect(ConstPointIterator2 begin, ConstPointIterator2 end) const
   the closest one.
 */
 bool Circle::intersection(
-  ConstPointIterator2 begin, 
-  ConstPointIterator2 end, 
+  const Polygon2& poly,
   Points2& points, 
   bool first) const
 {
-  ConstPointIterator2 it = begin, prev = begin;
-  for (++it; it != end; ++it, ++prev) {
+  ConstPointIterator2 it = poly.begin(), prev = poly.begin();
+  for (++it; it != poly.end(); ++it, ++prev) {
     if (intersection(Segment2(*prev, *it), points) && first)
       return true;
   }
-  return intersection(Segment2(*prev, *begin), points) || points.size() != 0;
+  return intersection(Segment2(*prev, poly.front()), points) || points.size() != 0;
 }
     
 // Operators

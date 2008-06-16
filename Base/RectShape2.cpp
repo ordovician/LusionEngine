@@ -96,9 +96,9 @@ bool RectShape2::intersection(const Segment2& s, Points2& points) const
   return s.intersect(iRect);  
 }
 
-bool RectShape2::intersection(ConstPointIterator2 begin, ConstPointIterator2 end, Points2& points) const
+bool RectShape2::intersection(const Polygon2& poly, Points2& points) const
 {
-  return ::intersect(iRect, begin, end);
+  return poly.intersect(iRect);
 }
 
 /*!

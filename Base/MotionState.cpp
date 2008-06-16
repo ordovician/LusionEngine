@@ -12,6 +12,8 @@
 #include "Algorithms.h"
 #include "Utils/PolygonUtils.h"
 
+#include "Geometry/Polygon2.hpp"
+
 #include "Types.h"
 #include "Engine.h"
 
@@ -155,13 +157,13 @@ void MotionState::getTransform(Matrix2& transform) const
   transform = trans*rot;  
 }
 
-void MotionState::getCollisionPolygon(const View* view, Points2& poly) const
+void MotionState::getCollisionPolygon(const View* view, Polygon2& poly) const
 {
   if (view != 0) {  
     Matrix2 trans; getTransform(trans);
-    ShallowPoints2 viewPoly = view->collisionPolygon();
-    poly.resize(viewPoly.second - viewPoly.first);
-    transform(viewPoly.first, viewPoly.second, poly.begin(), trans);
+    const Polygon2& viewPoly = view->collisionPolygon();
+    poly.resize(viewPoly.size());
+    transform(viewPoly.begin(), viewPoly.end(), poly.begin(), trans);
   }  
 }
 

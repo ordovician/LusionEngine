@@ -67,8 +67,8 @@ public:
 	void setDepth(int aDepth);
 	int depth() const;
 
-  MutableShallowPoints2 collisionPolygon();
-  ShallowPoints2 collisionPolygon() const;   
+  const Polygon2& collisionPolygon() const;
+  Polygon2& collisionPolygon();   
   
   void  setView(View* aView);
   View* view();
@@ -106,7 +106,7 @@ public:
   bool  intersection(const Circle& c, Points2& points) const;
   bool  intersection(const Rect2& r, Points2& points) const;
   bool  intersection(const Segment2& s, Points2& points) const;
-  bool  intersection(ConstPointIterator2 begin, ConstPointIterator2 end, Points2& points) const;
+  bool  intersection(const Polygon2& poly, Points2& points) const;
 
 	void	draw(const Rect2& r) const;
 
@@ -141,7 +141,7 @@ private:
   // Cached values
   Point2              iPrevPosition;
   MotionState*        iState;
-  mutable Points2    iPolygon;     // Collision polygon
+  mutable Polygon2    iPolygon;     // Collision polygon
   mutable bool        iNeedUpdate;  // indicate whether collision poly needs update
   mutable Rect2       iBBox;        // Bounding box
 };

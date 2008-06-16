@@ -17,7 +17,7 @@ static Point2 gPoints[] = {Point2(-1.0, -1.0), Point2(1.0, 0.0), Point2(-1.0, 1.
   it needs a view object, this is provided by the MockView
 */
 
-MockView::MockView(ConstPointIterator2 begin, ConstPointIterator2 end)
+MockView::MockView(const Polygon2& poly)
 {
   setCollisionPolygon(begin, end);
 }

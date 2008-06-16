@@ -108,9 +108,9 @@ bool CircleShape::intersection(const Segment2& s, Points2& points) const
   return iCircle.intersect(s);  
 }
 
-bool CircleShape::intersection(ConstPointIterator2 begin, ConstPointIterator2 end, Points2& points) const
+bool CircleShape::intersection(const Polygon2& poly, Points2& points) const
 {
-  return iCircle.intersection(begin, end, points);
+  return iCircle.intersection(poly, points);
 }
 
 /*!

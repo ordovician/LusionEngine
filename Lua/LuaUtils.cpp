@@ -78,7 +78,7 @@ SegmentView *checkSegmentView(lua_State* L, int index)
   lua stack. We assume array is a table of the form
   {{x = 1, y = 2}, {x = 3, y = 4}}. Polygon is returned in p. 
 */
-void getPolygon(lua_State* L, int t, Points2& p) 
+void getPolygon(lua_State* L, int t, Polygon2& p) 
 {
   luaL_checktype(L, t, LUA_TTABLE); // Make sure we get a table with points as first argument
   lua_pushnil(L); // first key (ready traversal of table)

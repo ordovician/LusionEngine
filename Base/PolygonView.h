@@ -9,14 +9,17 @@
 
 #pragma once
 
-#include "Base/View.h"
+#include <Base/View.h>
+
+#include <Geometry/Polygon2.hpp>
+
 #include <OpenGL/gl.h>
 
 class PolygonView : public View
 {
 public:
   // Constructors
-  PolygonView( ConstPointIterator2 begin, ConstPointIterator2 end, GLenum style = GL_POLYGON );
+  PolygonView( const Polygon2& poly, GLenum style = GL_POLYGON );
   PolygonView( GLenum style = GL_POLYGON );
   virtual ~PolygonView();
 
@@ -30,7 +33,7 @@ public:
 	virtual void draw(const Point2& pos, real rot, int image_index = 0) const;
   
   // Operations
-  void init( ConstPointIterator2 begin, ConstPointIterator2 end, GLenum style );
+  void init( const Polygon2& poly, GLenum style );
   
 private:
   GLenum iStyle;

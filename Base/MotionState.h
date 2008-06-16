@@ -12,6 +12,7 @@
 
 #include <Core/SharedObject.hpp>
 
+class Polygon2;
 class View;
  
 class MotionState : public SharedObject
@@ -51,7 +52,7 @@ public:
   
   // Calculations
   void  getTransform(Matrix2& trans) const;
-  void  getCollisionPolygon(const View* view, Points2& poly) const;
+  void  getCollisionPolygon(const View* view, Polygon2& poly) const;
   
 	// Operations
   // void  integrate(real t, int steps, MotionState& s);

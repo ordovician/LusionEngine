@@ -1,7 +1,7 @@
-#include <Geometry/Ray2.hpp>
+#include <Geometry/Line2.hpp>
 
 /*!
-    \class Ray2 Ray2.h
+    \class Line2 Line2.h
     \brief Describes a 2D ray.
 
     A ray has a start point and extends
@@ -13,32 +13,34 @@
 #include <cmath>
 #include <cassert>
 
+#include <Geometry/Polygon2.hpp>
+
 using namespace std;
 
 // Constructors
-Ray2::Ray2()
+Line2::Line2()
 {
 }
 
-Ray2::Ray2(const Point2& origin, const Vector2& dir)
+Line2::Line2(const Point2& origin, const Vector2& dir)
 {
     iV[0] = origin;
     iV[1] = dir.unit();
 }
 
 // Accessors
-Point2 Ray2::origin() const
+Point2 Line2::origin() const
 {
   return iV[0];
 }
 
-Vector2 Ray2::direction() const
+Vector2 Line2::direction() const
 {
   return iV[1];
 }
 
 // Calculations
-bool Ray2::intersect(const Segment2& seg) const
+bool Line2::intersect(const Segment2& seg) const
 {
   Vector2 d = direction();
   Vector2 v = seg.toVector();
@@ -69,7 +71,7 @@ bool Ray2::intersect(const Segment2& seg) const
   are parallell because it does not use exact numbers. 
   
 */
-bool Ray2::intersection(const Segment2& seg, Vector2& result) const
+bool Line2::intersection(const Segment2& seg, Vector2& result) const
 {
   Vector2 d = direction();
   Vector2 v = seg.toVector();
@@ -96,15 +98,15 @@ bool Ray2::intersection(const Segment2& seg, Vector2& result) const
 /*!
   Find closest intersection point on polygon
 */
-bool Ray2::intersection(const Polygon2& poly, Vector2& result) const
+bool Line2::intersection(const Polygon2& poly, Vector2& result) const
 {
   assert(false); // TODO: Think this is buggy. Why substact origin() from v and why no test on end to begin part
-  ConstPointIterator2 begin = poly.begin();
-  ConstPointIterator2 end = poly.begin();
-    
+  
   bool found_point = false;
   Vector2 v, v_prev;
   Point2  p, p_prev;
+  ConstPointIterator2 begin = poly.begin();
+  ConstPointIterator2 end = poly.end();  
   ConstPointIterator2 it;
   for (it = begin+1; it != end; ++it) {
     if (!intersection(Segment2(*(it-1), *it), p)) continue;
@@ -121,15 +123,14 @@ bool Ray2::intersection(const Polygon2& poly, Vector2& result) const
 /*!
   Find number of times ray intersects polygon defined by iterators
 */
-int Ray2::noIntersections(const Polygon2& poly) const
+int Line2::noIntersections(const Polygon2& poly) const
 {
-  ConstPointIterator2 begin = poly.begin();
-  ConstPointIterator2 end = poly.begin();  
   int n = 0;
   Vector2 v, v_prev;
   Point2  p, p_prev;
+  ConstPointIterator2 begin = poly.begin();
+  ConstPointIterator2 end = poly.end();   
   ConstPointIterator2 it;
-  
   for (it = begin+1; it != end; ++it) {
     if (intersect(Segment2(*(it-1), *it)))
       ++n;
@@ -139,7 +140,7 @@ int Ray2::noIntersections(const Polygon2& poly) const
   return n;
 }
  
-real Ray2::squaredDistance(const Point2& p) const
+real Line2::squaredDistance(const Point2& p) const
 {
   Vector2 v = p-origin();  
   real t = direction().dot(v);
@@ -149,7 +150,7 @@ real Ray2::squaredDistance(const Point2& p) const
   return len*len;
 }
  
-real Ray2::distance(const Point2& p) const
+real Line2::distance(const Point2& p) const
 {
   Vector2 v = p-origin();  
   real t = direction().dot(v);
@@ -158,7 +159,7 @@ real Ray2::distance(const Point2& p) const
   return abs(v.cross(direction()));
 }
 
-Point2 Ray2::nearestPoint(const Point2& p) const
+Point2 Line2::nearestPoint(const Point2& p) const
 {
   Vector2 v = p-origin();
   real t = direction().dot(v);
@@ -168,7 +169,7 @@ Point2 Ray2::nearestPoint(const Point2& p) const
   return origin()+t*direction();
 }
 
-bool Ray2::intersect(const Rect2& r) const
+bool Line2::intersect(const Rect2& r) const
 {
   if (intersect(Segment2(r.bottomLeft(), r.topLeft())))
     return true;
@@ -186,12 +187,12 @@ bool Ray2::intersect(const Rect2& r) const
 }
                        
 // Operators
-bool Ray2::operator==(const Ray2& r) const
+bool Line2::operator==(const Line2& r) const
 {
   return origin() == r.origin() && direction() == r.direction();
 }
 
-bool Ray2::operator!=(const Ray2& r) const
+bool Line2::operator!=(const Line2& r) const
 {
   return origin() != r.origin() || direction() != r.direction();  
 }

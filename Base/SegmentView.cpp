@@ -110,11 +110,11 @@ void SegmentView::recalculateCollisionPolygon()
     r = r.surround(it->target());    
   }
   
-  Points2 p;
+  Polygon2 p;
   p.push_back(r.bottomLeft());
   p.push_back(r.bottomRight());
   p.push_back(r.topRight());
   p.push_back(r.topLeft());      
   
-  setCollisionPolygon(p.begin(), p.end());   
+  setCollisionPolygon(p);   
 }

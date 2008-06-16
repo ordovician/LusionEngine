@@ -492,8 +492,8 @@ static int polygon(lua_State *L)
   if (n != 1)
     return luaL_error(L, "Got %d arguments expected 1", n);  
   Sprite* sprite = checkSprite(L);
-  ShallowPoints2 p = sprite->collisionPolygon();
-  for_each(p.first, p.second, PushValue<Point2>(L));
+  const Polygon2& p = sprite->collisionPolygon();
+  for_each(p.begin(), p.end(), PushValue<Point2>(L));
   return 1;
 }
 

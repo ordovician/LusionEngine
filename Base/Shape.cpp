@@ -119,10 +119,10 @@ bool Shape::intersection(const Segment2& s, Points2& points) const
   return false;  
 }
 
-bool Shape::intersection(ConstPointIterator2 begin, ConstPointIterator2 end, Points2& points) const
+bool Shape::intersection(const Polygon2& poly, Points2& points) const
 {
   assert(false);  
-  cerr << "Error: intersect(ConstPointIterator2 begin, ConstPointIterator2 end) not supported for this class" << endl;    
+  cerr << "Error: intersect(const Polygon2& poly, points) not supported for this class" << endl;    
   return false;    
 }
 

@@ -98,7 +98,7 @@ static Ray2Tests test2(TEST_INVOCATION(Ray2Tests, testSegmentIntersections));
 static Ray2Tests test3(TEST_INVOCATION(Ray2Tests, testRectIntersections));
 
 //bool intersect(const Ray2& r, const Segment2& s, Vector2& result);
-//bool intersect(const Ray2& r, ConstPointIterator2 begin, ConstPointIterator2 end, Vector2& result);
+//bool intersect(const Ray2& r, const Polygon2& poly, Vector2& result);
 //    Ray2();    
 //    Ray2(const Point2& origin, const Vector2& dir);
 //    

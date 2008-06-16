@@ -15,6 +15,11 @@
 using namespace std;
 
 // Constructors
+Polygon2::Polygon2()
+{
+
+}
+
 Polygon2::~Polygon2()
 {
 
@@ -46,15 +51,27 @@ int Polygon2::size() const
   return iPoints.size();
 }
 
+const Vector2& Polygon2::front() const
+{
+  return iPoints.front();
+}
+
+
+
 // Request    
 bool Polygon2::intersect(const Polygon2& polygon) const
 {
   return ::intersect(begin(), end(), polygon.begin(), polygon.end());
 }
-
+/*
+bool Polygon2::intersection(const Polygon2& polygon, Points2& points) const
+{
+  return ::intersection(begin(), end(), polygon.begin(), polygon.end(), points);
+}
+*/
 bool Polygon2::intersect(const Circle& circle) const
 {
-  return circle.intersect(begin(), end());
+  return circle.intersect(*this);
 }
 
 bool Polygon2::intersect(const Segment2& s) const
@@ -155,6 +172,11 @@ void Polygon2::minkowskiSum(const Polygon2& other, Polygon2& result) const
 void Polygon2::push_back(const Vector2& p)
 {
   iPoints.push_back(p);
+}
+
+void Polygon2::resize(int size) 
+{
+  iPoints.resize(size);
 }
 
 // Operators

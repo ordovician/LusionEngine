@@ -13,15 +13,15 @@
 
 static Point2 gPoints[] = {Point2(-1.0, -1.0), Point2(1.0, 0.0), Point2(-1.0, 1.0)};
 
-PolygonView::PolygonView(ConstPointIterator2 begin, ConstPointIterator2 end, GLenum style)
+PolygonView::PolygonView(const Polygon2& poly, GLenum style)
 {
-  init(begin, end, style);
+  init(poly, style);
 }
 
 PolygonView::PolygonView(GLenum style)
 {
-  Points2 poly(gPoints, gPoints+3);
-  init(poly.begin(), poly.end(), style);
+  Polygon2 poly(gPoints, gPoints+3);
+  init(poly, style);
 }
 
 PolygonView::~PolygonView()
@@ -47,17 +47,17 @@ void PolygonView::draw(const Point2& pos, real rot, int) const
     gltTranslate(pos);
     glRotated(rot, 0.0, 0.0, 1.0);
 
-    ShallowPoints2 poly = collisionPolygon();
+    const Polygon2& poly = collisionPolygon();
     glColor3dv(iColor);	
     glBegin(iStyle);  
-      gltVertex(poly.first, poly.second);  
+      gltVertex(poly.begin(), poly.end());  
     glEnd();
   glPopMatrix(); 
 }
 
 // Operations
-void PolygonView::init( ConstPointIterator2 begin, ConstPointIterator2 end, GLenum style )
+void PolygonView::init( const Polygon2& poly, GLenum style )
 {
-  setCollisionPolygon(begin, end);
+  setCollisionPolygon(poly);
   iStyle = style;
 }

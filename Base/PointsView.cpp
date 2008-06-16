@@ -36,13 +36,13 @@ PointsView::PointsView(Points2::iterator begin, Points2::iterator end) : iPoints
     r = r.surround(*it);
   }
   
-  Points2 p;
+  Polygon2 p;
   p.push_back(r.bottomLeft());
   p.push_back(r.bottomRight());
   p.push_back(r.topRight());
   p.push_back(r.topLeft());      
   
-  setCollisionPolygon(p.begin(), p.end());
+  setCollisionPolygon(p);
 }
 
 PointsView::PointsView()

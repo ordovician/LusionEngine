@@ -341,7 +341,7 @@ static int projectPoint(lua_State* L)
   real dy = luaL_checknumber(L, 2);    
   Vector2 v(dx, dy);
   
-  Points2 poly;
+  Polygon2 poly;
 
   getPolygon(L, 3, poly);
   vector<real> proj(poly.size());  
@@ -357,7 +357,7 @@ static int calcDirection(lua_State* L)
   if (n != 1)
     return luaL_error(L, "Got %d arguments expected 1 (polygon)", n);    
     
-  Points2 p;
+  Polygon2 p;
   getPolygon(L, 1, p);
   
   Points2::iterator pb = p.begin(), pe = p.end();
@@ -372,7 +372,7 @@ static int projectPolygon(lua_State* L)
   if (n != 3)
     return luaL_error(L, "Got %d arguments expected 3 (projections, poly1, poly2)", n);    
     
-  Points2 d, p, q;
+  Polygon2 d, p, q;
   getPolygon(L, 1, d);
   getPolygon(L, 2, p);
   getPolygon(L, 3, q);  
@@ -418,7 +418,7 @@ static int polygonCollision(lua_State* L)
   if (n != 2)
     return luaL_error(L, "Got %d arguments expected 2 (poly1, poly2)", n);   
     
-  Points2 p1, p2;
+  Polygon2 p1, p2;
   getPolygon(L, 1, p1);
   getPolygon(L, 2, p2);
 

@@ -73,10 +73,6 @@ bool intersect(const Points2& p1, const Points2& p2)
   return intersect(p1.begin(), p1.end(), p2.begin(), p2.end());
 }
 
-bool intersect(const Circle& circle, ConstPointIterator2 begin, ConstPointIterator2 end)
-{
-  return circle.intersect(begin, end);
-}
 
 bool intersect(const Segment2& s, ConstPointIterator2 begin, ConstPointIterator2 end)
 {

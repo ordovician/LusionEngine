@@ -15,7 +15,7 @@ class MockView : public View
 {
 public:
   // Constructors
-  MockView( ConstPointIterator2 begin, ConstPointIterator2 end);
+  MockView( const Polygon2& poly);
   MockView();
   virtual ~MockView();
 

@@ -96,9 +96,9 @@ bool SegmentShape2::intersection(const Segment2& s, Points2& points) const
   return iSeg.intersect(s);  
 }
 
-bool SegmentShape2::intersection(ConstPointIterator2 begin, ConstPointIterator2 end, Points2& points) const
+bool SegmentShape2::intersection(const Polygon2& poly, Points2& points) const
 {
-  return ::intersect(iSeg, begin, end);
+  return poly.intersect(iSeg);
 }
 
 /*!

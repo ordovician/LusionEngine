@@ -81,7 +81,7 @@ void Sprite::init(const Point2& pos, real deg, real speed)
   iDepth = gNextDepth++;
   iVisible = true;
   iName = "noname";
-  iPolygon = Points2(gPoints, gPoints+4); 
+  iPolygon = Polygon2(gPoints, gPoints+4); 
 
   iState = new MotionState(pos, deg, speed);
 
@@ -217,20 +217,20 @@ int Sprite::depth() const
 	return iDepth;
 }
 
-MutableShallowPoints2 Sprite::collisionPolygon()
+Polygon2& Sprite::collisionPolygon()
 {
   if (iNeedUpdate) {
     updateCache();
   }  
-  return make_pair(iPolygon.begin(), iPolygon.end());  
+  return iPolygon;  
 }
 
-ShallowPoints2 Sprite::collisionPolygon() const
+const Polygon2& Sprite::collisionPolygon() const
 {
   if (iNeedUpdate) {
     updateCache();
   }
-  return make_pair(iPolygon.begin(), iPolygon.end());
+  return iPolygon;
 }
 
 void Sprite::setView(View* aView)
@@ -240,9 +240,7 @@ void Sprite::setView(View* aView)
     iView = aView;
     aView->retain();
     
-    ShallowPoints2 poly = iView->collisionPolygon();
-    iPolygon.resize(poly.second-poly.first);
-    std::copy(poly.first, poly.second, iPolygon.begin());
+    iPolygon = iView->collisionPolygon();
     updateCache();    
   }
 }
@@ -365,9 +363,8 @@ bool Sprite::collide(Shape* other, real t, real dt, CollisionAction* command)
   if (!other->isSimple())
     return other->collide(this, t, dt, command);
 
-  Points2 points; // Intersection points
-  ShallowPoints2 poly = collisionPolygon();    
-  if (other->intersection(poly.first, poly.second, points)) {
+  Points2 points; // Intersection points  
+  if (other->intersection(collisionPolygon(), points)) {
     if (command) command->execute(this, other, points, t, dt);
     else {
       handleCollision(other, points, t, dt);
@@ -383,9 +380,8 @@ bool Sprite::inside(const Point2& p, real t, real dt,  Action* command)
 {
   if (!boundingBox().inside(p))
     return false;
-  ShallowPoints2 col_poly = collisionPolygon();
-  
-  bool is_inside = ::inside(col_poly.first, col_poly.second, p);
+      
+  bool is_inside = collisionPolygon().inside(p);
   if (is_inside && command != 0)
     command->execute(this, t, dt);
   else if (is_inside && iInsideAction != 0)
@@ -399,8 +395,7 @@ bool Sprite::inside(const Point2& p, real t, real dt,  Action* command)
 */
 bool Sprite::intersection(const Circle& c, Points2& points) const
 {
-  ShallowPoints2 poly = collisionPolygon();
-  return c.intersection(poly.first, poly.second, points);    
+  return c.intersection(collisionPolygon(), points);    
 }
 
 /*!
@@ -409,8 +404,7 @@ bool Sprite::intersection(const Circle& c, Points2& points) const
 */
 bool Sprite::intersection(const Rect2& r, Points2& points) const
 {
-  ShallowPoints2 poly = collisionPolygon();
-  return ::intersect(r, poly.first, poly.second);  
+  return collisionPolygon().intersect(r);  
 }
 
 /*!
@@ -419,14 +413,13 @@ bool Sprite::intersection(const Rect2& r, Points2& points) const
 */
 bool Sprite::intersection(const Segment2& s, Points2& points) const
 {
-  ShallowPoints2 poly = collisionPolygon();
-  return ::intersect(s, poly.first, poly.second);  
+  return collisionPolygon().intersect(s);  
 }
 
-bool Sprite::intersection(ConstPointIterator2 begin, ConstPointIterator2 end, Points2& points) const
+bool Sprite::intersection(const Polygon2& poly, Points2& points) const
 {
-  ShallowPoints2 poly = collisionPolygon();
-  return ::intersect(poly.first, poly.second, begin, end);  
+
+  return collisionPolygon().intersection(poly, points);  
 }
 
 /*!
@@ -470,7 +463,7 @@ void Sprite::advance(real dt)
 void Sprite::updateCache() const
 {
   iState->getCollisionPolygon(iView, iPolygon);
-  iBBox = ::boundingBox(iPolygon.begin(), iPolygon.end());
+  iBBox = iPolygon.boundingBox();
   iNeedUpdate = false;
 }
 

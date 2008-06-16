@@ -36,7 +36,7 @@ public:
   bool intersection(const Circle& c, Points2& points) const;
   bool intersection(const Rect2& r, Points2& points) const;
   bool intersection(const Segment2& s, Points2& points) const;
-  bool intersection(ConstPointIterator2 begin, ConstPointIterator2 end, Points2& points) const;
+  bool intersection(const Polygon2& poly, Points2& points) const;
   
   void draw(const Rect2& r) const;
       

@@ -12,6 +12,7 @@
 #include "Types.h"
 
 #include <Core/SharedObject.hpp>
+#include <Geometry/Polygon2.hpp>
 
 class View : public SharedObject
 {
@@ -25,10 +26,10 @@ public:
 	void setOrigin(const Point2 & aOrigin);
 	Point2 origin() const;
 			
-	void setCollisionPolygon(ConstPointIterator2 begin, ConstPointIterator2 end);
+	void setCollisionPolygon(const Polygon2& poly);
 
-  ShallowPoints2 collisionPolygon() const;
-  MutableShallowPoints2 collisionPolygon();	
+  const Polygon2& collisionPolygon() const;
+  Polygon2& collisionPolygon();	
 	
   real radius() const;
 	
@@ -42,7 +43,7 @@ public:
 private:
 	Point2    iOrigin;
   real      iRadius;
-  Points2  iPolygon;	
+  Polygon2  iPolygon;	
   
 protected:
   real      iColor[3];

@@ -78,8 +78,6 @@ bool intersect(
   ConstPointIterator2 qe);
   
 bool intersect(const Points2& p1, const Points2& p2);
-
-bool intersect(const Circle& circle, ConstPointIterator2 begin, ConstPointIterator2 end);
 bool intersect(const Segment2& seg, ConstPointIterator2 begin, ConstPointIterator2 end);
 bool intersect(const Rect2& rect, ConstPointIterator2 begin, ConstPointIterator2 end);
 

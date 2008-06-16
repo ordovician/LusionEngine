@@ -46,9 +46,9 @@ static int newGenericPolygonView(lua_State *L, GLenum style)
     *v = new PolygonView(style);
   }
   else {
-    Points2 p;
+    Polygon2 p;
     getPolygon(L, 2, p);
-    *v = new PolygonView(p.begin(), p.end(), style);                   
+    *v = new PolygonView(p, style);                   
   }
 
   setUserDataMetatable(L, "Lusion.View");
@@ -93,7 +93,7 @@ static int newImageView(lua_State *L)
     return luaL_error(L, "Argument 2 has to be a string or table of strings", n); 
     
   if (n >= 3 && lua_istable(L,3)) {
-    Points2 p;
+    Polygon2 p;
     getPolygon(L, 3, p);
     if (n == 5)
       *v = new ImageView(image_files, p, luaL_checknumber(L,4), luaL_checknumber(L,5));                            
@@ -151,7 +151,7 @@ static int newPointsView(lua_State *L)
    *v = new PointsView;
   }
   else {
-    Points2 s;
+    Polygon2 s;
     getPolygon(L, 2, s);
     *v = new PointsView(s.begin(), s.end());                   
   }
@@ -254,9 +254,9 @@ static int setPolygon(lua_State *L)
   if (n != 2)
     return luaL_error(L, "Got %d arguments expected 2", n);
   View* view = checkView(L);
-  Points2 p;
+  Polygon2 p;
   getPolygon(L, 2, p);
-  view->setCollisionPolygon(p.begin(), p.end());
+  view->setCollisionPolygon(p);
   return 0;
 }
 
@@ -266,8 +266,8 @@ static int polygon(lua_State *L)
   if (n != 1)
     return luaL_error(L, "Got %d arguments expected 1", n);  
   View* view = checkView(L);
-  ShallowPoints2 p = view->collisionPolygon();
-  for_each(p.first, p.second, PushValue<Point2>(L));
+  Polygon2 p = view->collisionPolygon();
+  for_each(p.begin(), p.end(), PushValue<Point2>(L));
   return 1;
 }
 

@@ -1,10 +1,9 @@
 /******************************************************************
-Name	: Ray2
-Author	: Erik Engheim
+Name	: Line2
+Author: Erik Engheim
 Date	: 07/09/2005
-Desc	: Describes a 2D ray. A ray has a start point and extends
-        infinitly in one direction. In some sense it is a like a line
-        segment with only one end point.
+Desc	: Describes a 2D line. The line definition has an origin point, which
+        is a point on the line and direction is the direction of the line.
 Comment	: This class has not been tested yet.
 *******************************************************************/
 
@@ -13,17 +12,18 @@ Comment	: This class has not been tested yet.
 #include <Core/Core.h>
 #include <Geometry/Vector2.hpp>
 #include <Geometry/Segment2.hpp>
-#include <Geometry/Polygon2.hpp>
 #include <vector>
 
 #include "Types.h"
 
-class Ray2
+class Polygon2;
+
+class Line2
 {
 public:
     // Constructors
-    Ray2();    
-    Ray2(const Point2& origin, const Vector2& dir);
+    Line2();    
+    Line2(const Point2& origin, const Vector2& dir);
     
     // Accessors
     Point2 origin() const;
@@ -42,8 +42,8 @@ public:
     bool intersect(const Rect2& rect) const;
     
     // Operators
-    bool operator==(const Ray2& q) const;
-    bool operator!=(const Ray2& q) const;
+    bool operator==(const Line2& q) const;
+    bool operator!=(const Line2& q) const;
     
 private:
   Vector2 iV[2];

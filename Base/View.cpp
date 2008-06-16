@@ -47,8 +47,8 @@ View::View()
   iColor[0] = 0.0;
   iColor[1] = 1.0;  
   iColor[2] = 0.0;    
-  Points2 poly(gPoints, gPoints+4);
-  setCollisionPolygon(poly.begin(), poly.end());
+  Polygon2 poly(gPoints, gPoints+4);
+  setCollisionPolygon(poly);
  
   // cout << hex << "0x" << (int)this << " view created" << endl;  // DEBUG
   setTag(gNextTag++); // DEBUG
@@ -80,10 +80,9 @@ Point2 View::origin() const
 /*!
   \see collisionPolygon
 */
-void View::setCollisionPolygon(ConstPointIterator2 begin, ConstPointIterator2 end)
+void View::setCollisionPolygon(const Polygon2& poly)
 {
-  iPolygon.resize(end-begin);
-  copy(begin, end, iPolygon.begin());
+  iPolygon = poly;
   iRadius = for_each(iPolygon.begin(), iPolygon.end(), Longest()).length;  
 }
 
@@ -94,14 +93,14 @@ void View::setCollisionPolygon(ConstPointIterator2 begin, ConstPointIterator2 en
   
   Subclasses should create and set collisionPolygon if possible.
 */
-ShallowPoints2 View::collisionPolygon() const
+const Polygon2& View::collisionPolygon() const
 {
-  return make_pair(iPolygon.begin(), iPolygon.end());
+  return iPolygon;
 }
 
-MutableShallowPoints2 View::collisionPolygon()
+Polygon2& View::collisionPolygon()
 {
-  return make_pair(iPolygon.begin(), iPolygon.end());
+  return iPolygon;
 }
 
 

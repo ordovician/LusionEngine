@@ -11,11 +11,14 @@ Comment	: This class has not been tested yet.
 #include <Core/Core.h>
 
 #include <Geometry/Vector2.hpp>
-#include <Geometry/Rect2.hpp>
-#include <Geometry/Segment2.hpp>
-#include <Geometry/Ray2.hpp>
 
 #include <vector>
+
+// Forward declarations
+class Rect2;
+class Segment2;
+class Ray2;
+class Polygon2;
 
 class Circle
 {     
@@ -37,8 +40,8 @@ public:
     bool intersect(const Segment2& seg) const;
     bool intersection(const Segment2& seg, Points2& points) const;        
     bool intersect(const Ray2& ray) const;
-    bool intersect(ConstPointIterator2 begin, ConstPointIterator2 end) const;
-    bool intersection(ConstPointIterator2 begin, ConstPointIterator2 end, Points2& points, bool first = false) const;        
+    bool intersect(const Polygon2& poly) const;
+    bool intersection(const Polygon2& poly, Points2& points, bool first = false) const;        
     
     // Calculations
                 

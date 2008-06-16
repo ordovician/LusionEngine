@@ -13,6 +13,7 @@
 #include <Geometry/Rect2.hpp>
 #include <Geometry/Circle.hpp>
 #include <Geometry/Segment2.hpp>
+#include <Geometry/Polygon2.hpp>
 
 #include <Core/SharedObject.hpp>
 
@@ -46,7 +47,7 @@ public:
   virtual bool intersection(const Circle& c, Points2& points) const;
   virtual bool intersection(const Rect2& r, Points2& points) const;
   virtual bool intersection(const Segment2& s, Points2& points) const;
-  virtual bool intersection(ConstPointIterator2 begin, ConstPointIterator2 end, Points2& points) const;      
+  virtual bool intersection(const Polygon2& poly, Points2& points) const;      
      
   virtual void draw(const Rect2& r) const;
    

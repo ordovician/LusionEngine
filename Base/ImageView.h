@@ -23,7 +23,7 @@ class ImageView : public View
 public:
   // Constructors
   ImageView( const StringList& filenames, real width = 2.0, real height = 2.0);  
-  ImageView( const StringList& filenames, const Points2& poly, real width = 2.0, real height = 2.0);  
+  ImageView( const StringList& filenames, const Polygon2& poly, real width = 2.0, real height = 2.0);  
   virtual ~ImageView();
 
   // Accessors
