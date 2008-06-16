@@ -416,10 +416,14 @@ bool Sprite::intersection(const Segment2& s, Points2& points) const
   return collisionPolygon().intersect(s);  
 }
 
+/*!
+  \param points this is not actually used.
+  \todo add code to return intersected points
+*/
 bool Sprite::intersection(const Polygon2& poly, Points2& points) const
 {
 
-  return collisionPolygon().intersection(poly, points);  
+  return collisionPolygon().intersect(poly);  
 }
 
 /*!

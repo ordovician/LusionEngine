@@ -121,11 +121,11 @@ static bool fastInside(ConstPointIterator2 pb, ConstPointIterator2 pe, const Poi
 /**
  * Only works for convex shapes but we can easily improve it to work for others
  */
-bool inside(ConstPointIterator2 pb, ConstPointIterator2 pe, const Point2& q)
+/*bool inside(ConstPointIterator2 pb, ConstPointIterator2 pe, const Point2& q)
 {
   Ray2 r(q, Vector2(-1.0, 0));
   return r.noIntersections(pb, pe) == 1;  
-}
+}*/
 
 /*!
   Calculates a minimum bounding box for all supplied points

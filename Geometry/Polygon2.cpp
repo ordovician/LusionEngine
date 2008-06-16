@@ -86,10 +86,13 @@ bool Polygon2::intersect(const Rect2& rect) const
 
 /*!
   True, if point \a q is inside polygon
+  
+  \note Only works for convex shapes but we can easily improve it to work for others  
 */
 bool Polygon2::inside(const Point2& q) const
 {
-  return ::inside(begin(), end(), q);
+  Ray2 r(q, Vector2(-1.0, 0));
+  return r.noIntersections(*this) == 1;
 }
 
 // Calculations

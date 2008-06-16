@@ -36,7 +36,7 @@ static int inside(lua_State *L)
   Polygon2 poly;
   getPolygon(L, 1, poly);
   Vector2 q = Vector2_pull(L, 2);
-  lua_pushboolean(L, inside(poly.begin(), poly.end(), q));  
+  lua_pushboolean(L, poly.inside(q));  
   return 1; 
 }
 

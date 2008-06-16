@@ -100,7 +100,7 @@ bool Ray2::intersection(const Polygon2& poly, Vector2& result) const
 {
   assert(false); // TODO: Think this is buggy. Why substact origin() from v and why no test on end to begin part
   ConstPointIterator2 begin = poly.begin();
-  ConstPointIterator2 end = poly.begin();
+  ConstPointIterator2 end = poly.end();
     
   bool found_point = false;
   Vector2 v, v_prev;
@@ -124,7 +124,7 @@ bool Ray2::intersection(const Polygon2& poly, Vector2& result) const
 int Ray2::noIntersections(const Polygon2& poly) const
 {
   ConstPointIterator2 begin = poly.begin();
-  ConstPointIterator2 end = poly.begin();  
+  ConstPointIterator2 end = poly.end();  
   int n = 0;
   Vector2 v, v_prev;
   Point2  p, p_prev;

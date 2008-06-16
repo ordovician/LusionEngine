@@ -81,7 +81,7 @@ bool intersect(const Points2& p1, const Points2& p2);
 bool intersect(const Segment2& seg, ConstPointIterator2 begin, ConstPointIterator2 end);
 bool intersect(const Rect2& rect, ConstPointIterator2 begin, ConstPointIterator2 end);
 
-bool inside(ConstPointIterator2 pb, ConstPointIterator2 pe, const Point2& point);
+//bool inside(ConstPointIterator2 pb, ConstPointIterator2 pe, const Point2& point);
 Rect2 boundingBox(ConstPointIterator2 pb, ConstPointIterator2 pe);
 
 // Debug
