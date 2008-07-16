@@ -9,7 +9,7 @@
 
 #include "Polygon2Tests.h"
 
-#include "Utils/PolygonUtils.h"
+#include "Geometry/Polygon2.hpp"
 
 #include <numeric>
 
@@ -35,7 +35,7 @@ void Polygon2Tests::testIntersections()
   poly.push_back(Vector2(11.857142857143, 46.142857142857));
   
   Vector2 p(14.0, 33.0);
-  bool is_inside = inside(poly.begin(), poly.end(), p);
+  bool is_inside = poly.inside(p);
   CPTAssert(is_inside);
 }
 

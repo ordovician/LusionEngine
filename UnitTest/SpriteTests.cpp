@@ -50,6 +50,8 @@ SpriteTests::~SpriteTests()
 
 void SpriteTests::testIntersections()
 {
+  AutoreleasePool::begin();
+
   Sprite* sprite = new Sprite(new MockView);
   
   // Test circle vs sprite
@@ -89,6 +91,7 @@ void SpriteTests::testIntersections()
   r1->release();
   r2->release();    
   
+  AutoreleasePool::end();  
 }
 
 void SpriteTests::testTrickyIntersections()
@@ -97,14 +100,14 @@ void SpriteTests::testTrickyIntersections()
   Sprite* space_ship = new Sprite(new MockView);
   space_ship->setPosition(Vector2(0.0f, 0.0f));
   // Obstacle
-  vector<Vector2> points;
+  Polygon2 points;
   points.push_back(Vector2(36.714285714286f, 29.857142857143f));
   points.push_back(Vector2(40.285714285714f,	29.714285714286f));
   points.push_back(Vector2(40.142857142857f,	1.0f));
   points.push_back(Vector2(30.0f, 0.85714285714286f));
   points.push_back(Vector2(30.428571428571f, 13.285714285714f));
   
-  Sprite* obstacle = new Sprite(new MockView(points.begin(), points.end()));
+  Sprite* obstacle = new Sprite(new MockView(points));
         
   CPTAssert(!space_ship->collide(obstacle, t, dt));    
   CPTAssert(!obstacle->collide(space_ship, t, dt));    
@@ -154,6 +157,8 @@ void SpriteTests::testTrickyIntersections()
 
 void SpriteTests::testMoving()
 {
+  AutoreleasePool::begin();  
+
   Sprite* sprite = new Sprite(new MockView);
 
   Rect2 bbox1(Vector2(-1.0f, -1.0f), Vector2(1.0f, 1.0f));    
@@ -168,6 +173,7 @@ void SpriteTests::testMoving()
   CPTAssert(sprite->position() == Vector2(10.0f, 0.0f));
   CPTAssert(sprite->boundingBox() == bbox2);
   sprite->release();
+  AutoreleasePool::end();  
 }
 
 void SpriteTests::testHierarchyIntersect()
@@ -203,7 +209,7 @@ void SpriteTests::testHierarchyIntersect()
   sprite->release();
   group->release();
   view->release();
-  
+
   AutoreleasePool::end();  
 }
 
@@ -214,16 +220,17 @@ void SpriteTests::testHierarchyIntersect()
 void SpriteTests::testSpecialIntersect()
 {
   AutoreleasePool::begin();
-  vector<Vector2> ship_points;
+  Polygon2 ship_points;
   ship_points.push_back(Vector2(8.59, -3.69));
   ship_points.push_back(Vector2(10.59, -2.69));
   ship_points.push_back(Vector2(8.59, -1.69));
-      
-  Sprite* space_ship = new Sprite(new MockView(ship_points.begin(), ship_points.end()));
+   
+  MockView* view = new MockView(ship_points);
+  Sprite* space_ship = new Sprite(view);
   space_ship->setPosition(Vector2(0.0f, 0.0f));
   
   // Obstacle
-  vector<Vector2> points;
+  Polygon2 points;
 //  points.push_back(Vector2(16.7143, 9.85714));
 //  points.push_back(Vector2(20.2857, 9.71429));
 //  points.push_back(Vector2(20.1429, -19));
@@ -236,14 +243,14 @@ void SpriteTests::testSpecialIntersect()
   points.push_back(Vector2(20.2857, 9.71429));        
   points.push_back(Vector2(16.7143, 9.85714));
 
-  Sprite* obstacle = new Sprite(new MockView(points.begin(), points.end()));
+  Sprite* obstacle = new Sprite(new MockView(points));
   obstacle->setPosition(Vector2(0.0f, 0.0f));
         
   CPTAssert(!space_ship->collide(obstacle, t, dt));    
   CPTAssert(!obstacle->collide(space_ship, t, dt));    
     
   space_ship->release();  
-  obstacle->release();    
+  obstacle->release(); 
   AutoreleasePool::end();  
 }
 

@@ -34,6 +34,8 @@ public:
     virtual void  next() = 0; 
     virtual bool  done() const = 0;
     virtual const T& value() const = 0;
+    
+    std::string typeName() const { return "Iterator"; }
 };
 
 /*!
@@ -201,6 +203,7 @@ public:
 
   void first() { 
     Iterator<NodePtr>* i = iRoot->iterator();
+    i->retain();
     if (i != 0) {
       i->first();
       iIterators.clear();
@@ -216,8 +219,8 @@ public:
   void next() {
     assert(!done());
     Iterator<NodePtr>* i = iIterators.back()->value()->iterator();
-    i->first();
     i->retain();
+    i->first();
     assert(i->refCount() == 2);
     iIterators.push_back(i);
     

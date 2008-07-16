@@ -20,6 +20,8 @@
 
 using namespace std;
 
+//#define DEBUG_MEMORY
+
 // Private classes
 class ShapeGroupIterator : public ShapeIterator 
 {
@@ -119,7 +121,9 @@ ShapeGroup::ShapeGroup(Shape *left, Shape *right, const Rect2& box)
 
 ShapeGroup::~ShapeGroup()
 {
-  // cout << hex << "0x" << (int)this << " collision group removed" << endl;  // DEBUG    
+  #ifdef DEBUG_MEMORY
+  cout << hex << "0x" << (int)this << " collision group removed tag: " << dec << tag() << endl;  // DEBUG    
+  #endif
   iLeft->release();
   iRight->release();
 }
@@ -251,8 +255,11 @@ void ShapeGroup::init(Shape *left, Shape *right)
 
   iBox = left->boundingBox().surround(right->boundingBox());
   
-  if (iLeft == iRight)
+  if (iLeft == iRight) {
+    iRight->release();  // Since iLeft was the same as iRight
+                        // we retained one time to many
     iRight = 0;
+  }
 }
 
 void ShapeGroup::init(Shape *left, Shape *right, const Rect2& box)
@@ -264,8 +271,11 @@ void ShapeGroup::init(Shape *left, Shape *right, const Rect2& box)
   iRight = right;
   iBox = box;
   
-  if (iLeft == iRight)
-    iRight = 0;  
+  if (iLeft == iRight) {
+    iRight->release();  // Since iLeft was the same as iRight
+                        // we retained one time to many
+    iRight = 0;
+  }
 }
 
 void ShapeGroup::init(vector<Shape*>::iterator begin, vector<Shape*>::iterator end)
@@ -311,10 +321,16 @@ Shape* ShapeGroup::buildBranch(
   }        
   else if (no_nodes == 1) {
     ret_obj = *begin;
+    #ifdef DEBUG_MEMORY        
+    ret_obj->setTag(12);
+    #endif    
     ret_obj->retain();
   }
   else if (no_nodes == 2) {
-    ret_obj = new ShapeGroup(*begin, *(begin+1));    
+    ret_obj = new ShapeGroup(*begin, *(begin+1));
+    #ifdef DEBUG_MEMORY        
+    ret_obj->setTag(11);
+    #endif        
   }
   else {
     // Find the midpoint of the bounding box to use as a qsplit pivot
@@ -331,7 +347,10 @@ Shape* ShapeGroup::buildBranch(
     // Create a new bounding volume
     Shape* left = buildBranch(begin, mid_point, (axis+1)%2);
     Shape* right = buildBranch(mid_point, end, (axis+1)%2);
-    ret_obj = new ShapeGroup(left, right, box);    
+    ret_obj = new ShapeGroup(left, right, box);
+    #ifdef DEBUG_MEMORY        
+    ret_obj->setTag(10);
+    #endif
   }
   ret_obj->autorelease();
   return ret_obj;

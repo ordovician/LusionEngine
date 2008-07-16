@@ -5,7 +5,7 @@
 
 using namespace std;
 
-// #define DEBUG_MEMORY
+//#define DEBUG_MEMORY
 
 /*!
     \class SharedObject SharedObject.h
@@ -38,7 +38,8 @@ using namespace std;
 SharedObject::SharedObject() : iTag(0) , iRefCount(1) 
 {
   #ifdef DEBUG_MEMORY  
-  cout << "0x" << hex << (int)this << " SharedObject created" << endl; 
+  cout << "0x" << hex << (int)this << " SharedObject created " << endl;
+  // NOTE: Can't print typeName since that depends on virtual function
   #endif
 }
 
@@ -114,7 +115,7 @@ SharedObject::release()
     std::string type = typeName();
     cout << "0x" << hex << (int)this << " released, refcount: " 
          << dec << iRefCount-1 
-         << " type: " << type << endl; 
+         << " type: " << type << " tag: " << iTag << endl; 
     if (iRefCount <= 0)
       cout << "Refcount mismatch!" << endl;
   }
@@ -126,7 +127,10 @@ SharedObject::release()
 
 void 
 SharedObject::autorelease() 
-{  
+{
+  #ifdef DEBUG_MEMORY
+  cout << "0x" << hex << (int)this << " autoreleased" << endl;
+  #endif
   if (this != 0)
     AutoreleasePool::currentPool()->add(this);
 }

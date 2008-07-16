@@ -90,17 +90,17 @@ void CircleTests::testPolygonIntersect()
   Circle c3(Vector2(-1.0f, -1.0f), 1.0f);  // Outside
   Circle c4(Vector2(3.0f, 3.0f), 1.0f);    // Inside
   
-  Points2 poly;
+  Polygon2 poly;
   poly.push_back(p1);
   poly.push_back(p2);
   poly.push_back(p3);
   poly.push_back(p4);      
   poly.push_back(p5);
   
-  CPTAssert(c1.intersect(poly.begin(), poly.end()));
-  CPTAssert(!c2.intersect(poly.begin(), poly.end()));
-  CPTAssert(!c3.intersect(poly.begin(), poly.end()));
-  CPTAssert(!c4.intersect(poly.begin(), poly.end()));
+  CPTAssert(c1.intersect(poly));
+  CPTAssert(!c2.intersect(poly));
+  CPTAssert(!c3.intersect(poly));
+  CPTAssert(!c4.intersect(poly));
   
   // Test against standard collision polygon
   Circle c5(Vector2(10.0f, 0.0f), 2.0f);
@@ -116,9 +116,9 @@ void CircleTests::testPolygonIntersect()
   CPTAssert(!c5.intersect(seg2));
   CPTAssert(!c5.intersect(seg3));
       
-  Points2 colPoly(points, points+3);
+  Polygon2 colPoly(points, points+3);
   
-  CPTAssert(!c5.intersect(colPoly.begin(), colPoly.end()));  
+  CPTAssert(!c5.intersect(colPoly));  
 }
 
 void CircleTests::testRayIntersect()

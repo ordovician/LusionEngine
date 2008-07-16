@@ -5,7 +5,7 @@
 
 #include <iostream>
 
-// #define DEBUG_MEMORY
+//#define DEBUG_MEMORY
 
 using namespace std;
 
@@ -46,11 +46,16 @@ stack<AutoreleasePool*> AutoreleasePool::sPoolStack;
 ////////////////////////////// Constructors
 AutoreleasePool::AutoreleasePool() 
 {
-
+  #ifdef DEBUG_MEMORY  
+  cout << hex << "0x" << (int)this << " AutoreleasePool created" << endl;  // DEBUG    
+  #endif
 }
 
 AutoreleasePool::AutoreleasePool(const AutoreleasePool& pool) : SharedObject(pool)
 {
+  #ifdef DEBUG_MEMORY  
+  cout << hex << "0x" << (int)this << " AutoreleasePool copied" << endl;  // DEBUG    
+  #endif  
 }
 
 AutoreleasePool& 
@@ -76,6 +81,13 @@ AutoreleasePool::add(SharedObject *aObj)
 ////////////////////////////// Operations
 void 
 AutoreleasePool::releasePool() {
+  #ifdef DEBUG_MEMORY  
+  cout << "releasePool: ";
+  for (SharedObjects::const_iterator it = iPoolObjects.begin(); it != iPoolObjects.end(); ++it) {
+    cout << hex << "0x" << (int)*it << " ";
+  }
+  cout << endl;
+  #endif
   for_each(iPoolObjects.begin(), iPoolObjects.end(), 
     mem_fun(&SharedObject::release));
   iPoolObjects.clear();
@@ -85,6 +97,7 @@ AutoreleasePool::releasePool() {
 void AutoreleasePool::begin()
 {
    sPoolStack.push(new AutoreleasePool);
+   assert(sPoolStack.size() > 0);
 }   
 
 void AutoreleasePool::end()

@@ -37,6 +37,8 @@ ShapeTests::~ShapeTests()
 
 void ShapeTests::testIntersections()
 {
+  AutoreleasePool::begin();
+
   // Test circle vs circle
   CircleShape* c1 = new CircleShape(Circle(Vector2(0.0f, 0.0f), 4.0f));
   CircleShape* c2 = new CircleShape(Circle(Vector2(2.0f, 2.0f), 4.0f)); // overlap
@@ -63,10 +65,13 @@ void ShapeTests::testIntersections()
   
   r1->release();
   r2->release();
+  AutoreleasePool::end();
 }
 
 void ShapeTests::testMovement()
 {
+  AutoreleasePool::begin();
+
   // Test bounding box calculations
   Point2 points[] = {Point2(-1.0f, -1.0f), Point2(1.0f, 0.0f), Point2(-1.0f, 1.0f)};
   
@@ -84,6 +89,7 @@ void ShapeTests::testMovement()
    
   CPTAssert(r.min() == points[0]);
   CPTAssert(r.max() == Vector2(1.0f, 1.0f));    
+  AutoreleasePool::end();  
 }
 
 void ShapeTests::testHierarchyIterators()
@@ -99,7 +105,10 @@ void ShapeTests::testHierarchyIterators()
   shapes.push_back(c3);
       
   ShapeGroup* group = new ShapeGroup(shapes.begin(), shapes.end());
+  group->setTag(4321);
   ShapeIterator* itr = group->iterator();
+  itr->setTag(1234);
+  itr->retain();
   CPTAssert(itr != 0);
   CPTAssert(!itr->done());  
   itr->next();

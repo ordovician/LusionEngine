@@ -19,13 +19,13 @@ static Point2 gPoints[] = {Point2(-1.0, -1.0), Point2(1.0, 0.0), Point2(-1.0, 1.
 
 MockView::MockView(const Polygon2& poly)
 {
-  setCollisionPolygon(begin, end);
+  setCollisionPolygon(poly);
 }
 
 MockView::MockView()
 {
-  Points2 poly(gPoints, gPoints+3);
-  setCollisionPolygon(poly.begin(), poly.end());
+  Polygon2 poly(gPoints, gPoints+3);
+  setCollisionPolygon(poly);
 }
 
 MockView::~MockView()
