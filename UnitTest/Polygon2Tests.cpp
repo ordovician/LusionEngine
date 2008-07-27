@@ -39,4 +39,24 @@ void Polygon2Tests::testIntersections()
   CPTAssert(is_inside);
 }
 
+void Polygon2Tests::testMinkowski()
+{
+  Polygon2 big(Rect2(-1.0, -1.0, 1.0, 1.0));
+  Polygon2 small(Rect2(-0.5, -0.5, 0.5, 0.5));
+  Polygon2 small2(Rect2(0.0, 0.0, 1.0, 1.0));
+  
+  Polygon2 result;
+  big.minkowskiSum(small, result);
+        
+  CPTAssert(result[0] == Vector2(-1.5, -1.5));
+  CPTAssert(result[2] == Vector2(1.5, 1.5));
+
+  result.clear();
+  big.minkowskiSum(small2, result);
+
+  CPTAssert(result[0] == Vector2(-1.0, -1.0));
+  CPTAssert(result[2] == Vector2(2.0, 2.0));  
+}
+
 static Polygon2Tests test1(TEST_INVOCATION(Polygon2Tests, testIntersections));
+static Polygon2Tests test2(TEST_INVOCATION(Polygon2Tests, testMinkowski));

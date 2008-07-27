@@ -56,7 +56,7 @@ static int size(lua_State *L)
 {
   int n = lua_gettop(L);  // Number of arguments
   if (n != 1) 
-    return luaL_error(L, "Got %d arguments expected 1", n); 
+    return luaL_error(L, "Got %d arguments expected 1 (self)", n); 
     
   Group* group = checkGroup(L);    
   lua_pushnumber(L, group->size());
@@ -69,7 +69,7 @@ static int contains(lua_State *L)
 {
   int n = lua_gettop(L);  // Number of arguments
   if (n != 2) 
-    return luaL_error(L, "Got %d arguments expected 2", n); 
+    return luaL_error(L, "Got %d arguments expected 2 (self, sprite)", n); 
     
   Group* group = checkGroup(L, 1);    
   Sprite* sprite = checkSprite(L, 2);

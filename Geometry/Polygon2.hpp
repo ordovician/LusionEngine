@@ -23,6 +23,7 @@ public:
   // Constructors
   template<typename ForwardIterator>
   Polygon2(ForwardIterator first, ForwardIterator last);
+  Polygon2(const Rect2& r);
   Polygon2();
   ~Polygon2();
   
@@ -50,6 +51,7 @@ public:
   // Operations
   void push_back(const Vector2& p);
   void resize(int size);
+  void clear();
   
   // Operators
   bool operator==(const Polygon2& polygon) const;

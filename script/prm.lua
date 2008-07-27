@@ -370,17 +370,8 @@ end
   their circles containing query point can possibly be reachable from position either.
 ]]--
 function ProbablisticRoadMap:findNode(pos)
-  local shortest_dist = math.huge
-  local shape_closest  = nil
-  self.circleGroup:inside(pos, Engine.seconds(), 1, function(shape, t, dt)
-    local dist = (shape:center() - pos):squaredLength()
-    if dist < shortest_dist then
-      shortest_dist = dist
-      shape_closest = shape
-    end
-  end)
-  
-  return self.circleNodeMap[shape_closest]
+  local circle = Graph.findCircle(self.circleGroup, pos)
+  return self.circleNodeMap[circle]
 end
 
  --[[

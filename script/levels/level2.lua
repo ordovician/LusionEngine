@@ -1,4 +1,4 @@
-local obstacles = Group:new()
+local obstacles = Collection:new()
 
 function addObstacle(...)
   local poly = Collection:new()
@@ -12,7 +12,7 @@ function addObstacle(...)
   view:setColor(1, 1 , 0.3)
   obstacle:setView(view)
   obstacle:setPosition(0, 0)
-  obstacles:add(obstacle)
+  obstacles:append(obstacle)
 end
 
 addObstacle(vec(14.00, 413.00), vec(14.00, 527.00), vec(38.00, 526.00), vec(38.00, 414.00))

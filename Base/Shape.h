@@ -37,6 +37,9 @@ public:
   virtual Rect2 boundingBox() const = 0;  
   virtual int   noShapes() const;  
   virtual ShapeIterator* iterator() const;
+
+	void setDepth(int aDepth);
+	int depth() const;
     
   // Request
   virtual bool isSimple() const;
@@ -65,5 +68,6 @@ public:
   void kill();
   
 private:
+  int                      iDepth;
   std::set<ShapeListener*> iListeners;   
 };

@@ -27,7 +27,6 @@
 
 using namespace std;
 
-static int  gNextDepth = 0;
 static bool gShowCollision = false;
 
 static Point2 gPoints[] = {Point2(-1.0, -1.0), Point2(1.0, -1.0), Point2(1.0, 1.0), Point2(-1.0, 1.0)};
@@ -78,7 +77,6 @@ void Sprite::init(const Point2& pos, real deg, real speed)
   iPlanAction = 0;
   iView = 0;
   iCurSubViewIndex = 0;
-  iDepth = gNextDepth++;
   iVisible = true;
   iName = "noname";
   iPolygon = Polygon2(gPoints, gPoints+4); 
@@ -207,16 +205,6 @@ MotionState* Sprite::motionState() const
   return iState;
 }
 
-void Sprite::setDepth(int aDepth)
-{
-	iDepth = aDepth;
-}
-
-int Sprite::depth() const
-{
-	return iDepth;
-}
-
 Polygon2& Sprite::collisionPolygon()
 {
   if (iNeedUpdate) {
@@ -246,6 +234,11 @@ void Sprite::setView(View* aView)
 }
 
 View*  Sprite::view()
+{
+  return iView;
+}
+
+const View*  Sprite::view() const
 {
   return iView;
 }

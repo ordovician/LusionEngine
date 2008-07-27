@@ -79,7 +79,7 @@ public:
 
     Rect2 translated(real aDx, real aDy) const;
     Rect2 translated(const Vector2 &aP) const;    
-
+    
     // Operations
     void translate(real aDx, real aDy);
     void translate(const Vector2 &aP);

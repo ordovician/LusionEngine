@@ -16,4 +16,5 @@ public:
     virtual ~Polygon2Tests();
     
     void testIntersections();
+    void testMinkowski();    
 };

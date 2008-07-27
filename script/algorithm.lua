@@ -248,7 +248,7 @@ function Geometry.makePathSeek(n_start, n_target)
     local p0 = s0:position()
     local p1 = s1:position()
     local d1 = s1:direction()
-    local c_1 = corridor[p1]
+    local c_1 = Graph.findCircle(corridor, p1)
     local target = circle_path[c_1].next:position()
     
     local dir_target = (target-p1):unit()  -- direction to target
@@ -264,7 +264,7 @@ end
   to target. So the graph is actually directed from target to multiple sources.
   
   This function translates this structure into an array of all the nodes along on
-  path going from node \a n_beggin to node \a n_end.
+  path going from node \a n_begin to node \a n_end.
 ]]--
 function Graph.createPath(n_begin, n_end, paths)
   local path = Collection:new()
@@ -307,4 +307,24 @@ function Graph.findPathWithDistance(d_desired, n_start, n_target)
   end
   
   return path_result
+end
+
+
+--[[
+  'circleGroup' is a ShapeGroup consisting of circles. This
+  function will return the circle which is closest to the point
+  'pos'
+]]--
+function Graph.findCircle(circleGroup, pos)
+  local shortest_dist = math.huge
+  local shape_closest  = nil
+
+  circleGroup:inside(pos, Engine.seconds(), 1, function(shape, t, dt)
+    local dist = (shape:center() - pos):squaredLength()
+    if dist < shortest_dist then
+      shortest_dist = dist
+      shape_closest = shape
+    end
+  end)
+  return shape_closest
 end

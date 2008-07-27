@@ -142,11 +142,26 @@ void Group::doPlanning(real start_time, real delta_time)
   if (shape)
     shape->doPlanning(start_time, delta_time);
 }
-  
+
+struct CompareShapeDepth : public binary_function<Shape*, Shape*, bool>
+{
+  bool operator()(const Shape* first, const Shape* second) const {
+    return first->depth() > second->depth();
+  }
+};
+
+/*!
+  Draws all shapes inside or intersecting rectangle 
+  \a r with the shapes of lowest depth drawn on top of those
+  of higher depth.
+*/
 void Group::draw(const Rect2& r) const
 {
-  set<Shape*>::iterator shape = iShapes.begin();
-  for (;shape != iShapes.end(); ++shape) {
+  vector<Shape*> shapes(iShapes.begin(), iShapes.end());
+  sort(shapes.begin(), shapes.end(), CompareShapeDepth());
+  typedef vector<Shape*>::iterator iterator;
+  
+  for (iterator shape = shapes.begin(); shape != shapes.end(); ++shape) {
     (*shape)->draw(r);
   }  
 }

@@ -20,6 +20,18 @@ Polygon2::Polygon2()
 
 }
 
+Polygon2::Polygon2(const Rect2& r)
+{
+  real h = r.height();
+  real w = r.width();
+
+  iPoints.resize(4);
+  iPoints[0] = r.min();
+  iPoints[1] = r.min() + Vector2(w,0.0f);
+  iPoints[2] = r.max();
+  iPoints[3] = r.min() + Vector2(0.0f,h);  
+}
+
 Polygon2::~Polygon2()
 {
 
@@ -180,6 +192,11 @@ void Polygon2::push_back(const Vector2& p)
 void Polygon2::resize(int size) 
 {
   iPoints.resize(size);
+}
+
+void Polygon2::clear() 
+{
+  iPoints.clear();
 }
 
 // Operators

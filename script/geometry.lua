@@ -212,17 +212,28 @@ function Geometry.minkowskiSum(v, w)
   w[m+2] = w[2] -- the other one might not have been reached.
                 -- j+1 and i+1 will be accesses which might
                 -- potentially be m+2 or n+2.
-    
+  print("dumping v:", n)
+  for k, val in pairs(v) do
+   print(val:toString())
+  end
+  
+  print("dumping w:", m)
+  for k, val in pairs(w) do
+   print(val:toString())
+  end
+  
   local ang, ang_v, ang_w
   repeat
     result:append(v[i]+w[j])
 
     -- We need to do these two following checks to make sure
     -- that angle always increases in value as we trail around polygon.
+    print("ang = angle(v[i], v[i+1])", i, v[i]:toString(), v[i+1]:toString())
     ang = angle(v[i], v[i+1])
     if ang_v and ang < ang_v then ang = 2.0*math.pi+ang end
     ang_v = ang
     
+    print("ang = angle(w[j], w[j+1])", j, w[j]:toString(), w[j+1]:toString())    
     ang = angle(w[j], w[j+1])
     if ang_w and ang < ang_w then ang = 2.0*math.pi+ang end    
     ang_w = ang
@@ -344,4 +355,45 @@ end
 
 function Polygon:print()
   self:foreach(function(v) v:print() end)
+end
+
+--[[
+  Converts a collection of lua shapes to a Group.
+  Group has some advantages in that it allows for collision detection
+  of a shape against every member and it can be used for input
+  to a GroupShape. A collection on the other hand has the advantage
+  of supporting random access.
+]]--
+function Collection:toGroup()
+  local group = Group:new()
+  for _, shape in pairs(self) do
+    group:add(shape)
+  end
+  return group
+end
+
+function Collection:toShapeGroup()
+  return ShapeGroup:new(self:toGroup())
+end
+
+--[[
+  Returns a function which will take a sprite
+  as argument and produce the minkowski sum of the
+  sprite and 'kernel' polygon
+  
+  You also set the color of all the sprites
+  created
+]]--
+function Geometry.minkowskiAdder(kernel, red, green, blue)
+  function adder(sprite)
+    local poly = sprite:polygon()
+    poly = Geometry.minkowskiSum(poly, kernel)
+    local view = PolygonView:new(poly)
+    view:setColor(red, green, blue)
+    local minkowski_sprite = Sprite:new(view)
+    minkowski_sprite:setPosition(sprite:position())
+    return minkowski_sprite
+  end
+  
+  return adder
 end

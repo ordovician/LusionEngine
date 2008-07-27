@@ -1,10 +1,17 @@
+--[[
+  List of hotkeys:
+  p - RRT path from active NPC to other
+  z - switch player
+  v - center view
+  k - construct roadmap
+  l - load roadmap
+  s - save roadmap
+  c - Probablistic roadmap path visualized
+]]--
+
 -- dofile("script/unittester.lua")
--- dofile("script/gametest.lua")
+
 -- Sprite.setShowCollision(true)
-
--- dofile("script/maingame.lua")
-
--- medial axis or skeleton
 require("script/rrt")
 require("script/queue")
 require("script/stack")
@@ -42,7 +49,8 @@ end
 -- Creates a random number of obstacles and return the sprite group containing them
 function createRandomObstacles(noObstacles)  
   local obstacles = Group:new()
-
+  local obstacle_collection = Collection:new()
+  
   for i=1,noObstacles do
     local angle = math.random(0,360)
     local speed = 0  
@@ -71,10 +79,9 @@ function createRandomObstacles(noObstacles)
     until not obstacles:collide(obstacle, Engine.seconds(), 1)
 
     obstacles:add(obstacle)
-
-    -- obstacle:setVisible(false)
+    obstacle_collection:append(obstacle)
   end
-  return obstacles
+  return obstacle_collection
 end
 
 function Shape:addNPC(planeView)
@@ -361,9 +368,9 @@ function displayTrajectories(angvel_min, angvel_max, angvel_steps, dt, steps)
 end
 
 function setupWorld()
-  --obstacles = createRandomObstacles(10)
-  obstacles = dofile("script/levels/level2.lua") -- loads sprites from level file
-  obstacles = ShapeGroup:new(obstacles)
+  --obstacles = createRandomObstacles(10):toGroup()
+  obstacle_collection = dofile("script/levels/level2.lua") -- loads sprites from level file
+  obstacles = ShapeGroup:new(obstacle_collection:toGroup())
   
   actors = Group:new()
 
@@ -385,6 +392,9 @@ function setupWorld()
   Engine.registerKeyClickEvent(Key.v, function()
     Engine.setView(Rect:new(-20,-20, 20, 20))
   end)  
+
+  -- minkowski_obstacles = obstacle_collection:map(
+  --      Geometry.minkowskiAdder(Polygon:rect(-1, -1, 2, 2), 1, 0, 0))
 
 end
 

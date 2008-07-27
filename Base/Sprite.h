@@ -64,14 +64,12 @@ public:
   void setMotionState(MotionState* state);
   MotionState* motionState() const;
   
-	void setDepth(int aDepth);
-	int depth() const;
-
   const Polygon2& collisionPolygon() const;
   Polygon2& collisionPolygon();   
   
   void  setView(View* aView);
   View* view();
+  const View* view() const;
   
   void  setSubViewIndex(int index);
   int   subViewIndex() const;
@@ -127,7 +125,6 @@ private:
   
 private:
   std::string  iName;
-	int     iDepth;
 	bool	  iVisible;
 	View*   iView;
   int     iCurSubViewIndex;

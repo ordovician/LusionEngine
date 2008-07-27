@@ -366,7 +366,7 @@ static int draw(lua_State *L)
 {
   int n = lua_gettop(L);  // Number of arguments
   if (n != 2) 
-    return luaL_error(L, "Got %d arguments expected 3 (self, rect)", n); 
+    return luaL_error(L, "Got %d arguments expected 2 (self, rect)", n); 
     
   Shape* shape = checkShape(L, 1);    
 
@@ -489,7 +489,7 @@ static const luaL_Reg gShapeFuncs[] = {
     
   // Calculate     
   {"draw", draw},
-    
+      
   // Operations  
   {"update", update},
   {"doPlanning", doPlanning},  

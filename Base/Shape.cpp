@@ -31,13 +31,17 @@ using namespace std;
    
    However in the future it will be possible for all shapes.
 */
+
+static int  gNextDepth = 0;
  
 // Helper functions
 
 // Constructors
 Shape::Shape()
 {
-  
+  // This way the last created shapes is always drawn  on top of the
+  // first created ones
+  iDepth = gNextDepth--;  
 }
 
 Shape::~Shape()
@@ -66,6 +70,16 @@ ShapeIterator* Shape::iterator() const
 {
   static NullIterator<Shape*> nullIterator;
   return &nullIterator;
+}
+
+void Shape::setDepth(int aDepth)
+{
+	iDepth = aDepth;
+}
+
+int Shape::depth() const
+{
+	return iDepth;
 }
 
 // Request
