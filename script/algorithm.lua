@@ -202,7 +202,7 @@ function Graph.astar(n_start, n_goal)
       return distance[v]+v:distanceTo(n_goal) < distance[w]+w:distanceTo(n_goal)
     end)
     
-    print("remove", v.tag)
+    -- print("remove", v.tag)
     if v == n_goal then 
       break 
     end
@@ -219,7 +219,7 @@ function Graph.astar(n_start, n_goal)
     for _,w in pairs(candidates) do
       if v:hasNeighbor(w) then
         local d = distance[v] + v:distanceTo(w)
-        print("edge", v.tag, w.tag, distance[w], d)
+        -- print("edge", v.tag, w.tag, distance[w], d)
         if  d < distance[w] then
           distance[w] = d
           path[w] = v
@@ -267,8 +267,9 @@ end
   path going from node \a n_begin to node \a n_end.
 ]]--
 function Graph.createPath(n_begin, n_end, paths)
-  local path = Collection:new()
+  local path = Polygon:new()
   local n = n_end
+  
   while n ~= nil and paths[n] ~= n_begin do
     path:prepend(n)
     n = paths[n]

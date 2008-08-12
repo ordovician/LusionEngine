@@ -58,7 +58,8 @@ end
 
 -- Return a set which is the result of applying fn(e) to each element 'e' of collection
 function Collection:map(fn)
-  local result = Collection:new()
+  local super = getmetatable(self)
+  local result = super:new()
   for _,v in pairs(self) do
     table.insert(result, fn(v))
   end
@@ -81,7 +82,8 @@ end
 
 -- Return a subset of self where fn(v) = true, where 'v' in self
 function Collection:filter(fn)
-  local result = Collection:new()
+  local super = getmetatable(self)
+  local result = super:new()
   for _,v in pairs(self) do
     if fn(v) then table.insert(result, v) end
   end

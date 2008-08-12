@@ -423,22 +423,14 @@ function setupRoadMap()
     local n_src = roadmap:findNode(me:position())
     local n_dst = roadmap:findNode(other:position())    
     if n_src and n_dst then 
-      print("Going from", n_src.tag, "to", n_dst.tag)
-
       local distance, path = Graph.astar(n_src, n_dst)
 
-      local n = n_dst
-      local poly = Polygon:new(other:position(), n.circle:center())
-      local i = 0 -- NOTE: to break when too far
-      print("node", n.tag)
-      while n ~= nil and path[n] ~= n do
-        n = path[n]
-        print("node", n.tag)
-        poly:append(n.circle:center())
-        i = i+1
-        if i > 20 then break end
-      end
-      poly:append(me:position())
+      local poly = Graph.createPath(n_src, n_dst, path):map(function(n) 
+        return n.circle:center()
+      end)
+      poly:prepend(me:position())
+      poly:append(other:position())
+
       Geometry.viewPath(poly)
     end
   end)
