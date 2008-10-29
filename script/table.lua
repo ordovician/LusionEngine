@@ -1,5 +1,6 @@
 --[[
 	Utility functions.
+  Copyright 2007 Translusion. All rights reserved.	
 --]]
 
 -- joins to tables into one table

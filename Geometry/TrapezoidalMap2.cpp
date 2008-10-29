@@ -1,3 +1,6 @@
+/*
+ * Copyright 2007 Translusion. All rights reserved.
+ */
 #include <Geometry/TrapezoidalMap2.hpp>
 #include <Geometry/TrapezoidNode2.hpp>
 #include <Geometry/IO.hpp>

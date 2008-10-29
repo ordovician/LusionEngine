@@ -3,6 +3,7 @@
   \author Erik Engheim - Translusion
   \date 18.10.2007
   
+  Copyright 2007 Translusion. All rights reserved.
 */
 
 #pragma once

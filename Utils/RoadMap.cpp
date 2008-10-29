@@ -18,7 +18,7 @@
 
 using namespace std;
 
-const real ACCURACY		=	0.5;  // a measure for the accuracy during roadmap construction
+const real ACCURACY		=	0.00005;  // a measure for the accuracy during roadmap construction
 const real MAX_DIST	  =	10.0;	// maximum distance a sample can move in search for nearest obstacle  
 const real MAX_DIST_SQUARED	=	MAX_DIST * MAX_DIST;	// maximum distance squared
 
@@ -51,7 +51,8 @@ ClosestPointFinder::ClosestPointFinder(Shape* obstacles, const Rect2& bbox) : iO
 void ClosestPointFinder::discCollision(const Circle& circle, Shape* shape, Points2& points) 
 {
   CircleShape c(circle);
-  shape->collide(&c, iT, iDt, this);
+  iPoints.clear();
+  shape->collide(&c, secondsPassed(), iDt, this);
   points = iPoints;
 }
 
@@ -93,6 +94,7 @@ bool ClosestPointFinder::nearestObstacle(const Point2& c, Point2& point_result)
       radius = radius+stepsize;      
     }
 	}
+
   return is_collision;
 }
 

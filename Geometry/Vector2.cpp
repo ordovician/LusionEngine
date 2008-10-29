@@ -1,3 +1,6 @@
+/*
+ * Copyright 2007 Translusion. All rights reserved.
+ */
 #include <Geometry/Vector2.hpp>
 
 /*!

@@ -59,7 +59,7 @@ MAX_DIST_SQUARED	=	MAX_DIST * MAX_DIST	-- maximum distance squared
 MAX_EDGE_SIZE	=		10.0			 -- maximum edge size
 MAX_RADIUS		=	100.0			-- maximum sphere radius
 MIN_RADIUS		=	1.0			-- minimum sphere radius
-ACCURACY		=	0.5				 -- a measure for the accuracy during roadmap construction
+ACCURACY		=	0.00005				 -- a measure for the accuracy during roadmap construction
 
 ProbablisticRoadMap = {}
 
@@ -371,6 +371,10 @@ end
 ]]--
 function ProbablisticRoadMap:findNode(pos)
   local circle = Graph.findCircle(self.circleGroup, pos)
+  if not circle then
+    print("ProbablisticRoadMap:findNode(pos): no circle at pos =", pos:toString())
+    return nil
+  end
   return self.circleNodeMap[circle]
 end
 
@@ -400,14 +404,13 @@ function ProbablisticRoadMap:slowRetractSample(c)
   
   -- init second point to find second nearest obstacle
 	local c1 = c + ds
-
+  
 	-- while the nearest obstacle to c' (c_near) is approx. equal to c_close, keep searching
 	local c1_found = true
 	local c_near = self:nearestObstacle(c1)
 	while (c_near-c_close):squaredLength() < ACCURACY do
 		c1 = c1 + ds;
 		c_near = self:nearestObstacle(c1)
-
 		-- break when c' has moved too far
 		if (c1 - c_close):squaredLength() > MAX_DIST_SQUARED or not self.bbox:inside(c1) then
 		  c1_found = false
@@ -417,12 +420,12 @@ function ProbablisticRoadMap:slowRetractSample(c)
 
 	 -- search for equidistant vertex
 	if c1_found then 
-	  c_v = self:equidistantVertex(c, c1)							
+	  c_v = self:slowEquidistantVertex(c, c1)							
 	else  		  
 	  c_v = c1 - ds
 	end
 
-	return c_v
+  return c_v
 end
 
 function ProbablisticRoadMap:retractSample(c)
@@ -441,14 +444,14 @@ end
  taken are below a certain minimum length.
 ]]--
 function ProbablisticRoadMap:slowEquidistantVertex(c1, c2)
-  -- init step vector
+  -- init step vector  
   local ds = (c2-c1)*0.5
-  
+
 	-- init first test position and both nearest obstacles
 	local c_v = c1 + ds
 	local c1_obst = self:nearestObstacle(c1)
 	local c2_obst = self:nearestObstacle(c_v)
-
+  
 	while ds:squaredLength() > ACCURACY do
 		ds = ds*0.5
 
@@ -462,7 +465,6 @@ function ProbablisticRoadMap:slowEquidistantVertex(c1, c2)
 		-- update nearest obstacle to test position
 		c2_obst = self:nearestObstacle(c_v)
 	end
-
 	return c_v
 end
 
@@ -483,7 +485,6 @@ end
  if none is found nil is returned.
 ]]--
 function ProbablisticRoadMap:slowNearestObstacle(c)
--- function ProbablisticRoadMap:nearestObstacle(c)
 	local is_collision = false
 	local radius
 	
@@ -518,7 +519,7 @@ function ProbablisticRoadMap:slowNearestObstacle(c)
 end
 
 
- --[[
+--[[
   Finds the largest circle surroudning point c. This is done by performing a binary
   search. We start with a circle covering the whole scene. If there is a collision with this
   scene we check for collision with a circle of half the radius. At any given time
@@ -528,7 +529,7 @@ end
     - An area we don't know whether is collision free or not. 
   We always split the unknown area in two trying to deterimine which half is
   collision free, which one is not or which one is unknown.
- ]]--
+]]--
 function ProbablisticRoadMap:largestFreeDisc(c)
   local is_collision = false
   local radius
@@ -666,7 +667,7 @@ end
 function Graph.findChokePoints(n_start, key_nodes)
   local _, path = Graph.dijkstra(n_start)
   local chokepoints = Collection:new()
-  local r_max  = 1 -- nodes with radius below this is considered part of narrow passage
+  local r_max  = 1.8 -- nodes with radius below this is considered part of narrow passage
   
   -- Checks if n is a valid choke node and adds it if it is
   function addChokePoint(n)
@@ -679,13 +680,19 @@ function Graph.findChokePoints(n_start, key_nodes)
       end      
       -- Adds a pair describing location of chokepoint and direction of
       -- path into chokepoint from narrow passage
-      chokepoints:append( {n_choke, (n_choke - n_tube):unit()} )
+      chokepoints:append({
+        node      = n_choke, 
+        direction = (n_choke:position() - n_tube:position()):unit()
+      })
+      print("Added chokepoint:", n_choke:toString(), (n_choke:position() - n_tube:position()):unit():toString())
     end
   end
   
   for _, n in pairs(key_nodes) do
+    print("considering point as chokepoint:", n:toString())
     while path[n] ~= n do
       addChokePoint(n)
+      n = path[n]      
     end
     addChokePoint(n)
   end

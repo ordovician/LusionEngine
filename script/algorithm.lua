@@ -1,3 +1,8 @@
+--[[
+  Created by Erik Engheim on 25/12/2007
+  Copyright 2007 Translusion. All rights reserved.
+]]--
+
 require("script/queue")
 require("script/stack")
 require("script/set")
@@ -317,6 +322,9 @@ end
   'pos'
 ]]--
 function Graph.findCircle(circleGroup, pos)
+  assert(pos, "pos can not be nil")
+  assert(circleGroup, "circleGroup can not be nil")
+    
   local shortest_dist = math.huge
   local shape_closest  = nil
 

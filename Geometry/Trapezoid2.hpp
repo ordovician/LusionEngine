@@ -4,6 +4,8 @@ Author	: Erik Engheim
 Date	: 07/09/2005
 Desc	: Describes a 2d line segment. 
 Comment	: This class has not been tested yet.
+
+Copyright 2007 Translusion. All rights reserved.
 *******************************************************************/
 
 #pragma once

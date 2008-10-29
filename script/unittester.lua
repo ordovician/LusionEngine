@@ -4,7 +4,8 @@
 	
 	created: 4/10/2007
 	author: Erik Engheim
-	
+	Copyright 2007 Translusion. All rights reserved.
+  
   Performs unit tests. Tests are peformed by UnitTester.testFiles()
   Provide a list of filename as input to UnitTester.testFiles and it
   will load and run the unit tests in each file. 
@@ -34,11 +35,12 @@
 --]]
 
 local testfiles = {
---"script/UnitTest/algorithmtest.lua",
-"script/UnitTest/circletest.lua",
-"script/UnitTest/spritetest.lua",
---"script/UnitTest/special.lua",  
-"script/UnitTest/polygontests.lua"  
+-- "script/UnitTest/algorithmtest.lua",
+-- "script/UnitTest/circletest.lua",
+-- "script/UnitTest/spritetest.lua",
+-- "script/UnitTest/special.lua",  
+-- "script/UnitTest/polygontests.lua" 
+"script/UnitTest/prmtests.lua"
 }
 
 UnitTester = {}

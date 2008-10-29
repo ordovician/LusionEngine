@@ -4,7 +4,8 @@
 	
 	created: 14/02/2007
 	author: Erik Engheim
-	
+	Copyright 2007 Translusion. All rights reserved.
+  
   Defines and edge in the geometric sense. An edge is simply a pair
   of nodes. A node can be a number, a string or anything else. 
 	

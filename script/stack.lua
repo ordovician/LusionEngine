@@ -1,10 +1,16 @@
 --[[
+  Created by Erik Engheim on 25/12/2007
+  Copyright 2007 Translusion. All rights reserved.
+]]--
+
+--[[
 	Stack class
 	-------------------------
 	
 	created: 14/02/2007
 	author: Erik Engheim
-	
+  Copyright 2007 Translusion. All rights reserved.
+  	
   Supports pushing and popping of values onto a stack
 	
 --]]

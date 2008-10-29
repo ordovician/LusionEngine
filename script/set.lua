@@ -6,7 +6,8 @@ require("script/map")
 	
 	created: 14/02/2007
 	author: Erik Engheim
-	
+  Copyright 2007 Translusion. All rights reserved.
+  	
   Wraps a table to make it more convenient to deal with it as a set
 --]]
 

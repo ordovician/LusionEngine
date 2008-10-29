@@ -4,7 +4,8 @@
 	
 	created: 14/02/2007
 	author: Erik Engheim
-	
+	Copyright 2007 Translusion. All rights reserved.
+  
 	Timer class is used to time the number of miliseconds it takes to perform an operation.
 	So this class can be used for performance testing
 

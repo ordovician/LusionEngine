@@ -6,7 +6,8 @@ require("script/stack")
 	
 	created: 14/02/2007
 	author: Erik Engheim
-	
+	Copyright 2007 Translusion. All rights reserved.
+  
   A trapezoid is defined by a top and bottom segment and a left and right
   end point. A trapezoid can have at most 2 neighboring trapezoids on each side.
   

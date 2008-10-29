@@ -4,6 +4,8 @@ Author	: Erik Engheim
 Date	: 06/02/2006
 Desc	: A node in a tree used a a search tree for trapezoids in a trapezoidal map.
 Comment	: This class has not been tested yet.
+
+Copyright 2007 Translusion. All rights reserved.
 *******************************************************************/
 
 #pragma once

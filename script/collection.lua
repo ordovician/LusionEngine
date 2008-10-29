@@ -4,7 +4,8 @@
 	
 	created: 14/02/2007
 	author: Erik Engheim
-	
+	Copyright 2007 Translusion. All rights reserved.
+  
 	Wraps table and allows you to use the table in a more convenient manner.
 	Attempts to duplicate some of the handy ways you can handle collections
 	in Ruby and Python.

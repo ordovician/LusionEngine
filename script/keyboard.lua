@@ -1,4 +1,7 @@
 --[[
+  Created by Erik Engheim on 25/12/2007
+  Copyright 2007 Translusion. All rights reserved.
+
   Defines all the keycodes used by SDL. To be used with Engine.keyState() to retrieve the
   status of a key (whether it is pressed or released).
 --]]

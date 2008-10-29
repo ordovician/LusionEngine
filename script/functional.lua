@@ -1,4 +1,7 @@
 --[[
+  Created by Erik Engheim on 25/12/2007
+  Copyright 2007 Translusion. All rights reserved.
+
 	Functional utilities
 	-------------------------
 	
