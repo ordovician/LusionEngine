@@ -138,12 +138,7 @@ function ProbablisticRoadMap:construct(no_samples, retract_quotient)
 		-- check whether sample is outside all discs in the roadmap
     if self.bbox:inside(c) and not self:insideRoadMap(c) then      
       --  add node to roadmap
-      local radius = self:largestFreeDisc(c)
-      if radius > MIN_RADIUS then      
-        radius = math.min(radius, MAX_RADIUS)
-        local node = PrmNode:newNode(c, radius)
-        self.nodes:append(node)
-      end
+      self:addNodeAt(c)
     end
     free_disc_time = free_disc_time + t:stop()
     sampling_time = sampling_time + t:stop()
@@ -160,6 +155,10 @@ function ProbablisticRoadMap:construct(no_samples, retract_quotient)
   self:connectOverlappingCircles()
   print("Time spent connecting nodes:", t:stop())
   
+  t = Timer:start()
+  self:connectLooseEnds()
+  print("Time spent connecting loose ends:", t:stop())
+    
   -- removes unconnected nodes
   print("cleaning up...")  
 	self:cleanUp()
@@ -167,6 +166,22 @@ function ProbablisticRoadMap:construct(no_samples, retract_quotient)
   print("Making node search structure...")  	
   self:makeNodeSearchStructure()
 	return true  
+end
+
+--[[
+  Adds a node at position 'c' and creates largest possible free
+  disc around it. Returns the node that was created and added
+  to roadmap
+]]--
+function ProbablisticRoadMap:addNodeAt(c)
+  local node = nil
+  local radius = self:largestFreeDisc(c)
+  if radius > MIN_RADIUS then      
+    radius = math.min(radius, MAX_RADIUS)
+    node = PrmNode:newNode(c, radius)
+    self.nodes:append(node)
+  end
+  return node
 end
 
 --[[
@@ -180,12 +195,54 @@ function ProbablisticRoadMap:connectOverlappingCircles()
       -- check whether spheres are overlapping and the nodes are not connected by an edge yet
   	  if n ~= m and n.circle:collide(m.circle) and not n:hasNeighbor(m) then
   	    -- To prevent edges through obstacles perform an additional collision check
-  			if not self:lineCollision(n, m) then
+  			if not self:lineCollision(n, m) then          
           n:insertNeighbors(m)
           m:insertNeighbors(n)
   			end
 			
   	  end
+    end
+  end
+end
+
+--[[
+  We assume here that the nodes structure is connected into
+  several graphs. Typically the small graphs will be removed later
+  by cleanUp()
+]]--
+function ProbablisticRoadMap:connectLooseEnds()
+  -- collect all the nodes which are potentially at the
+  -- end of the graphs
+  local ends = Collection:new()
+  for _,n in pairs(self.nodes) do
+    print("#", n:noNeighbors())
+    if n:noNeighbors() < 2 then
+      ends:append(n)
+    end
+  end
+  
+  -- Iterate over these 'end points' and
+  -- see if we can connect any of them
+  for _,n in pairs(ends) do
+    for _,m in pairs(ends) do
+      local ds = m:position() - n:position()
+  		if  n ~= m and 
+  		    ds:length() < (m:radius() + n:radius()) * 1.25 and
+  		    not self:lineCollision(n, m)  		    
+  		then
+        ds = ds * 0.5
+        local pos = n:position() + ds
+        local node self:addNodeAt(pos)
+        
+        if node and 
+           node.circle:collide(n.circle) and
+           node.circle:collide(m.circle) 
+        then
+          n:insertNeighbors(node)
+          m:insertNeighbors(node)          
+          node:insertNeighbors(n, m)
+        end
+  		end      
     end
   end
 end

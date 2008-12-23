@@ -68,6 +68,18 @@ function GraphNode:distanceTo(n)
 end
 
 --[[
+  Number of neighbors. This is a slow process, because
+  it needs to count up the neighbors
+]]--
+function GraphNode:noNeighbors()
+  local n = 0
+  for _, _ in pairs(self.mNeighbors) do
+    n = n + 1
+  end
+  return n
+end
+
+--[[
 	Graph class
 	-------------------------
 	
