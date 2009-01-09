@@ -8,10 +8,16 @@
  */
 
 #include "Engine.h"
+
+#include <SDL.h>
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+
+
 #include "Base/Sprite.h"
 #include "Lua/Base/LuaSprite.h"
 #include "LuaEngine.h"
-#include "Base/ImageView.h"
+//#include "Base/ImageView.h"
 #include "Base/Group.h"
 #include "Base/CircleShape.h"
 #include "Base/RectShape2.h"
@@ -33,17 +39,9 @@ using namespace std;
 
 // private member variables
 // Timer
-static const int RUN_GAME_LOOP = 1;
-static const int ENGINE_STATS = 2;
-static SDL_TimerID gTimer;
 static int gStartTime = 0;
 
 static bool       gDone;
-
-// Key and mouse state
-static real gMouseX = 0.0;
-static real gMouseY = 0.0;
-static bool gMouseButton = false; // True if left mouse button down
 
 // Viewport
 static int gViewportWidth = 640;
@@ -53,11 +51,6 @@ static int gViewportHeight = 640;
 static Rect2  gView(-20.0, -20.0, 20.0, 20.0);
 
 static bool gGLInitialized = false;
-
-// Statistics
-static real gAverageLoopTime = 0.0;
-
-
 
 // private functions
 template <typename ForwardIterator>
@@ -86,105 +79,23 @@ static void renderFrame(real start_time)
 
 static void handleKeys()
 {
-  Uint8 *keystate = SDL_GetKeyState(0);
+  ubyte *keystate = getKeyState();
   
   gDone = keystate[SDLK_q];
   
   if (keystate[SDLK_d]) debugLua();      
 }
 
-static void handleMouse()
-{
-  int x, y;
-  Uint8 state = SDL_GetMouseState(&x, &y);
-  real vx = x;
-  real vy = gViewportHeight-y;
-  gMouseX = (vx/gViewportWidth)*gView.width()+gView.left();
-  gMouseY = (vy/gViewportHeight)*gView.height()+gView.bottom();         
-  gMouseButton = state & SDL_BUTTON(1);    
-}
 
-static void engineLoop(Uint32 start_ticks)
+static void engineLoop(uint32 start_ticks)
 {
   real secs = start_ticks*(1.0/1000.0); 
   handleKeys();
-  handleMouse();
+  handleMouse(gView, gViewportWidth, gViewportHeight);
   renderFrame(secs);    
   luaUpdate(secs);
   
   AutoreleasePool::currentPool()->releasePool();
-}
-
-static void engineStats()
-{
-  cout << "Average looptime: " << gAverageLoopTime << " ms" << endl;
-}
-
-
-
-static Uint32 engineLoopTimer(Uint32 interval, void* param)
-{
-  // Create a user event to call the game loop.
-  SDL_Event event;
-
-  event.type = SDL_USEREVENT;
-  event.user.code = RUN_GAME_LOOP;
-  event.user.data1 = (void *)SDL_GetTicks(); // So we know when event was sent
-  event.user.data2 = 0;
-
-  SDL_PushEvent(&event);
-
-  return interval;
-}
-
-/*! To collect and print out statistics about engine */
-static Uint32 engineStatsTimer(Uint32 interval, void* param)
-{
-  // Create a user event to call the game loop.
-  SDL_Event event;
-
-  event.type = SDL_USEREVENT;
-  event.user.code = ENGINE_STATS;
-  event.user.data1 = 0;
-  event.user.data2 = 0;
-
-  SDL_PushEvent(&event);
-
-  return interval;
-}
-
-static void handleUserEvents(SDL_Event* event)
-{
-    Uint32 start_ticks, end_ticks;
-    switch (event->user.code) {
-        case RUN_GAME_LOOP:
-          start_ticks = (Uint32)event->user.data1;
-          engineLoop(start_ticks);
-          end_ticks = SDL_GetTicks();
-          gAverageLoopTime = (gAverageLoopTime+end_ticks-start_ticks)/2.0;
-          break;
-        case ENGINE_STATS:
-          engineStats();
-          break;
-        default:
-            break;
-    }
-}
-
-// Inititialization
-static void initSDL()
-{
-  int error;
-  SDL_Surface* drawContext;
-
-  error = SDL_Init(SDL_INIT_EVERYTHING);
-
-  // Create a real-buffered draw context
-  SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-                      
-  Uint32 flags;
-  flags = SDL_OPENGL;// | SDL_FULLSCREEN;
-  drawContext = SDL_SetVideoMode(gViewportWidth, gViewportHeight, 0, flags);
 }
 
 static void initGL()
@@ -208,24 +119,12 @@ static void initGL()
   gGLInitialized  = true;
 }
 
-static void installTimer()
-{
-    // Called almost for each frame if we assume 60 frames per second
-
-    gTimer = SDL_AddTimer(ticksPerFrame(), engineLoopTimer, NULL);
-
-  #ifdef PRINT_AVG_LOOP_TIME  
-    // Called each 2 sec to show statistics
-    gStatTimer = SDL_AddTimer(5000, engineStatsTimer, NULL);        
-  #endif    
-}
-
-
 void engineInit()
 {   
   gDone = false;
+  setEngineLoopCallback(engineLoop);
   initLua();  
-  initSDL();
+  initSDL(gViewportWidth, gViewportHeight);
   initGL();
 #ifdef USE_TEXTURES  
   initTextures();  
@@ -234,40 +133,6 @@ void engineInit()
   installTimer();
   
   AutoreleasePool::currentPool()->releasePool();  
-}
-
-void engineEventLoop()
-{
-    SDL_Event event;
-    
-    while((!gDone) && (SDL_WaitEvent(&event))) {
-        switch(event.type) {
-            case SDL_USEREVENT:
-                handleUserEvents(&event);
-                break;
-                
-            case SDL_QUIT:
-                gDone = true;
-                break;
-                
-            default:
-                break;
-        }   // End switch
-            
-    }   // End while
-        
-}
-
-void engineCleanup()
-{
-    SDL_bool success;
-    success = SDL_RemoveTimer(gTimer);
-  #ifdef PRINT_AVG_LOOP_TIME  
-    success = SDL_RemoveTimer(gStatTimer);
-  #endif
-    closeLua();
-    
-    SDL_Quit();
 }
 
 // Constructors
@@ -323,6 +188,14 @@ SegmentShape2* createSegment2(const Segment2& seg)
 
 
 // Accessors
+bool isDone() {
+  return gDone;
+}
+
+void setDone(bool done) {
+  gDone = done;
+}
+
 void setViewportHeight(int height)
 {
   gViewportHeight = height;
@@ -370,32 +243,26 @@ Rect2 worldView()
 
 int ticksLeft(int start_ticks)
 {
-  return ticksPerFrame() - (SDL_GetTicks()-start_ticks);
+  return ticksPerFrame() - (getTicks()-start_ticks);
 }
+
+
+
 
 void startTimer()
 {
-  gStartTime = SDL_GetTicks();
+  gStartTime = getTicks();
 }
 
 int stopTimer()
 {
-  return SDL_GetTicks()-gStartTime;
+  return getTicks()-gStartTime;
 }
 
-bool isMouseButtonDown()
-{
-  return gMouseButton;
-}
-
-Vector2 mousePosition()
-{
-  return Vector2(gMouseX, gMouseY);
-}
 
 // Request
 bool stateOfKey(int key)
 {
-  Uint8 *keystate = SDL_GetKeyState(0);  
+  ubyte *keystate = getKeyState();  
   return keystate[key];
 }

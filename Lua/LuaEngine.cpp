@@ -8,6 +8,7 @@
  */
 
 #include "LuaEngine.h"
+
 #include "Engine.h"
 #include "Timing.h"
 #include "Utils/PolygonUtils.h"
@@ -69,7 +70,7 @@ static int update(lua_State *L)
 
 static int ticks(lua_State* L)
 {
-  lua_pushnumber(L, SDL_GetTicks());
+  lua_pushnumber(L, getTicks());
   return 1;
 }
 
@@ -189,8 +190,8 @@ static int keyStates(lua_State* L)
   if (n != 0)
     return luaL_error(L, "Got %d arguments expected 0", n);    
 
-  Uint8 **keystate = (Uint8 **)lua_newuserdata(L, sizeof(Uint8 *));  
-  *keystate = SDL_GetKeyState(0);
+  ubyte **keystate = (ubyte **)lua_newuserdata(L, sizeof(ubyte *));  
+  *keystate = getKeyState();
 
   luaL_getmetatable(L, "Lusion.KeyStates");
   lua_setmetatable(L, -2);       
@@ -204,7 +205,7 @@ static int isKeyDown(lua_State* L)
   if (n != 2)
     return luaL_error(L, "Got %d arguments expected 2 (self, key code)", n);    
 
-  Uint8* keystate = 0;
+  ubyte* keystate = 0;
   checkUserData(L, "Lusion.KeyStates", keystate);
   
   lua_pushboolean(L, keystate[luaL_checkinteger(L,2)]);

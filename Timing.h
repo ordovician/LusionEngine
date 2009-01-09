@@ -13,3 +13,4 @@ int  ticksPerFrame();
 void setTicksPerFrame(int noTicks);
 real secondsPerFrame();
 real secondsPassed();
+int  getTicks();

@@ -33,3 +33,7 @@ real secondsPassed()
 {
   return clock()*(1.0f/CLOCKS_PER_SEC);
 }
+
+int getTicks() {
+  return clock()*(1000.0f/CLOCKS_PER_SEC);
+}

@@ -8,6 +8,9 @@
  */
 
 #include "Engine.h"
+
+#include <SDL.h>
+
 #include <Core/AutoreleasePool.hpp>
 
 int main(int argc, char *argv[])

@@ -17,7 +17,7 @@
 #include "Lua/Geometry/LuaTrapezoid2.h"
 
 #include "Base/PolygonView.h"
-#include "Base/ImageView.h"
+//#include "Base/ImageView.h"
 #include "Base/SegmentView.h"
 #include "Base/PointsView.h"
 #include "Base/TrapezoidView.h"
@@ -71,7 +71,7 @@ static int newOutlineView(lua_State *L)
   return newGenericPolygonView(L, GL_LINE_LOOP);
 }
 
-static int newImageView(lua_State *L) 
+/*static int newImageView(lua_State *L) 
 {
   int n = lua_gettop(L);  // Number of arguments
   if (n < 2 || n > 5)
@@ -109,7 +109,7 @@ static int newImageView(lua_State *L)
   setUserDataMetatable(L, "Lusion.View");
 
   return 1; 
-}
+}*/
 
 static int newSegmentView(lua_State *L) 
 {
@@ -348,10 +348,10 @@ static const luaL_Reg gOutlineViewFuncs[] = {
   {NULL, NULL}
 };
 
-static const luaL_Reg gImageViewFuncs[] = {
+/*static const luaL_Reg gImageViewFuncs[] = {
   {"new", newImageView},
   {NULL, NULL}
-};
+};*/
 
 static const luaL_Reg gSegmentViewFuncs[] = {
   {"new", newSegmentView},
@@ -411,7 +411,7 @@ void initLuaView(lua_State *L)
   registerFuncs(L, "PathView", gPathViewFuncs);
   registerFuncs(L, "OutlineView", gOutlineViewFuncs);
       
-  registerFuncs(L, "ImageView", gImageViewFuncs);  
+  //registerFuncs(L, "ImageView", gImageViewFuncs);  
   registerFuncs(L, "SegmentView", gSegmentViewFuncs);    
   registerFuncs(L, "PointsView", gPointsViewFuncs);      
   registerFuncs(L, "TrapezoidView", gTrapezoidViewFuncs);

@@ -8,10 +8,6 @@
  */
 #pragma once
 
-#include <SDL.h>
-#include <OpenGL/gl.h>
-#include <OpenGL/glu.h>
-
 #include <Geometry/Vector2.hpp>
 #include <Geometry/Circle.hpp>
 #include <Geometry/Rect2.hpp>
@@ -19,6 +15,8 @@
 
 #include "Timing.h"
 #include "Types.h"
+#include "EngineSDL.h"
+
 
 class Shape;
 class Sprite;
@@ -27,11 +25,9 @@ class RectShape2;
 class SegmentShape2;
 class View;
 
- #define USE_TEXTURES
+//#define USE_TEXTURES
 
 void engineInit();
-void engineEventLoop();
-void engineCleanup();
 
 // Constructors
 Sprite*        createSprite();
@@ -42,6 +38,9 @@ RectShape2*    createRect2(const Rect2& rect);
 SegmentShape2* createSegment2(const Segment2& seg);
 
 // Accessors
+bool isDone();
+void setDone(bool done);
+
 void setViewportHeight(int height);
 void setViewportWidth(int width);
 void setViewport(int width, int height);
@@ -52,8 +51,6 @@ Rect2 worldView();
 int     ticksLeft(int start_ticks);
 void    startTimer();
 int     stopTimer();
-bool    isMouseButtonDown();
-Vector2 mousePosition();
 
 // Request
 bool stateOfKey(int key);

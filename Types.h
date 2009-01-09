@@ -27,3 +27,7 @@ typedef std::set<Group*>       GroupSet;
 
 typedef std::list<std::string>      StringList;
 typedef std::list<std::string>      StringList;
+typedef unsigned char               ubyte;
+typedef unsigned int                uint32;
+
+typedef void (*EngineLoopCallback)(uint32 start_ticks);
