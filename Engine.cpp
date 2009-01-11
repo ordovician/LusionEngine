@@ -9,7 +9,6 @@
 
 #include "Engine.h"
 
-#include <SDL.h>
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
 
@@ -69,21 +68,20 @@ inline void deleteAll(const Container &c)
 }
 
 // Game related functions
-static void renderFrame(real start_time) 
+static void renderFrame(real /*start_time*/) 
 {
     glClear(GL_COLOR_BUFFER_BIT);
     renderGroup()->draw(worldView());
-    // luaRenderFrame(start_ticks); // don't see a need to be able to control this form lua
-    SDL_GL_SwapBuffers();
+    swapBuffers();
 }
 
 static void handleKeys()
 {
   ubyte *keystate = getKeyState();
   
-  gDone = keystate[SDLK_q];
+  gDone = keystate['q'];
   
-  if (keystate[SDLK_d]) debugLua();      
+  if (keystate['d']) debugLua();      
 }
 
 

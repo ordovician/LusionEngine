@@ -14,13 +14,13 @@
 #include "Lua/LuaUtils.h"
 #include "Lua/Geometry/LuaVector2.h"
 #include "Lua/Geometry/LuaSegment2.h"
-#include "Lua/Geometry/LuaTrapezoid2.h"
+// #include "Lua/Geometry/LuaTrapezoid2.h"
 
 #include "Base/PolygonView.h"
 //#include "Base/ImageView.h"
 #include "Base/SegmentView.h"
 #include "Base/PointsView.h"
-#include "Base/TrapezoidView.h"
+// #include "Base/TrapezoidView.h"
 
 #include <lua.hpp>
 #include <cassert>
@@ -161,22 +161,22 @@ static int newPointsView(lua_State *L)
   return 1; 
 }
 
-static int newTrapezoidView(lua_State *L) 
-{
-  int n = lua_gettop(L);  // Number of arguments
-  if (n != 2)
-   return luaL_error(L, "Got %d arguments expected 2 (class, trapezoid)", n); 
-  luaL_checktype(L, 1, LUA_TTABLE); 
-
-  pushClassInstance(L);
-
-  View **v = (View **)lua_newuserdata(L, sizeof(View *));
-  *v = new TrapezoidView(Trapezoid2_pull(L, 2));
-
-  setUserDataMetatable(L, "Lusion.View");
-
-  return 1; 
-}
+// static int newTrapezoidView(lua_State *L) 
+// {
+//   int n = lua_gettop(L);  // Number of arguments
+//   if (n != 2)
+//    return luaL_error(L, "Got %d arguments expected 2 (class, trapezoid)", n); 
+//   luaL_checktype(L, 1, LUA_TTABLE); 
+// 
+//   pushClassInstance(L);
+// 
+//   View **v = (View **)lua_newuserdata(L, sizeof(View *));
+//   *v = new TrapezoidView(Trapezoid2_pull(L, 2));
+// 
+//   setUserDataMetatable(L, "Lusion.View");
+// 
+//   return 1; 
+// }
 
 // Destructors
 // __gc
@@ -366,10 +366,10 @@ static const luaL_Reg gPointsViewFuncs[] = {
   {NULL, NULL}
 };
 
-static const luaL_Reg gTrapezoidViewFuncs[] = {
-  {"new", newTrapezoidView},
-  {NULL, NULL}
-};
+// static const luaL_Reg gTrapezoidViewFuncs[] = {
+//   {"new", newTrapezoidView},
+//   {NULL, NULL}
+// };
 
 static const luaL_Reg gDestroyViewFuncs[] = {
   {"__gc", destroyView},  
@@ -414,6 +414,6 @@ void initLuaView(lua_State *L)
   //registerFuncs(L, "ImageView", gImageViewFuncs);  
   registerFuncs(L, "SegmentView", gSegmentViewFuncs);    
   registerFuncs(L, "PointsView", gPointsViewFuncs);      
-  registerFuncs(L, "TrapezoidView", gTrapezoidViewFuncs);
+  // registerFuncs(L, "TrapezoidView", gTrapezoidViewFuncs);
   
 }

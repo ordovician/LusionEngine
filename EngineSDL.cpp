@@ -49,6 +49,10 @@ static uint32 engineLoopTimer(uint32 interval, void* param)
 }
 
 // private
+void swapBuffers() {
+  SDL_GL_SwapBuffers();
+}
+  
 void installTimer()
 {
     // Called almost for each frame if we assume 60 frames per second

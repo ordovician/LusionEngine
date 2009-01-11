@@ -9,13 +9,14 @@
  
 #pragma once
 
-#include <SDL.h>
+#include <SDL/SDL.h>
 
 #include <Geometry/Vector2.hpp>
 
 #include "Types.h"
 
 // private
+void swapBuffers();
 void installTimer();
 uint32 engineStatsTimer(uint32 interval, void* param);
 void handleUserEvents(SDL_Event* event, EngineLoopCallback engineLoop);
