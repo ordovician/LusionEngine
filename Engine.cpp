@@ -68,7 +68,7 @@ inline void deleteAll(const Container &c)
 }
 
 // Game related functions
-static void renderFrame(real /*start_time*/) 
+void renderFrame(real /*start_time*/)
 {
     glClear(GL_COLOR_BUFFER_BIT);
     renderGroup()->draw(worldView());
@@ -85,16 +85,25 @@ static void handleKeys()
 }
 
 
-static void engineLoop(uint32 start_ticks)
+static void engineLoop(real secs)
 {
-  real secs = start_ticks*(1.0/1000.0); 
+  engineBeginLoop(secs);
+  renderFrame(secs);
+  engineEndLoop(secs);
+}
+
+void engineBeginLoop(real secs)
+{
   handleKeys();
   handleMouse(gView, gViewportWidth, gViewportHeight);
-  renderFrame(secs);    
-  luaUpdate(secs);
-  
+}
+
+void engineEndLoop(real secs)
+{
+  luaUpdate(secs);  
   AutoreleasePool::currentPool()->releasePool();
 }
+
 
 static void initGL()
 {
@@ -120,15 +129,13 @@ static void initGL()
 void engineInit()
 {   
   gDone = false;
-  setEngineLoopCallback(engineLoop);
+  initKeyboard();
   initLua();  
-  initSDL(gViewportWidth, gViewportHeight);
   initGL();
 #ifdef USE_TEXTURES  
   initTextures();  
 #endif
   initGame();
-  installTimer();
   
   AutoreleasePool::currentPool()->releasePool();  
 }
@@ -209,6 +216,18 @@ void setViewport(int width, int height)
   gViewportWidth = width;
   gViewportHeight = height;
 }
+
+void setViewport(const QSize size)
+{
+  gViewportWidth = size.width();
+  gViewportHeight = size.height();
+}
+
+QSize getViewport()
+{
+  return QSize(gViewportWidth, gViewportHeight);
+}
+
 
 void setWorldView(const Rect2& rect)
 {

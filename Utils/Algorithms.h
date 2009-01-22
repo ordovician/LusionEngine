@@ -66,7 +66,7 @@ namespace Util
   }
 
   template<class T, class F>
-  void foreach(Iterator<T>* source, F f) {
+  void each(Iterator<T>* source, F f) {
     while (!source->done()) {
       f(source->value());
       source->next();

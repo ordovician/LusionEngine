@@ -13,10 +13,11 @@
 #include <Geometry/Rect2.hpp>
 #include <Geometry/Segment2.hpp>
 
+#include "EngineQt.h"
 #include "Timing.h"
 #include "Types.h"
-#include "EngineSDL.h"
 
+#include <QtCore/QSize>
 
 class Shape;
 class Sprite;
@@ -40,10 +41,11 @@ SegmentShape2* createSegment2(const Segment2& seg);
 // Accessors
 bool isDone();
 void setDone(bool done);
-
 void setViewportHeight(int height);
 void setViewportWidth(int width);
 void setViewport(int width, int height);
+void setViewport(const QSize size);
+QSize getViewport();
 void setWorldView(const Rect2& rect);
 void lookAt(const Point2& p);
 Rect2 worldView();
@@ -54,3 +56,8 @@ int     stopTimer();
 
 // Request
 bool stateOfKey(int key);
+
+// Operations
+void renderFrame(real start_time);
+void engineBeginLoop(real start_time);
+void engineEndLoop(real start_time);

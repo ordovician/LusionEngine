@@ -9,17 +9,26 @@
 
 #include "Engine.h"
 
-#include <SDL/SDL.h>
+#include <QtGui/QApplication>
+
+#include <Gui/MainForm.h>
 
 #include <Core/AutoreleasePool.hpp>
 
 int main(int argc, char *argv[])
 {  
   AutoreleasePool::begin();
-    engineInit();
-    engineEventLoop();
+    QApplication a(argc, argv);
+  
+    QWidget* w = new MainForm;
+    w->resize(640, 480);
+    a.setActiveWindow( w );
+    w->show();
+    
+    int result = a.exec();
+    delete w;
     engineCleanup();
   AutoreleasePool::end();
           
-  return 0;
+  return result;
 }

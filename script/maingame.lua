@@ -422,7 +422,7 @@ function setupWorld()
 
   npcs[1] = actors:addNPC(view)
   npcs[2] = actors:addNPC(view)  
-
+  npcs[2]:setSpeed(0.5)
 
   selectedNPC = 2
   -- trailingLine = Sprite:new()
