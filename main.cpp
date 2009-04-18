@@ -27,7 +27,6 @@ int main(int argc, char *argv[])
     
     int result = a.exec();
     delete w;
-    engineCleanup();
   AutoreleasePool::end();
           
   return result;

@@ -81,22 +81,22 @@ bool RectShape2::inside(const Point2& p, real t, real dt, Action* command)
 
 
 // Calculations
-bool RectShape2::intersection(const Circle& c, Points2& points) const
+bool RectShape2::intersection(const Circle& c, Points2& ) const
 {
   return c.intersect(iRect);
 }
 
-bool RectShape2::intersection(const Rect2& r, Points2& points) const
+bool RectShape2::intersection(const Rect2& r, Points2& ) const
 {
   return iRect.intersect(r);  
 }
 
-bool RectShape2::intersection(const Segment2& s, Points2& points) const
+bool RectShape2::intersection(const Segment2& s, Points2& ) const
 {
   return s.intersect(iRect);  
 }
 
-bool RectShape2::intersection(const Polygon2& poly, Points2& points) const
+bool RectShape2::intersection(const Polygon2& poly, Points2& ) const
 {
   return poly.intersect(iRect);
 }
@@ -104,7 +104,7 @@ bool RectShape2::intersection(const Polygon2& poly, Points2& points) const
 /*!
   Draws circle if it is inside rectangle \a r
 */
-void RectShape2::draw(const Rect2& r) const
+void RectShape2::draw(const Rect2& ) const
 {
 #ifndef UNIT_TEST
   glBegin(GL_LINES);    

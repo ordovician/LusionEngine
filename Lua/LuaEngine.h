@@ -21,6 +21,8 @@ void debugLua();
 void   luaRenderFrame(real start_time);
 void   luaSetNumberProperty(const char* key_path, double value);
 double luaGetNumberProperty(const char* key_path);
+void   luaSetEngineBoolean(const char* key, int int_key, bool value);
+bool   luaGetEngineBoolean(const char* key, int int_key);
 void   luaUpdate(real start_time);
 
 // Accessors

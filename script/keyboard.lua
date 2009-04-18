@@ -2,7 +2,7 @@
   Created by Erik Engheim on 25/12/2007
   Copyright 2007 Translusion. All rights reserved.
 
-  Defines all the keycodes used by SDL. To be used with Engine.keyState() to retrieve the
+  Defines all the keycodes used by SDL. To be used with Engine.keyState(key) to retrieve the
   status of a key (whether it is pressed or released).
 --]]
 
@@ -244,6 +244,15 @@ Key = {
   UNDO		= 322
 }
 
+keystates = {}
+function Engine.keystate(key)
+  return keystates[key]
+end
+
+function Engine.setKeystate(key, value)
+  keystates[key] = value
+end
+
 Engine.keyClickEvents = Collection:new()
 
 function Engine.registerKeyClickEvent(key, handler)
@@ -254,9 +263,8 @@ function Engine.registerKeyClickEvent(key, handler)
 end
 
 function Engine.handleKeyClickEvents()
-  local keystates = Engine.keyStates()
   function handleEvent(key, event)
-    if keystates[key] then
+    if Engine.keystate(key) then
       event.armed = true
     elseif event.armed then
       event.handler()

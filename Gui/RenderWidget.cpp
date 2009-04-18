@@ -3,18 +3,19 @@
 #include "Engine.h"
 #include "Timing.h"
 
+#include "Lua/LuaEngine.h"
+
 #include <QtGui/QKeyEvent>
+#include <QtDebug>
 
 RenderWidget::RenderWidget(QWidget* parent)
   : QGLWidget(parent)
 {
-  // Makes this widget grab all keyboard input
-  //grabKeyboard();
+  setFocus();
 }
 
 RenderWidget::~RenderWidget()
 {
-  //releaseKeyboard();
 }
 
 void RenderWidget::initializeGL()
@@ -43,7 +44,6 @@ void RenderWidget::timerEvent ( QTimerEvent * event )
 {
   Q_UNUSED(event);
   real secs = secondsPassed();
-  engineBeginLoop(secs);
   updateGL(); // calls paintGL() indirectly
   engineEndLoop(secs);
 }
@@ -51,15 +51,11 @@ void RenderWidget::timerEvent ( QTimerEvent * event )
 void RenderWidget::keyPressEvent ( QKeyEvent * event )
 {
   unsigned int k = event->key();
-  if (k < 256)
-    setKeyState(k, 1);
-  // QGLWidget::keyPressEvent ( QKeyEvent * event )
+  luaSetEngineBoolean("keystate", k, true);
 }
 
 void RenderWidget::keyReleaseEvent ( QKeyEvent * event )
 {
   unsigned int k = event->key();
-  if (k < 256)
-    setKeyState(k, 0);
-  // QGLWidget::keyPressEvent ( QKeyEvent * event )
+  luaSetEngineBoolean("keystate", k, false);
 }

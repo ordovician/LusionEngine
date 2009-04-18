@@ -81,22 +81,22 @@ bool SegmentShape2::inside(const Point2& p, real t, real dt, Action* command)
 
 
 // Calculations
-bool SegmentShape2::intersection(const Circle& c, Points2& points) const
+bool SegmentShape2::intersection(const Circle& c, Points2& ) const
 {
   return c.intersect(iSeg);
 }
 
-bool SegmentShape2::intersection(const Rect2& r, Points2& points) const
+bool SegmentShape2::intersection(const Rect2& r, Points2& ) const
 {
   return iSeg.intersect(r);  
 }
 
-bool SegmentShape2::intersection(const Segment2& s, Points2& points) const
+bool SegmentShape2::intersection(const Segment2& s, Points2& ) const
 {
   return iSeg.intersect(s);  
 }
 
-bool SegmentShape2::intersection(const Polygon2& poly, Points2& points) const
+bool SegmentShape2::intersection(const Polygon2& poly, Points2& ) const
 {
   return poly.intersect(iSeg);
 }
@@ -104,7 +104,7 @@ bool SegmentShape2::intersection(const Polygon2& poly, Points2& points) const
 /*!
   Draws segment if it is inside rectangle \a r
 */
-void SegmentShape2::draw(const Rect2& r) const
+void SegmentShape2::draw(const Rect2& ) const
 {
 #ifndef UNIT_TEST
   glColor3f(1.0f, 0.0f, 0.0f);	

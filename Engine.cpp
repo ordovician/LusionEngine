@@ -72,30 +72,6 @@ void renderFrame(real /*start_time*/)
 {
     glClear(GL_COLOR_BUFFER_BIT);
     renderGroup()->draw(worldView());
-    swapBuffers();
-}
-
-static void handleKeys()
-{
-  ubyte *keystate = getKeyState();
-  
-  gDone = keystate['q'];
-  
-  if (keystate['d']) debugLua();      
-}
-
-
-static void engineLoop(real secs)
-{
-  engineBeginLoop(secs);
-  renderFrame(secs);
-  engineEndLoop(secs);
-}
-
-void engineBeginLoop(real secs)
-{
-  handleKeys();
-  handleMouse(gView, gViewportWidth, gViewportHeight);
 }
 
 void engineEndLoop(real secs)
@@ -129,7 +105,6 @@ static void initGL()
 void engineInit()
 {   
   gDone = false;
-  initKeyboard();
   initLua();  
   initGL();
 #ifdef USE_TEXTURES  
@@ -274,12 +249,4 @@ void startTimer()
 int stopTimer()
 {
   return getTicks()-gStartTime;
-}
-
-
-// Request
-bool stateOfKey(int key)
-{
-  ubyte *keystate = getKeyState();  
-  return keystate[key];
 }

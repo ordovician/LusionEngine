@@ -41,7 +41,7 @@ Shape* minkowskiSum(const Shape* group) {
 
 
 // Constructors
-ClosestPointFinder::ClosestPointFinder(Shape* obstacles, const Rect2& bbox) : iObstacles(obstacles), iBBox(bbox) {
+ClosestPointFinder::ClosestPointFinder(Shape* obstacles, const Rect2& bbox) : iBBox(bbox), iObstacles(obstacles) {
   assert(iObstacles != 0);
   iT = secondsPassed();
   iDt = 1.0;
@@ -56,7 +56,7 @@ void ClosestPointFinder::discCollision(const Circle& circle, Shape* shape, Point
   points = iPoints;
 }
 
-bool ClosestPointFinder::execute(Shape* me, Shape* other, Points2& points, real t, real dt) 
+bool ClosestPointFinder::execute(Shape* , Shape* , Points2& points, real, real) 
 {
   iPoints = points;
   return true;
@@ -133,7 +133,7 @@ bool
 ClosestPointFinder::retractSample(const Vector2& c, Vector2& c_v) {
   Vector2 c_close;
   if (!nearestObstacle(c, c_close))
-    false;
+    return false;
 
   // No point in trying to retract if we are on border already
   if (c == c_close)
@@ -156,7 +156,7 @@ ClosestPointFinder::retractSample(const Vector2& c, Vector2& c_v) {
     
 	while ((c_near-c_close).squaredLength() < ACCURACY) {
 		c1 = c1 + ds;
-    c_near;
+    
     if (!nearestObstacle(c1, c_near))
       return false;
 

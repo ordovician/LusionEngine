@@ -179,44 +179,6 @@ static int worldView(lua_State* L)
 }
 
 // Request
-static int keyState(lua_State* L)
-{
-  int n = lua_gettop(L);
-  if (n != 1)
-    return luaL_error(L, "Got %d arguments expected 1 (key code)", n);    
-
-  lua_pushboolean(L, stateOfKey(luaL_checkinteger(L,1)));
-  return 1;
-}
-
-static int keyStates(lua_State* L)
-{
-  int n = lua_gettop(L);
-  if (n != 0)
-    return luaL_error(L, "Got %d arguments expected 0", n);    
-
-  ubyte **keystate = (ubyte **)lua_newuserdata(L, sizeof(ubyte *));  
-  *keystate = getKeyState();
-
-  luaL_getmetatable(L, "Lusion.KeyStates");
-  lua_setmetatable(L, -2);       
-   
-  return 1;
-}
-
-static int isKeyDown(lua_State* L)
-{
-  int n = lua_gettop(L);
-  if (n != 2)
-    return luaL_error(L, "Got %d arguments expected 2 (self, key code)", n);    
-
-  ubyte* keystate = 0;
-  checkUserData(L, "Lusion.KeyStates", keystate);
-  
-  lua_pushboolean(L, keystate[luaL_checkinteger(L,2)]);
-  return 1;
-}
-
 /*!
   Optimized version of ProbablisticRoadMaps nearest obstacle
   It was taking up a lot of time when computing roadmap
@@ -451,8 +413,6 @@ static const luaL_Reg gEngineFuncs[] = {
   {"setTicksPerFrame", setTicksPerFrame},    
   {"secondsPerFrame", secondsPerFrame},                    
   {"ticksLeft", ticksLeft},          
-  {"keyState", keyState},            
-  {"keyStates", keyStates},  
   {"nearestObstacle", nearestObstacle},
   {"equidistantVertex", equidistantVertex},
   {"retractSample", retractSample},          
@@ -472,18 +432,7 @@ static const luaL_Reg gDebugFuncs[] = {
   {NULL, NULL}
 };
 
-static const luaL_Reg gKeyStatesFuncs[] = {
-  {"__index", isKeyDown},  
-  {NULL, NULL}
-};
-
 // Initialization
-static void initLuaKeyStates(lua_State *L)
-{
-  luaL_newmetatable(L, "Lusion.KeyStates");
-  luaL_register(L, 0, gKeyStatesFuncs);        
-}
-
 void initLua()
 {
 	gLuaState = lua_open();
@@ -508,7 +457,6 @@ void initLua()
   // initLuaPaths2(gLuaState);  
   // initLuaGraph2(gLuaState);    // NOTE: Depends on CGAL
   initLuaMotionState(gLuaState);  
-  initLuaKeyStates(gLuaState);    
   initLuaMatrix2(gLuaState);    
     
   if (luaL_dofile(gLuaState, gEngineScript)) {
@@ -562,15 +510,8 @@ void luaUpdate(real start_time)
 {
   lua_State *L = luaState(); 
   lua_getglobal(L, "Engine");
-  
-  // Set mouse state
-  lua_pushboolean(L, isMouseButtonDown());
-  lua_setfield(L, -2, "mouseButton");
-  
-  Vector2_push(L, mousePosition());
-  lua_setfield(L, -2, "mousePosition");  
-  
-  lua_getfield(L, -1, "update"); // Get functioned named "onCollision" from table lying at the top of the stack
+    
+  lua_getfield(L, -1, "update");
   lua_remove(L, -2);  // Remove element right below top of stack (Sprite table)
   lua_pushnumber(L, start_time);  
   if (lua_pcall(L, 1, 0, 0)) {
@@ -656,6 +597,19 @@ void luaSetNumberProperty(const char* key_path, double value)
   pcall(2, 0);      
 }
 
+/*!
+  Gets a property on a lua object in the global lua state. The name of the property
+  can be given as a property path similar to keypaths in Cocoa.
+  
+  \code
+  luaGetNumberProperty("Engine.player.rotation");
+  \endcode
+  is the same as calling:
+  
+  Engine.player():rotation(180)
+  
+  In lua code    
+*/
 double luaGetNumberProperty(const char* key_path)
 {
   lua_State *L = luaState(); 
@@ -666,6 +620,61 @@ double luaGetNumberProperty(const char* key_path)
   real number = luaL_checknumber(L, -1);
   return number;
 }
+
+/*!
+  Similar to luaSetNumberProperty but will not work for key paths.
+  Instead it it works only on boolean properties found on the Engine
+  global table in lua code.
+  
+  \code
+  luaSetEngineBoolean("Engine.keystate", 12, true);
+  \endcode
+  is the same as calling:
+  
+  Engine.setKeystate(12, true)
+  
+  In lua code    
+*/
+void luaSetEngineBoolean(const char* key, int int_key, bool value)
+{
+  lua_State *L = luaState(); 
+  lua_getglobal(L, "Engine");
+  string s(key);
+  s[0] = (char)toupper(s[0]);
+  s = "set"+s; 
+  lua_getfield(L, -1, s.c_str());
+  lua_remove(L, -2);  
+  lua_pushnumber(L, int_key);
+  lua_pushboolean(L, value);    
+  pcall(2, 0);      
+}
+
+/*!
+  Similar to luaGetNumberProperty but will not work for key paths.
+  Instead it it works only on boolean properties found on the Engine
+  global table in lua code.
+  
+  \code
+  luaGetEngineBoolean("Engine.keystate", 12);
+  \endcode
+  is the same as calling:
+  
+  Engine.keystate(12)
+  
+  In lua code
+*/
+bool luaGetEngineBoolean(const char* key, int int_key)
+{
+  lua_State *L = luaState(); 
+  lua_getglobal(L, "Engine");
+  lua_getfield(L, -1, key);
+  lua_remove(L, -2);  
+  lua_pushnumber(L, int_key);
+  pcall(1, 1);      
+  bool value = lua_toboolean(L, -1);
+  return value;
+}
+
 
 // Accessors
 lua_State* luaState()

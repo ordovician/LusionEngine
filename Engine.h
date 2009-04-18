@@ -13,7 +13,6 @@
 #include <Geometry/Rect2.hpp>
 #include <Geometry/Segment2.hpp>
 
-#include "EngineQt.h"
 #include "Timing.h"
 #include "Types.h"
 
@@ -59,5 +58,4 @@ bool stateOfKey(int key);
 
 // Operations
 void renderFrame(real start_time);
-void engineBeginLoop(real start_time);
 void engineEndLoop(real start_time);

@@ -807,11 +807,6 @@ static int kill(lua_State *L)
   return 0;
 }
 
-static int onPlan(lua_State *) 
-{
-  return 0;
-}
-
 // Global sprite functions
 static int setShowCollision(lua_State *L) 
 {

@@ -33,12 +33,11 @@ end
 
 function Engine.updatePlayer()
   local player = Engine.player()
-  local keystates = Engine.keyStates()
 
-  if keystates[Key.UP]    then player:accelerate(0.4) end
-  if keystates[Key.DOWN]  then player:accelerate(-0.4) end
-  if keystates[Key.RIGHT] then player:rotate(-3.0) end
-  if keystates[Key.LEFT]  then player:rotate(3.0) end
+  if Engine.keystate(Key.UP)    then player:accelerate(0.4) end
+  if Engine.keystate(Key.DOWN)  then player:accelerate(-0.4) end
+  if Engine.keystate(Key.RIGHT) then player:rotate(-3.0) end
+  if Engine.keystate(Key.LEFT) then player:rotate(3.0) end
   
 end
 
