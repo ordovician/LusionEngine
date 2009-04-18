@@ -428,7 +428,8 @@ function setupWorld()
   -- trailingLine:setView(SegmentView:new())
   
   local npc = currentNPC()
-  Engine.registerKeyClickEvent(Key.z, makePlayerSwitch)  
+  -- Engine.registerKeyClickEvent(Key.z, makePlayerSwitch)  
+  Engine.registerKeyClickEvent(90, makePlayerSwitch)  
   Engine.update = update  
 
   Engine.registerKeyClickEvent(Key.v, function()
@@ -438,6 +439,10 @@ function setupWorld()
   -- minkowski_obstacles = obstacle_collection:map(
   --      Geometry.minkowskiAdder(Polygon:rect(-1, -1, 2, 2), 1, 0, 0))
 
+  erik = Sprite:new(npc:view())
+  erik:setPosition(vec(0, 0))
+  erik:setSpeed(2)
+  erik:setDirection(vec(0, 1))
 end
 
 function setupCollisionHandling()

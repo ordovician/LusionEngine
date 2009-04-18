@@ -31,7 +31,6 @@ INCLUDEPATH += . \
 
 # Input
 HEADERS += Engine.h \
-    EngineQt.h \
     Timing.h \
     Types.h \
     Base/Action.h \
@@ -85,7 +84,6 @@ HEADERS += Engine.h \
     Gui/RenderWidget.h \
     Gui/MainForm.h
 SOURCES += Engine.cpp \
-    EngineQt.cpp \
     main.cpp \
     Timing.cpp \
     Base/Action.cpp \

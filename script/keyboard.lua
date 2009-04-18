@@ -243,13 +243,24 @@ Key = {
   EURO		= 321,		
   UNDO		= 322
 }
-
+key_hits = 0
+key_count = 0
 keystates = {}
 function Engine.keystate(key)
   return keystates[key]
 end
 
 function Engine.setKeystate(key, value)
+  print("Setting keystate:", key, "to", value)
+  if value then
+    key_hits = key_hits + 1
+  else
+    key_hits = key_hits - 1
+  end
+  key_count = key_count + 1
+  if key_count > 10 then
+    print("keycount", key_count, "keyhits", key_hits, "key", key, "value", value)
+  end
   keystates[key] = value
 end
 
