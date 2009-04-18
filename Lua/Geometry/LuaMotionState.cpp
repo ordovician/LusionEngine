@@ -27,26 +27,6 @@ MotionState  *checkMotionState(lua_State* L, int index)
   return v;
 }
 
-/*!
-  Not called directly by Lua but by other functions that need
-  to create a 'MotionState' object.
-  
-  Assumes that another MotionState object is at 'index'.
-  So the metatable of that object is set to the metatable of the new
-  pushed object
-*/
-static MotionState* MotionState_create(lua_State *L, int index)
-{
-  lua_newtable(L);
-  lua_getmetatable(L, index);       
-  lua_setmetatable(L, -2);
-    
-  MotionState **s = (MotionState **)lua_newuserdata(L, sizeof(MotionState *));  
-  *s = new MotionState; 
-  setUserDataMetatable(L, "Lusion.MotionState");  
-  return *s;
-}
-
 void MotionState_push(lua_State *L, MotionState* mstate)
 {
   lua_newtable(L);

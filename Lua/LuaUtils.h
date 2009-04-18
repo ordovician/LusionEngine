@@ -104,8 +104,8 @@ struct PushValue : public std::unary_function<T, void>
     lua_rawseti(L, -2, n++);  // Set index n in array to point table we just created  
   }
   
-  int n;
   lua_State *L;  
+  int n;
 };
 
 void  getPolygon(lua_State* L, int t, Polygon2& p);

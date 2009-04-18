@@ -237,6 +237,7 @@ static const luaL_Reg gSegmentFuncs[] = {
   {"tag", tag},                        
 
   // Request
+  {"isDegenerate", isDegenerate},                        
   {"above", above},                        
   {"below", below},                        
   {"on", on},                            

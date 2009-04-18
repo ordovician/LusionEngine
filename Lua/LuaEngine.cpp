@@ -45,6 +45,11 @@
 #include <lua.hpp>
 #include <iostream>
 #include <iterator>
+#include <algorithm>
+#include <vector>
+
+#include <cstring>
+#include <cctype>
 
 #include <Geometry/IO.hpp>
 
@@ -56,13 +61,13 @@ static const char* gStartupScript = "script/startup.lua";
 static const char* gGameScript = "script/game.lua";
 
 // Functions exported to Lua
-static int renderFrame(lua_State *L) 
+static int renderFrame(lua_State* /*L*/) 
 {
 
   return 0;
 }
 
-static int update(lua_State *L) 
+static int update(lua_State* /*L*/) 
 {
 
   return 0;
@@ -572,6 +577,94 @@ void luaUpdate(real start_time)
     cerr << "Error when calling update: " 
          << lua_tostring(gLuaState, -1) << endl;
   }
+}
+
+static bool pcall(int nargs, int nresults) 
+{
+  int error_code = lua_pcall(gLuaState, nargs, nresults, 0);
+  if (error_code) {
+    cerr << "Error when calling pcall (set get property): " 
+         << lua_tostring(gLuaState, -1) << endl;
+  }
+  return error_code == 0;
+}
+
+static void splitKeyPath(const char* key_path, vector<string> & keys)
+{
+  const char* begin = key_path;
+  const char* end   = key_path + strlen(key_path);
+  
+  const char *it = begin;
+  const char *it_prev = begin;
+
+  while (it != end) {
+    it = find(it_prev, end, '.');
+    string key(it_prev, it);
+    keys.push_back(key);
+    it_prev = it+1;
+  }  
+}
+
+/*!
+  Will put value found by 
+*/
+static void fetchValue(vector<string> & keys)
+{
+  lua_State *L = luaState(); 
+  vector<string>::const_iterator it = keys.begin();
+  lua_getglobal(L, it->c_str());
+  ++it;
+  lua_getfield(L, -1, it->c_str());
+  ++it;
+  pcall(0, 1);
+  
+  while (it != keys.end()) {
+    lua_getfield(L, -1, it->c_str());
+    lua_insert(L, -2); // swaps function and 'this' on stack, so function objects is at bottom
+    pcall(1, 1);
+    ++it;
+  }  
+}
+
+/*!
+  Sets a property on a lua object in the global lua state. The name of the property
+  can be given as a property path similar to keypaths in Cocoa. 
+  \code
+  luaSetNumberProperty("Engine.player.rotation", 180);
+  \endcode
+  is the same as calling:
+  
+  Engine.player():setRotation(180)
+  
+  In lua code
+*/
+void luaSetNumberProperty(const char* key_path, double value)
+{
+  lua_State *L = luaState(); 
+
+  vector<string> keys;
+  splitKeyPath(key_path, keys);
+  string key = keys.back();
+  keys.pop_back();
+  fetchValue(keys);
+
+  key = "set" + key;
+  key[3] = (char)toupper(key[3]);
+  lua_getfield(L, -1, key.c_str());
+  lua_insert(L, -2); // swaps function and 'this' on stack, so function objects is at bottom
+  lua_pushnumber(L, value);  
+  pcall(2, 0);      
+}
+
+double luaGetNumberProperty(const char* key_path)
+{
+  lua_State *L = luaState(); 
+
+  vector<string> keys;
+  splitKeyPath(key_path, keys);
+  fetchValue(keys);
+  real number = luaL_checknumber(L, -1);
+  return number;
 }
 
 // Accessors

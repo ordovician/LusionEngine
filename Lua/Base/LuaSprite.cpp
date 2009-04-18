@@ -103,7 +103,7 @@ static int newSprite(lua_State *L)
   return 1; 
 }
 
-static int init(lua_State *L) 
+static int init(lua_State *) 
 {  
   return 0;
 }
@@ -807,7 +807,7 @@ static int kill(lua_State *L)
   return 0;
 }
 
-static int onPlan(lua_State *L) 
+static int onPlan(lua_State *) 
 {
   return 0;
 }

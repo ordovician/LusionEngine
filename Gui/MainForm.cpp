@@ -5,6 +5,7 @@
 #include <QtUiTools>
 
 #include "Gui/RenderWidget.h"
+#include "Lua/LuaEngine.h"
 
 MainForm::MainForm(QWidget *parent)
      : QWidget (parent)
@@ -27,12 +28,12 @@ MainForm::MainForm(QWidget *parent)
   setWindowTitle(tr("Lusion Engine"));
 }
 
-void MainForm::on_angleSlider_valueChanged(int)
+void MainForm::on_angleSlider_valueChanged(int value)
 {
-  
+  luaSetNumberProperty("Engine.player.rotation", value);
 }
 
-void MainForm::on_speedSlider_valueChanged(int)
+void MainForm::on_speedSlider_valueChanged(int value)
 {
-  
+  luaSetNumberProperty("Engine.player.speed", value);  
 }

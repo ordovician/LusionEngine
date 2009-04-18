@@ -18,8 +18,10 @@ void initGame();
 void closeLua();
 void debugLua();
 
-void luaRenderFrame(real start_time);
-void luaUpdate(real start_time);
+void   luaRenderFrame(real start_time);
+void   luaSetNumberProperty(const char* key_path, double value);
+double luaGetNumberProperty(const char* key_path);
+void   luaUpdate(real start_time);
 
 // Accessors
 lua_State* luaState();
