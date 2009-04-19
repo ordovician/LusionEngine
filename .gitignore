@@ -1,0 +1,15 @@
+build*
+*.plist
+tmtags
+.svn
+.DS_Store
+*.a
+*.tmproj
+*.lproj
+Doc*
+script/svn-commit.tmp
+Images
+LusionEngine.xcodeproj
+LusionEngine_Prefix.pch
+Makefile
+lusionengine.app
