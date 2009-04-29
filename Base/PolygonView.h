@@ -13,7 +13,8 @@
 
 #include <Geometry/Polygon2.hpp>
 
-#include <OpenGL/gl.h>
+//#include <OpenGL/gl.h>
+#include <GL/glew.h>
 
 class PolygonView : public View
 {

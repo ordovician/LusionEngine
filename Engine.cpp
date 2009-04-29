@@ -9,8 +9,9 @@
 
 #include "Engine.h"
 
-#include <OpenGL/gl.h>
-#include <OpenGL/glu.h>
+//#include <OpenGL/gl.h>
+//#include <OpenGL/glu.h>
+#include <GL/glew.h>
 
 
 #include "Base/Sprite.h"

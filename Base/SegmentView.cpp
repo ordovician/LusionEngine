@@ -11,7 +11,8 @@
 #include "Utils/PolygonUtils.h"
 #include "Utils/GLUtils.h"
 
-#include <OpenGL/gl.h>
+//#include <OpenGL/gl.h>
+#include <GL/glew.h>
 
 #include <algorithm>
 

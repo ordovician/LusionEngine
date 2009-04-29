@@ -13,7 +13,8 @@
 
 #include <Geometry/Vector2.hpp>
 
-#include <OpenGL/gl.h>
+//#include <OpenGL/gl.h>
+#include <GL/glew.h>
 #include <algorithm>
 
 #include <iostream>

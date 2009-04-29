@@ -13,6 +13,7 @@
 
 #include "Utils/Exception.h"
 
+#include <cassert>
 #include <vector>
 #include <set>
 /*!

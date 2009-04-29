@@ -18,7 +18,8 @@
 #ifndef UNIT_TEST
 #include "Utils/GLUtils.h"
 
-#include <OpenGL/gl.h>
+//#include <OpenGL/gl.h>
+#include <GL/glew.h>
 #endif
 
 using namespace std;

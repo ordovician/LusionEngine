@@ -10,7 +10,8 @@
 #include "Utils/GLUtils.h"
 #include "Utils/PolygonUtils.h"
 
-#include <OpenGL/gl.h>
+//#include <OpenGL/gl.h>
+#include <GL/glew.h>
 
 void gltTranslate(const Point2& pos)
 {  
