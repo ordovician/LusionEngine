@@ -5,7 +5,6 @@ import os, sys
 env = parent_env.Clone()
 
 ConfigureInstallDirectory(env, 'LusionEngine')
-SetLibraryVersions(env, {'qt' : '4_4_3'})
 
 name = 'lusionengine'
 
