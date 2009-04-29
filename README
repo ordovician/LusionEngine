@@ -1,0 +1,12 @@
+Copyright 2006 Translusion. All rights reserved.
+
+To compile this program you need to have Qt 4.x installed and have compiled up a static library of
+latests version of Lua. Put the static library in the projects root directory and run:
+  qmake LusionEngine.pro
+to produce a Makefile. 
+
+Then run:
+  make
+to build the project.
+
+Compiling has only been tested on Mac OS X Leopard but should work on Linux and Windows as well.
