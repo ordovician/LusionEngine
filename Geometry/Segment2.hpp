@@ -35,8 +35,8 @@ public:
     real xmax() const;
     real ymax() const;
     
-    int   tag() const;
-    void  setTag(int tag);
+    long   tag() const;
+    void  setTag(long tag);
     
     void  setData(void *data);
     void* data() const;

@@ -47,14 +47,14 @@ stack<AutoreleasePool*> AutoreleasePool::sPoolStack;
 AutoreleasePool::AutoreleasePool() 
 {
   #ifdef DEBUG_MEMORY  
-  cout << hex << "0x" << (int)this << " AutoreleasePool created" << endl;  // DEBUG    
+  cout << hex << "0x" << (long)this << " AutoreleasePool created" << endl;  // DEBUG
   #endif
 }
 
 AutoreleasePool::AutoreleasePool(const AutoreleasePool& pool) : SharedObject(pool)
 {
   #ifdef DEBUG_MEMORY  
-  cout << hex << "0x" << (int)this << " AutoreleasePool copied" << endl;  // DEBUG    
+  cout << hex << "0x" << (long)this << " AutoreleasePool copied" << endl;  // DEBUG
   #endif  
 }
 
@@ -67,7 +67,7 @@ AutoreleasePool::~AutoreleasePool()
 {
   releasePool();
   #ifdef DEBUG_MEMORY  
-  cout << hex << "0x" << (int)this << " AutoreleasePool removed" << endl;  // DEBUG    
+  cout << hex << "0x" << (long)this << " AutoreleasePool removed" << endl;  // DEBUG
   #endif
 }
 

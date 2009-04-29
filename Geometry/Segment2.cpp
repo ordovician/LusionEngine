@@ -78,12 +78,12 @@ real Segment2::ymax() const
   return max(iV[0].y(), iV[1].y());  
 }
 
-int Segment2::tag() const
+long Segment2::tag() const
 {
-  return (int)data();
+  return (long)data();
 }
 
-void  Segment2::setTag(int tag)
+void  Segment2::setTag(long tag)
 {
   setData((void*)tag);
 }

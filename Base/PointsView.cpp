@@ -53,7 +53,7 @@ PointsView::PointsView()
 
 PointsView::~PointsView()
 {
-  cout << hex << "0x" << (int)this << " PointsView removed" << endl;  // DEBUG  
+  cout << hex << "0x" << (long)this << " PointsView removed" << endl;  // DEBUG
 }
 
 static void drawPoint(const Point2& p) {

@@ -122,7 +122,7 @@ ShapeGroup::ShapeGroup(Shape *left, Shape *right, const Rect2& box)
 ShapeGroup::~ShapeGroup()
 {
   #ifdef DEBUG_MEMORY
-  cout << hex << "0x" << (int)this << " collision group removed tag: " << dec << tag() << endl;  // DEBUG    
+  cout << hex << "0x" << (long)this << " collision group removed tag: " << dec << tag() << endl;  // DEBUG
   #endif
   iLeft->release();
   iRight->release();

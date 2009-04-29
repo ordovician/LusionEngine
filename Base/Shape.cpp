@@ -51,7 +51,7 @@ Shape::~Shape()
     bind2nd(
       mem_fun(&ShapeListener::shapeDestroyed),
       this));
-  // cout << hex << "0x" << (int)this << " Shape removed" << endl;  // DEBUG    
+  // cout << hex << "0x" << (long)this << " Shape removed" << endl;  // DEBUG
 }
 
 // Accessors

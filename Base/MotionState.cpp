@@ -53,7 +53,7 @@ MotionState::MotionState(const Point2& aPos, real aDeg, real aSpeed)
 
 MotionState::~MotionState()
 {
-  // cout << hex << "0x" << (int)this << " motion state removed" << endl;  // DEBUG    
+  // cout << hex << "0x" << (long)this << " motion state removed" << endl;  // DEBUG
 }
 
 // Initialization

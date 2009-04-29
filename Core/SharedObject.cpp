@@ -38,7 +38,7 @@ using namespace std;
 SharedObject::SharedObject() : iTag(0) , iRefCount(1) 
 {
   #ifdef DEBUG_MEMORY  
-  cout << "0x" << hex << (int)this << " SharedObject created " << endl;
+  cout << "0x" << hex << (long)this << " SharedObject created " << endl;
   // NOTE: Can't print typeName since that depends on virtual function
   #endif
 }
@@ -59,7 +59,7 @@ SharedObject::operator=(const SharedObject&) {
 SharedObject::~SharedObject() 
 {
   #ifdef DEBUG_MEMORY  
-  cout << "0x" << hex << (int)this << " SharedObject removed" << endl; 
+  cout << "0x" << hex << (long)this << " SharedObject removed" << endl;
   #endif  
 }
 
@@ -98,7 +98,7 @@ SharedObject::retain()
   if (this != 0) { 
     ++iRefCount; 
     #ifdef DEBUG_MEMORY
-    cout << "0x" << hex << (int)this << " retained, refcount: " << dec << iRefCount << endl; 
+    cout << "0x" << hex << (long)this << " retained, refcount: " << dec << iRefCount << endl;
     #endif
   }
 }
@@ -113,7 +113,7 @@ SharedObject::release()
   #ifdef DEBUG_MEMORY
   if (this != 0) {
     std::string type = typeName();
-    cout << "0x" << hex << (int)this << " released, refcount: " 
+    cout << "0x" << hex << (long)this << " released, refcount: "
          << dec << iRefCount-1 
          << " type: " << type << " tag: " << iTag << endl; 
     if (iRefCount <= 0)
@@ -129,7 +129,7 @@ void
 SharedObject::autorelease() 
 {
   #ifdef DEBUG_MEMORY
-  cout << "0x" << hex << (int)this << " autoreleased" << endl;
+  cout << "0x" << hex << (long)this << " autoreleased" << endl;
   #endif
   if (this != 0)
     AutoreleasePool::currentPool()->add(this);

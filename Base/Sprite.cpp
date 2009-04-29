@@ -61,7 +61,7 @@ Sprite::Sprite(const Point2& aPos, real aDeg, real aSpeed)
 
 Sprite::~Sprite()
 {
-  cout << hex << "0x" << (int)this << " sprite removed" << endl;  // DEBUG  
+  cout << hex << "0x" << (long)this << " sprite removed" << endl;  // DEBUG
   iUpdateAction->release();
   iCollisionAction->release();
   iInsideAction->release();
@@ -84,7 +84,7 @@ void Sprite::init(const Point2& pos, real deg, real speed)
   iState = new MotionState(pos, deg, speed);
 
   updateCache();  
-  // cout << hex << "0x" << (int)this << " sprite created" << endl;  // DEBUG
+  // cout << hex << "0x" << (long)this << " sprite created" << endl;  // DEBUG
 }
 
 #pragma mark Accessors

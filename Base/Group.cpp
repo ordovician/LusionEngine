@@ -48,7 +48,7 @@ Group::Group() : iCurShape(0)
 Group::~Group()
 {
   clear();
-  // cout << hex << "0x" << (int)this << " group removed" << endl;  // DEBUG  
+  // cout << hex << "0x" << (long)this << " group removed" << endl;  // DEBUG
 }
 
 // Accessors

@@ -50,14 +50,14 @@ View::View()
   Polygon2 poly(gPoints, gPoints+4);
   setCollisionPolygon(poly);
  
-  // cout << hex << "0x" << (int)this << " view created" << endl;  // DEBUG
+  // cout << hex << "0x" << (long)this << " view created" << endl;  // DEBUG
   setTag(gNextTag++); // DEBUG
 }
 
 View::~View()
 {
   std::cout << "tag: " << tag() << std::endl;
-  std::cout << std::hex << "0x" << (int)this << " view removed" << std::endl;  // DEBUG
+  std::cout << std::hex << "0x" << (long)this << " view removed" << std::endl;  // DEBUG
 }
 
 // Accessors
