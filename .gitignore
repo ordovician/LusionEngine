@@ -10,6 +10,8 @@ Doc*
 script/svn-commit.tmp
 Images
 LusionEngine.xcodeproj
+*.xcodeproj
 LusionEngine_Prefix.pch
 Makefile
 lusionengine.app
+moc_*
