@@ -1,4 +1,14 @@
-Copyright 2006 Translusion. All rights reserved.
+Copyright 2006 Erik Engheim. All rights reserved.
+
+License: GPLv2.0
+
+This is a 2D engine built in a fairly standard Object Oriented fashion in C++ with Lua scripting capability. However I am no longer maintaining it because I have redone the whole project in the form of Lusion2D at https://gitorious.org/lusion2d/lusion2d. Lusion2D aims to be a more sophisticated game engine by considering a lot of things not considered in LusionEngine:
+
+  - Component based or data oriented design instead of object oriented. This is where the game industry is moving as it is more flexible and offers better performance.
+  - Modern OpenGL rendering techniques. LusionEngine just uses code straight out of the old OpenGL red book.
+  - Levels and configuration done in a declarative fashion to make it easier to use tools to create levels.
+
+LusionEngine is made available however since it might be interesting for people interested in how to create a C++ based game engine using Lua. However I can't advice using the Lua wrapping technique used here. It can be done in a cleaner and less complicated fashion by using "placement new" for memory allocation of lua wrapped C++ objects. The technique used in LusionEngine was chosen because at the time I created it, I did not know of placement new. 
 
 To compile this program you need to have Qt 4.x installed and have compiled up a static library of
 latests version of Lua. Put the static library in the projects root directory and run:
